@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28606.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FST.G1.TournamentPlanner.API", "FST.G1.TournamentPlanner.API\FST.G1.TournamentPlanner.API.csproj", "{09308C95-3E5A-44E5-ABBE-522223CDB36D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FST.G1.TournamentPlanner.DB", "FST.G1.TournamentPlanner.DB\FST.G1.TournamentPlanner.DB.csproj", "{42300409-676D-464A-ABE4-340705309870}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09308C95-3E5A-44E5-ABBE-522223CDB36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09308C95-3E5A-44E5-ABBE-522223CDB36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09308C95-3E5A-44E5-ABBE-522223CDB36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09308C95-3E5A-44E5-ABBE-522223CDB36D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42300409-676D-464A-ABE4-340705309870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42300409-676D-464A-ABE4-340705309870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42300409-676D-464A-ABE4-340705309870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42300409-676D-464A-ABE4-340705309870}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99475396-01DE-4184-99DB-C570C17561DA}
+	EndGlobalSection
+EndGlobal
