@@ -1,12 +1,36 @@
-﻿<Window x:Class="FST.TournamentPlanner.UI.MainWindow"
+﻿<RibbonWindow x:Class="FST.TournamentPlanner.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
         xmlns:local="clr-namespace:FST.TournamentPlanner.UI"
+        xmlns:vm="clr-namespace:FST.TournamentPlanner.UI.ViewModel"
+        xmlns:view="clr-namespace:FST.TournamentPlanner.UI.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
-</Window>
+        Title="DER Turnierplanner" Height="450" Width="800">
+    
+    <DockPanel>
+        <ribbon:Ribbon DockPanel.Dock="Top">
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton ToolTip="Open Tournament" Label="Open Tournament"/>
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <Ribbon.ApplicationMenu>
+            <RibbonApplicationMenu>
+                <RibbonApplicationMenuItem Header="Open Tournament"/>
+                <RibbonSeparator/>
+                <RibbonApplicationMenuItem Header="E_xit"/>
+            </RibbonApplicationMenu>
+                </Ribbon.ApplicationMenu>
+                    <ribbon:RibbonTab Header="Banana">
+                
+            </ribbon:RibbonTab>
+        </ribbon:Ribbon>
+        <Grid>
+            <view:TournamentView />
+        </Grid>
+
+    </DockPanel>
+</RibbonWindow>

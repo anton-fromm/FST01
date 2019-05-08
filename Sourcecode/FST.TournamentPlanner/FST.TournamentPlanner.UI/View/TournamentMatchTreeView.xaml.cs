@@ -10,18 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Controls.Ribbon;
 
-namespace FST.TournamentPlanner.UI
+namespace FST.TournamentPlanner.UI.View
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für TournamentMatchTreeView.xaml
     /// </summary>
-    public partial class MainWindow : RibbonWindow
+    public partial class TournamentMatchTreeView : Window
     {
-        public MainWindow()
+        public TournamentMatchTreeView()
         {
             InitializeComponent();
         }
