@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace FST.TournamentPlanner.DB.Models
 {
-    [Table("PlayArea", Schema = "tp")]
-    public class PlayArea : BaseEntity
+    [Table("Team", Schema = "tp")]
+    public class Team : BaseEntity
     {
-        public Tournament Tournament { get; set; }
+        public Tournament Tournamet { get; set; }
         public String Name { get; set; }
-        public String Description { get; set; }
+
     }
 }

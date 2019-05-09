@@ -5,13 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FST.TournamentPlanner.DB.Models
 {
-    [Table("Tournament", Schema = "tp")]
-    public class Tournament : BaseEntity
+    [Table("PlayAreaBooking", Schema = "tp")]
+    public class PlayAreaBooking : BaseEntity
     {
+        public PlayArea PlayArea { get; set; }
         public DateTime Start { get; set; }
-
-        public ICollection<PlayArea> PlayAreas { get; set; }
-
-        public String Description { get; set; }
+        public DateTime End { get; set; }
     }
 }
