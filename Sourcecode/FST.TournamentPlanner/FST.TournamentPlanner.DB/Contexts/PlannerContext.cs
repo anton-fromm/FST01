@@ -11,6 +11,7 @@ namespace FST.TournamentPlanner.DB.Contexts
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }
 
         private string connectionString = Settings.DbConnection;
 

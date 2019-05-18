@@ -13,5 +13,11 @@ namespace FST.TournamentPlanner.DB.Models
         public ICollection<PlayArea> PlayAreas { get; set; }
 
         public String Description { get; set; }
+
+        public int MatchDuration { get; set; }
+
+        public int TeamCount { get; set; }
+
+        public bool IsStarted { get; set; }
     }
 }
