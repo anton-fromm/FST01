@@ -8,6 +8,10 @@ namespace FST.TournamentPlanner.API.Contracts
     public interface IPlayArea
     {
         /// <summary>
+        /// Id of the play area
+        /// </summary>
+        int Id { get; }
+        /// <summary>
         /// Name of the play area
         /// </summary>
         string Name { get; set; }

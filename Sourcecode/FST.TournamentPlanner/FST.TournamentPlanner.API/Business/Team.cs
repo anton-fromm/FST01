@@ -8,6 +8,12 @@ namespace FST.TournamentPlanner.API.Business
 {
     public class Team : ITeam
     {
+        private Tournament _tournament;
+        protected Team(Tournament tournament)
+        {
+            _tournament = tournament;
+        }
+        public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Description { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }

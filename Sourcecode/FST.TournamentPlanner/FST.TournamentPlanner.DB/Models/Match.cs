@@ -17,5 +17,6 @@ namespace FST.TournamentPlanner.DB.Models
         public PlayAreaBooking PlayAreaBooking { get; set; }
         public Match Successor { get; set; }
         public ICollection<Match> Predecessors { get; set; }
+        public MatchState State { get; set; }
     }
 }

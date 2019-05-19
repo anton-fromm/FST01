@@ -10,6 +10,11 @@ namespace FST.TournamentPlanner.API.Business
     [DebuggerDisplay("{Name} ({Description})")]
     public class PlayArea : IPlayArea
     {
+        private Tournament _tournament;
+        protected PlayArea(Tournament tournament)
+        {
+            _tournament = tournament;
+        }
         public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Description { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }

@@ -1,4 +1,5 @@
 ﻿using FST.TournamentPlanner.API.Business;
+using db = FST.TournamentPlanner.DB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace FST.TournamentPlanner.API.Contracts
     {
 
         #region Master data stuff
+        /// <summary>
+        /// Id of the tournament
+        /// </summary>
+        int Id { get; }
         /// <summary>
         /// Name of the tournament
         /// </summary>
@@ -46,7 +51,7 @@ namespace FST.TournamentPlanner.API.Contracts
         /// <summary>
         /// Current state of the tournament
         /// </summary>
-        TournamentState TournamentState { get; }
+        db.TournamentState State { get; }
 
         /// <summary>
         /// Starts the tournament
@@ -138,19 +143,13 @@ namespace FST.TournamentPlanner.API.Contracts
         #region Matches
         /// <summary>
         /// Get the matches within the tournament as non-hierachic list
-        /// 
-        /// Only valid if the tournament is not in Created-State<see cref="TournamentState"/>
         /// </summary>
-        /// <returns>matches</returns>
-        ICollection<IMatch> GetMatches();
+        IReadOnlyCollection<IMatch> Matches { get; }
 
         /// <summary>
         /// Gets the root match element for this tournament (final match).
-        /// 
-        /// Only valid if the tournament is not in Created-State<see cref="TournamentState"/>
         /// </summary>
-        /// <returns></returns>
-        IMatch GetRootMatch();
+        IMatch RootMatch { get; }
         #endregion
     }
 }
