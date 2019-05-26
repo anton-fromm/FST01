@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FST.TournamentPlanner.DB.Contexts;
-using FST.TournamentPlanner.API.Contracts;
 using FST.TournamentPlanner.API.Repositories;
 using FST.TournamentPlanner.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +31,7 @@ namespace FST.TournamentPlanner.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<ITournamentService, TournamentService>();
             //services.AddScoped<IUserService, UserService>();
             services.AddDbContext<PlannerContext>(o => o.UseSqlServer(Configuration["sqlconnection:connectionString"]));
         }

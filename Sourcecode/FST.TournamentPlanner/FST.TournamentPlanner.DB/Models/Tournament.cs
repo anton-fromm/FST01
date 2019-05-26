@@ -8,6 +8,10 @@ namespace FST.TournamentPlanner.DB.Models
     [Table("Tournament", Schema = "tp")]
     public class Tournament : BaseEntity
     {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
         public DateTime Start { get; set; }
 
         public ICollection<PlayArea> PlayAreas { get; set; }
@@ -15,9 +19,7 @@ namespace FST.TournamentPlanner.DB.Models
         public ICollection<Match> Matches { get; set; }
 
         public ICollection<Team> Teams { get; set; }
-
-        public String Description { get; set; }
-
+        
         public int MatchDuration { get; set; }
 
         public int TeamCount { get; set; }

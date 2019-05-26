@@ -12,6 +12,7 @@ namespace FST.TournamentPlanner.API.Repositories
         void Delete(TEntity entity);
         void Delete(int id);
         void Edit(TEntity entity);
+        IEnumerable<TEntity> GetAll(); 
 
         //read side (could be in separate Readonly Generic Repository)
         TEntity GetById(int id);

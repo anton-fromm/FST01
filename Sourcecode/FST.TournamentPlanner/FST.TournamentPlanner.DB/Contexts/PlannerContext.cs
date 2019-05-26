@@ -29,5 +29,12 @@ namespace FST.TournamentPlanner.DB.Contexts
         {
             optionsBuilder.UseSqlServer(this.connectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Match>().HasOne(m => m.TeamOne);
+            modelBuilder.Entity<Match>().HasOne(m => m.TeamTwo);
+            modelBuilder.Entity<MatchResult>().HasOne(mr => mr.Match);
+        }
     }
 }

@@ -17,11 +17,22 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         // GET: api/User
-        [HttpGet]
-        public Model.Tournament Get()
+        [HttpPost("{id}")]
+        public Models.Tournament Get(int id)
         {
-            Model.Tournament x =  this._service.GenerateMatchPlan();
+            Models.Tournament x =  this._service.Get(id);
+            if (x == null)
+            {
+                return null;
+            }
             return x;
         }
+
+        [HttpGet]
+        public IEnumerable<Models.Tournament> Get()
+        {
+            return _service.GetAll();
+        }
+
     }
 }

@@ -1,10 +1,10 @@
-﻿using FST.TournamentPlanner.API.Contracts;
-using FST.TournamentPlanner.DB.Contexts;
+﻿using FST.TournamentPlanner.DB.Contexts;
 using FST.TournamentPlanner.DB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FST.TournamentPlanner.API.Repositories
 {
@@ -12,6 +12,11 @@ namespace FST.TournamentPlanner.API.Repositories
     {
         public TournamentRepository(PlannerContext context) : base(context)
         {
+
+        }
+        public override IEnumerable<Tournament> GetAll()
+        {
+            return PlannerContext.Set<Tournament>().Include(p => p.Teams).Include(p => p.PlayAreas);
         }
     }
 }

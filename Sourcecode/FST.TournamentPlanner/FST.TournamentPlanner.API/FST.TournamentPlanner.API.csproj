@@ -5,7 +5,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Backup\Business\Tournament.cs" />
+    <Compile Remove="Backup\Contracts\IMatch.cs" />
+    <Compile Remove="Backup\Contracts\IPlayArea.cs" />
+    <Compile Remove="Backup\Contracts\IRepositoryWrapper.cs" />
+    <Compile Remove="Backup\Contracts\ITournament.cs" />
+    <Compile Remove="Backup\Controllers\ValuesController.cs" />
+    <Compile Remove="Backup\Repositories\UserRepository.cs" />
+    <Compile Remove="Backup\Services\IUserService.cs" />
+    <Compile Remove="Backup\Services\UserService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Backup\Contracts\ITournament.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Backup\Business\Tournament.cs" />
+    <None Include="Backup\Contracts\IMatch.cs" />
+    <None Include="Backup\Contracts\IPlayArea.cs" />
+    <None Include="Repositories\IRepositoryWrapper.cs" />
+    <None Include="Backup\Controllers\ValuesController.cs" />
+    <None Include="Backup\Repositories\UserRepository.cs" />
+    <None Include="Backup\Services\IUserService.cs" />
+    <None Include="Backup\Services\UserService.cs" />
   </ItemGroup>
 
   <ItemGroup>

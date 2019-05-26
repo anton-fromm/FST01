@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FST.TournamentPlanner.API.Repositories
 {
@@ -58,5 +59,10 @@ namespace FST.TournamentPlanner.API.Repositories
         }
 
         public void SaveChanges() => PlannerContext.SaveChanges();
+
+        public virtual IEnumerable<TEntity> GetAll()
+        {
+            return PlannerContext.Set<TEntity>();
+        }
     }
 }

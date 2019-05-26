@@ -1,5 +1,4 @@
-﻿using FST.TournamentPlanner.API.Contracts;
-using FST.TournamentPlanner.DB.Contexts;
+﻿using FST.TournamentPlanner.DB.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
