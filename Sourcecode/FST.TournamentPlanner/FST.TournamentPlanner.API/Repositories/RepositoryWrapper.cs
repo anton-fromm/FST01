@@ -10,19 +10,19 @@ namespace FST.TournamentPlanner.API.Repositories
     public class RepositoryWrapper: IRepositoryWrapper
     {
         private PlannerContext _ctx;
-        private IUserRepository _user;
+        private TournamentRepository _tournament;
 
 
-        public IUserRepository User
+        public TournamentRepository Tournament
         {
             get
             {
-                if (_user == null)
+                if (_tournament == null)
                 {
-                    _user = new UserRepository(_ctx);
+                    _tournament = new TournamentRepository(_ctx);
                 }
 
-                return _user;
+                return _tournament;
             }
         }
 

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FST.TournamentPlanner.API.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class TournamentRepository : Repository<Tournament>, IRepository<Tournament>
     {
-        public UserRepository(PlannerContext context) : base(context)
+        public TournamentRepository(PlannerContext context) : base(context)
         {
         }
     }

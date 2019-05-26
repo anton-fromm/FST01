@@ -9,9 +9,12 @@ namespace FST.TournamentPlanner.DB.Contexts
 {
     public class PlannerContext : DbContext
     {
-        public DbSet<Item> Items { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<Match> Match { get; set; }
+        public DbSet<MatchResult> MatchResult { get; set; }
+        public DbSet<PlayArea> PlayArea { get; set; }
+        public DbSet<PlayAreaBooking> PlayAreaBooking { get; set; }
+        public DbSet<Team> Team { get; set; }
+        public DbSet<Tournament> Tournament { get; set; }
 
         private string connectionString = Settings.DbConnection;
 
