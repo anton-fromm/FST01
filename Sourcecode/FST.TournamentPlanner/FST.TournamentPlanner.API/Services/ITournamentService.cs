@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FST.TournamentPlanner.API.Services
 {
-    interface ITournamentService
+    public interface ITournamentService
     {
         Tournament GenerateMatchPlan();
     }

@@ -18,9 +18,10 @@ namespace FST.TournamentPlanner.API.Controllers
 
         // GET: api/User
         [HttpGet]
-        public IEnumerable<Model.Tournament> Get()
+        public Model.Tournament Get()
         {
-            return this._service.GenerateMatchPlan();
+            Model.Tournament x =  this._service.GenerateMatchPlan();
+            return x;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace FST.TournamentPlanner.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IUserService, UserService>();
             services.AddDbContext<PlannerContext>(o => o.UseSqlServer(Configuration["sqlconnection:connectionString"]));
         }
 
