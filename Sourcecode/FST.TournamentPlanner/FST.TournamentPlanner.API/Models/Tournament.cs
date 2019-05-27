@@ -79,9 +79,19 @@ namespace FST.TournamentPlanner.API.Models
         public List<Team> Teams => _tournament.Teams.Select(t => new Team(t)).ToList();
 
         /// <summary>
-        /// List of teams
+        /// List of matches
         /// </summary>
-        public List<Match> Matches => _tournament.Matches.Select(m => new Match(m)).ToList();
+        public Match FinalMatch
+        {
+            get
+            {
+                if (_tournament.Matches == null || _tournament.Matches.Count() == 0)
+                {
+                    return null;
+                }
+                return new Match(_tournament.Matches.Single(m => m.Successor == null)); // Select(m => new Match(m)).ToList();
+            }
+        }
 
 
     }

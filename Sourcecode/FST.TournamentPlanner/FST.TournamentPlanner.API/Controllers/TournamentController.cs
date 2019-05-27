@@ -43,12 +43,12 @@ namespace FST.TournamentPlanner.API.Controllers
                 return new BadRequestObjectResult(matchId);
             }
 
-            if (scoreOne <= 0)
+            if (scoreOne < 0)
             {
                 return new BadRequestObjectResult(scoreOne);
             }
 
-            if (scoreTwo <= 0)
+            if (scoreTwo < 0)
             {
                 return new BadRequestObjectResult(scoreTwo);
             }
@@ -58,5 +58,10 @@ namespace FST.TournamentPlanner.API.Controllers
             return this._service.SetScore(matchId, scoreOne, scoreTwo);
         }
 
+        [HttpPost("Start/{tournamentId}")]
+        public IActionResult Start(int tournamentId)
+        {
+            return this._service.Start(tournamentId);
+        }
     }
 }

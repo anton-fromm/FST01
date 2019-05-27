@@ -43,7 +43,7 @@ namespace FST.TournamentPlanner.API.Repositories
             editedEntity = entity;
         }
 
-        public TEntity GetById(int id)
+        public virtual TEntity GetById(int id)
         {
             return PlannerContext.Set<TEntity>().FirstOrDefault(e => e.Id == id);
         }

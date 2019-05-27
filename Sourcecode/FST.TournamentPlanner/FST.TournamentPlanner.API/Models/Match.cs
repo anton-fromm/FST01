@@ -28,7 +28,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match.TeamOne.Team == null)
+                if (_match.TeamOne?.Team == null)
                 {
                     return null;
                 }
@@ -43,7 +43,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match.TeamTwo.Team == null)
+                if (_match.TeamTwo?.Team == null)
                 {
                     return null;
                 }
@@ -69,12 +69,12 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Score of team one
         /// </summary>
-        public int? TeamOneScore => _match.TeamOne.Score;
+        public int? TeamOneScore => _match.TeamOne?.Score;
 
         /// <summary>
         /// Score of team two
         /// </summary>
-        public int? TeamTwoScore => _match.TeamTwo.Score;
+        public int? TeamTwoScore => _match.TeamTwo?.Score;
 
         /// <summary>
         /// State of this match
@@ -84,7 +84,7 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Successor of this match
         /// </summary>
-        public Match Successor
+        internal Match Successor
         {
             get
             {
@@ -103,7 +103,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                DB.Models.Match preMatch = _match.Predecessors.OrderBy(p => p.Id).FirstOrDefault();
+                DB.Models.Match preMatch = _match.Predecessors?.OrderBy(p => p.Id).FirstOrDefault();
                 if (preMatch == null)
                 {
                     return null;
@@ -119,7 +119,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                DB.Models.Match preMatch = _match.Predecessors.OrderBy(p => p.Id).LastOrDefault();
+                DB.Models.Match preMatch = _match.Predecessors?.OrderBy(p => p.Id).LastOrDefault();
                 if (preMatch == null)
                 {
                     return null;

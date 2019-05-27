@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace FST.TournamentPlanner.DB.Models
 {
+
+    [DebuggerDisplay("{Id}")]
     [Table("Match", Schema = "tp")]
     public class Match : BaseEntity
     {

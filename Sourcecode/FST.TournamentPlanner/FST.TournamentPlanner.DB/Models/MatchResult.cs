@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace FST.TournamentPlanner.DB.Models
 {
+    [DebuggerDisplay("{Team?.Name}: {Score}")]
     [Table("MatchResult", Schema = "tp")]
     public class MatchResult : BaseEntity
     {
