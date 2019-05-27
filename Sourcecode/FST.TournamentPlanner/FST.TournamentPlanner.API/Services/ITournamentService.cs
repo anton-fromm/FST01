@@ -1,4 +1,5 @@
 ﻿using FST.TournamentPlanner.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace FST.TournamentPlanner.API.Services
         Tournament Get(int id);
         IEnumerable<Tournament> GetAll();
         Tournament GenerateMatchPlan(int id);
+        IActionResult SetScore(int matchId,int scoreOne, int scoreTwo);
+
     }
 }

@@ -34,5 +34,29 @@ namespace FST.TournamentPlanner.API.Controllers
             return _service.GetAll();
         }
 
+        [HttpPost]
+        public IActionResult SetScoreOnMatch (int matchId, int scoreOne, int scoreTwo)
+        {
+            #region inputValidation
+            if (matchId <= 0)
+            {
+                return new BadRequestObjectResult(matchId);
+            }
+
+            if (scoreOne <= 0)
+            {
+                return new BadRequestObjectResult(scoreOne);
+            }
+
+            if (scoreTwo <= 0)
+            {
+                return new BadRequestObjectResult(scoreTwo);
+            }
+
+            #endregion inputValidation
+
+            return this._service.SetScore(matchId, scoreOne, scoreTwo);
+        }
+
     }
 }

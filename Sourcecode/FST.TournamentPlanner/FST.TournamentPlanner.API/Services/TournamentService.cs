@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FST.TournamentPlanner.API.Models;
 using FST.TournamentPlanner.API.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using DbModels = FST.TournamentPlanner.DB.Models;
 
 namespace FST.TournamentPlanner.API.Services
@@ -20,7 +21,7 @@ namespace FST.TournamentPlanner.API.Services
         public Tournament GenerateMatchPlan(int id)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(id);
-                                          
+
             //
             // Generate match tree
             //
@@ -48,7 +49,7 @@ namespace FST.TournamentPlanner.API.Services
                 firstRoundMatches[i].TeamOne = new DbModels.MatchResult() { Team = teams[i * 2], CreatedAt = DateTime.Now };
                 firstRoundMatches[i].TeamTwo = new DbModels.MatchResult() { Team = teams[i * 2 + 1], CreatedAt = DateTime.Now };
             }
-            
+
             //_repoWrapper.Tournament.SaveChanges();
 
             return new Tournament(_repoWrapper.Tournament.GetById(id));
@@ -69,6 +70,23 @@ namespace FST.TournamentPlanner.API.Services
             var bla = _repoWrapper.Tournament.GetAll().ToList();
             var blubb = bla.Select(t => new Tournament(t));
             return blubb;
+        }
+
+        public IActionResult SetScore(int matchId, int scoreOne, int scoreTwo)
+        {
+            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            if(match == null)
+            {
+                return new NotFoundResult();
+            }
+
+            match.TeamOne.Score = scoreOne;
+            match.TeamTwo.Score = scoreTwo;
+
+            this._repoWrapper.Match.SaveChanges();
+
+            return new OkResult();
+
         }
 
         Tournament ITournamentService.Get(int id)
@@ -162,7 +180,7 @@ namespace FST.TournamentPlanner.API.Services
             }
 
             //Needed to create round 0
-            if(matchesThisRound == null)
+            if (matchesThisRound == null)
             {
                 matchesThisRound = new List<DbModels.Match>();
             }
@@ -178,6 +196,8 @@ namespace FST.TournamentPlanner.API.Services
             }
 
         }
+
+
 
         #endregion
     }

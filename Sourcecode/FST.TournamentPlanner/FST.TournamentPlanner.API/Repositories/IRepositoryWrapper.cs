@@ -9,5 +9,6 @@ namespace FST.TournamentPlanner.API.Repositories
     public interface IRepositoryWrapper
     {
         TournamentRepository Tournament { get; }
+        MatchRepository Match { get; }
     }
 }

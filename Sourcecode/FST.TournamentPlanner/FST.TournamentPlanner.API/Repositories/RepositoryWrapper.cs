@@ -10,6 +10,8 @@ namespace FST.TournamentPlanner.API.Repositories
     {
         private PlannerContext _ctx;
         private TournamentRepository _tournament;
+        private MatchRepository _match;
+
 
 
         public TournamentRepository Tournament
@@ -22,6 +24,21 @@ namespace FST.TournamentPlanner.API.Repositories
                 }
 
                 return _tournament;
+            }
+        }
+
+
+
+        public MatchRepository Match
+        {
+            get
+            {
+                if (_match == null)
+                {
+                    _match = new MatchRepository(_ctx);
+                }
+
+                return _match;
             }
         }
 
