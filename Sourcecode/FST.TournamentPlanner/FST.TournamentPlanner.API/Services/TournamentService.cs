@@ -156,6 +156,7 @@ namespace FST.TournamentPlanner.API.Services
             matchesPerRound.OrderByDescending(l => l.Key).ToList().ForEach(l => l.Value.ForEach(m =>
             {
                 m.PlayAreaBooking = CreateBookingForPlayArea(tournament);
+                //little work-around: without this save, the next call of CreateBookingForPlayArea will not determinate the correct next slot
                 _repoWrapper.Tournament.SaveChanges();
             })
             );
