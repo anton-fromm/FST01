@@ -10,6 +10,6 @@ namespace FST.TournamentPlanner.API.Services
     {
         Tournament Get(int id);
         IEnumerable<Tournament> GetAll();
-        Tournament GenerateMatchPlan();
+        Tournament GenerateMatchPlan(int id);
     }
 }
