@@ -78,6 +78,11 @@ namespace FST.TournamentPlanner.API.Models
         /// </summary>
         public List<Team> Teams => _tournament.Teams.Select(t => new Team(t)).ToList();
 
+        /// <summary>
+        /// List of teams
+        /// </summary>
+        public List<Match> Matches => _tournament.Matches.Select(m => new Match(m)).ToList();
+
 
     }
 }

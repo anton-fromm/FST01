@@ -49,7 +49,7 @@ namespace FST.TournamentPlanner.API.Services
                 firstRoundMatches[i].TeamTwo = new DbModels.MatchResult() { Team = teams[i * 2 + 1], CreatedAt = DateTime.Now };
             }
             
-            _repoWrapper.Tournament.SaveChanges();
+            //_repoWrapper.Tournament.SaveChanges();
 
             return new Tournament(_repoWrapper.Tournament.GetById(id));
         }
@@ -115,10 +115,16 @@ namespace FST.TournamentPlanner.API.Services
         private void GenerateMatchTree(DbModels.Match match, int depth)
         {
             depth--;
+
             // Generate predecessors
-            var preMatchOne = new DbModels.Match();
+            if (match.Predecessors == null)
+            {
+                match.Predecessors = new List<DbModels.Match>();
+            }
+
+            DbModels.Match preMatchOne = new DbModels.Match();
             match.Predecessors.Add(preMatchOne);
-            var preMatchTwo = new DbModels.Match();
+            DbModels.Match preMatchTwo = new DbModels.Match();
             match.Predecessors.Add(preMatchTwo);
 
             // Generate next level
@@ -154,6 +160,13 @@ namespace FST.TournamentPlanner.API.Services
                 matchesThisRound = new List<DbModels.Match>();
                 matchList.Add(round, matchesThisRound);
             }
+
+            //Needed to create round 0
+            if(matchesThisRound == null)
+            {
+                matchesThisRound = new List<DbModels.Match>();
+            }
+
             matchesThisRound.Add(parentMatch);
             if (parentMatch.Predecessors != null)
             {
