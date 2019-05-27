@@ -20,7 +20,7 @@ namespace FST.TournamentPlanner.Tests
             this._tournamentService = new TournamentService(
                 new RepositoryWrapper(
                     new PlannerContext(
-                        "Data Source=stadtler-fst.database.windows.net;Initial Catalog=FST;Persist Security Info=True;User ID=User1;Password=123qwe!!"
+                        "ConnectionString"
                     )
                 )
             );
