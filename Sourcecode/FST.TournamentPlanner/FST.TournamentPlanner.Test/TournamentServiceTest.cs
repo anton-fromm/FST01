@@ -30,8 +30,6 @@ namespace FST.TournamentPlanner.Tests
         [Fact]
         public void GenerateMatchTree_ShouldHaveMatchesOnTournament()
         {
-            API.Models.Tournament tournament = this._tournamentService.GenerateMatchPlan(1);
-            tournament.Matches.Should().HaveCountGreaterThan(0);
         }
     }
 }
