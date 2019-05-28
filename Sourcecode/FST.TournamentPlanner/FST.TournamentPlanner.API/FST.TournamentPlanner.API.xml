@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FST.TournamentPlanner.API</name>
+    </assembly>
+    <members>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.Id">
+            <summary>
+            Id of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.TeamOne">
+            <summary>
+            First Team in this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.TeamTwo">
+            <summary>
+            Second Team in this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.PlayArea">
+            <summary>
+            Play area this match is held
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.Start">
+            <summary>
+            Start time of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.End">
+            <summary>
+            End time of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.TeamOneScore">
+            <summary>
+            Score of team one
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.TeamTwoScore">
+            <summary>
+            Score of team two
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.MatchState">
+            <summary>
+            State of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.Successor">
+            <summary>
+            Successor of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.FirstPredecessor">
+            <summary>
+            First predecessor game
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.SecondPredecessor">
+            <summary>
+            Second predecessor game
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.Looser">
+            <summary>
+            Looser team of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Match.Winner">
+            <summary>
+            Winner team of this match
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Id">
+            <summary>
+            Id of the play area
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Name">
+            <summary>
+            Name of the play area
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Description">
+            <summary>
+            Description of the play area
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Team.Id">
+            <summary>
+            Id of the team
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Team.Name">
+            <summary>
+            Name of the team
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.Id">
+            <summary>
+            Id of the tournament
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.Name">
+            <summary>
+            Name of the tournament
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.Description">
+            <summary>
+            Description of the tournament
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.StartTime">
+            <summary>
+            Start day and time of the tournament
+            
+            Only valid while the tournament is in Created-State<see cref="T:FST.TournamentPlanner.DB.Models.TournamentState"/>
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.MatchDuration">
+            <summary>
+            Duration a single match within the tournament
+            
+            Only valid while the tournament is in Created-State<see cref="T:FST.TournamentPlanner.DB.Models.TournamentState"/>
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.TeamCount">
+            <summary>
+            Number of teams in the tournament.
+            This number must be expressable as potence of basis 2
+            
+            Only valid while the tournament is in Created-State<see cref="T:FST.TournamentPlanner.DB.Models.TournamentState"/>
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.State">
+            <summary>
+            Current state of the tournament
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.PlayAreas">
+            <summary>
+            List of play areas within this tournament
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.Teams">
+            <summary>
+            List of teams
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Models.Tournament.FinalMatch">
+            <summary>
+            List of matches
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemovePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+            <summary>
+            Remove the given play area from the tournament
+            
+            Only valid while the tournament is in Created-State<see cref="!:TournamentState"/>
+            </summary>
+            <param name="playArea">play area to remove</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateRoundLists(FST.TournamentPlanner.DB.Models.Match)">
+            <summary>
+            Convert the tree of matches to a directory, where the key is the current play round and the value is the list of all matches within the round
+            </summary>
+            <param name="finalMatch">root element to start navigation from</param>
+            <returns>dictionary</returns>
+        </member>
+    </members>
+</doc>
