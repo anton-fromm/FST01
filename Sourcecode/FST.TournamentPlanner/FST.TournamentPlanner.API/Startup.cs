@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace FST.TournamentPlanner.API
 {
@@ -42,6 +43,8 @@ namespace FST.TournamentPlanner.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "DER Turnierplaner - REST API", Version = "v1" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "FST.TournamentPlanner.API.xml");
+                c.IncludeXmlComments(filePath);
             });
         }
 

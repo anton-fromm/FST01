@@ -4,6 +4,47 @@
         <name>FST.TournamentPlanner.API</name>
     </assembly>
     <members>
+        <member name="T:FST.TournamentPlanner.API.Controllers.TournamentController">
+            <summary>
+            This class 
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.#ctor(FST.TournamentPlanner.API.Services.ITournamentService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Get(System.Int32)">
+            <summary>
+            Get the tournament by its Id
+            </summary>
+            <param name="id">Id of the tournament</param>
+            <returns>tournament object</returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Get">
+            <summary>
+            Get the list of all tournaments
+            </summary>
+            <returns>tournaments</returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.SetScoreOnMatch(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Set the score for a match. This call is only valid if the match is not finished yet
+            </summary>
+            <param name="matchId">Id of the match</param>
+            <param name="scoreOne">current score of team one</param>
+            <param name="scoreTwo">current score of team two</param>
+            <returns>Resultcode</returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Start(System.Int32)">
+            <summary>
+            Starts the tournament. 
+            This call is only valid if the tournament is in state "Created"
+            </summary>
+            <param name="tournamentId"></param>
+            <returns></returns>
+        </member>
         <member name="P:FST.TournamentPlanner.API.Models.Match.Id">
             <summary>
             Id of this match
