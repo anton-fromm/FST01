@@ -17,7 +17,7 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         // GET: api/User
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public Models.Tournament Get(int id)
         {
             Models.Tournament x =  this._service.Get(id);
