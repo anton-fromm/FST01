@@ -1,5 +1,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Rest;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FST.TournamentPlanner.UI.ViewModel
 {
@@ -22,14 +26,35 @@ namespace FST.TournamentPlanner.UI.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            if (IsInDesignMode)
+            {
+                // Code runs in Blend --> create design time data.
+                CurrentTournament = new TournamentViewModel(CreateDesignTimeVm());
+            }
+            else
+            {
+                var bla = new Model.ModelClient(new AnonymousCredential())
+                {
+                    BaseUri = new Uri("https://fstg1tournamentplannerapi.azurewebsites.net/")
+                };
+                CurrentTournament = new TournamentViewModel(bla.GetWithHttpMessagesAsync(1).Result.Body);
+            }
+
+
+
+        }
+
+        private ObservableCollection<TournamentViewModel> _tournaments;
+        public ObservableCollection<TournamentViewModel> Tournaments
+        {
+            get
+            {
+                if (_tournaments == null)
+                {
+                    _tournaments = new ObservableCollection<TournamentViewModel>();
+                }
+                return _tournaments;
+            }
         }
 
         #region OpenTournamentCommand
@@ -49,7 +74,6 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
-
 
         #region CurrentTournament
         private TournamentViewModel _currentTournament;
@@ -72,5 +96,30 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
 
         #endregion
+
+        private Model.Models.Tournament CreateDesignTimeVm()
+        {
+            #region Dummy PlayAreas
+            var playAreas = new List<Model.Models.PlayArea>();
+            playAreas.Add(new Model.Models.PlayArea(1, "Area 1", "Play Area 1"));
+            playAreas.Add(new Model.Models.PlayArea(1, "Area 2", "Play Area 2"));
+            #endregion
+
+            #region Dummy Teams
+            var teams = new List<Model.Models.Team>();
+            teams.Add(new Model.Models.Team(1, "Team 1"));
+            teams.Add(new Model.Models.Team(2, "Team 2"));
+            teams.Add(new Model.Models.Team(3, "Team 3"));
+            teams.Add(new Model.Models.Team(4, "Team 4"));
+            teams.Add(new Model.Models.Team(5, "Team 5"));
+            teams.Add(new Model.Models.Team(6, "Team 6"));
+            teams.Add(new Model.Models.Team(7, "Team 7"));
+            teams.Add(new Model.Models.Team(8, "Team 8"));
+            #endregion
+            
+            var finalMatch = new Model.Models.Match(1, new Model.Models.Team(1, "Team 1"), new Model.Models.Team(2, "Team 2"), playAreas[0], DateTime.Now, DateTime.Now.AddMinutes(60), null, null, 2, null, null, null, null);
+            var tournament = new Model.Models.Tournament(1, "Ping-Pong", "nur die Harten kommen in den Garten...", DateTime.Now, 60, 8, 1, playAreas, teams, finalMatch);
+            return tournament;
+        }
     }
 }

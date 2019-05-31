@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Controls.Ribbon;
 
-namespace FST.TournamentPlanner.UI
+namespace FST.TournamentPlanner.UI.View
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für TournamentListView.xaml
     /// </summary>
-    public partial class MainWindow : RibbonWindow
+    public partial class TournamentListView : UserControl
     {
-        public MainWindow()
+        public TournamentListView()
         {
             InitializeComponent();
-            DataContext = new ViewModel.MainViewModel();
         }
     }
 }
