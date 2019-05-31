@@ -45,6 +45,14 @@
             <param name="tournamentId"></param>
             <returns></returns>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.RemoveTeam(System.Int32,System.Int32)">
+            <summary>
+            Remove the team from the tournament
+            </summary>
+            <param name="tournamentId">Id of the tournament</param>
+            <param name="teamId">Id of the team</param>
+            <returns></returns>
+        </member>
         <member name="P:FST.TournamentPlanner.API.Models.Match.Id">
             <summary>
             Id of this match
@@ -128,6 +136,11 @@
         <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Description">
             <summary>
             Description of the play area
+            </summary>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Models.Team">
+            <summary>
+            Team class
             </summary>
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Team.Id">

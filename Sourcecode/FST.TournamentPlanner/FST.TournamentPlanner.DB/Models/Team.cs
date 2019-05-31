@@ -10,7 +10,6 @@ namespace FST.TournamentPlanner.DB.Models
     [Table("Team", Schema = "tp")]
     public class Team : BaseEntity
     {
-        public Tournament Tournamet { get; set; }
         public String Name { get; set; }
 
     }

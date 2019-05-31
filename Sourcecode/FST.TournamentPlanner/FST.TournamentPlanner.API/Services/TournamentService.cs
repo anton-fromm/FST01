@@ -163,6 +163,7 @@ namespace FST.TournamentPlanner.API.Services
             //
             // randomize team list for fairness
             //
+            //TODO: Shuffle wieder einschalten
             List<DbModels.Team> teams = tournament.Teams.ToList(); //.ShuffleToNewList();
             //
             // assign teams to matches

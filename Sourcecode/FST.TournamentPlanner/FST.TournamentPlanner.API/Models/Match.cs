@@ -11,9 +11,11 @@ namespace FST.TournamentPlanner.API.Models
     public class Match
     {
         private DB.Models.Match _match;
-        internal Match(DB.Models.Match match)
+        private Tournament _tournament;
+        internal Match(Tournament tournament, DB.Models.Match match)
         {
             _match = match;
+            _tournament = tournament;
         }
         
         /// <summary>
@@ -92,7 +94,7 @@ namespace FST.TournamentPlanner.API.Models
                 {
                     return null;
                 }
-                return new Match(_match.Successor);
+                return new Match(_tournament, _match.Successor);
             }
         }
 
@@ -108,7 +110,7 @@ namespace FST.TournamentPlanner.API.Models
                 {
                     return null;
                 }
-                return new Match(preMatch);
+                return new Match(_tournament, preMatch);
             }
         }
         
@@ -124,7 +126,7 @@ namespace FST.TournamentPlanner.API.Models
                 {
                     return null;
                 }
-                return new Match(preMatch);
+                return new Match(_tournament, preMatch);
             }
         }
 

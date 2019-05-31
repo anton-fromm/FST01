@@ -33,11 +33,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
             else
             {
-                var bla = new Model.ModelClient(new AnonymousCredential())
-                {
-                    BaseUri = new Uri("https://fstg1tournamentplannerapi.azurewebsites.net/")
-                };
-                CurrentTournament = new TournamentViewModel(bla.GetWithHttpMessagesAsync(1).Result.Body);
+                CurrentTournament = new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body);
             }
 
 

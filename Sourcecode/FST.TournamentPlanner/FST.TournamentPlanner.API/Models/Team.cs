@@ -7,10 +7,14 @@ using db = FST.TournamentPlanner.DB.Models;
 
 namespace FST.TournamentPlanner.API.Models
 {
+    /// <summary>
+    /// Team class
+    /// </summary>
     [DebuggerDisplay("{Id} - {Name}")]
     public class Team
     {
         private db.Team _team;
+        private Tournament _tournament;
         internal Team(db.Team team)
         {
             _team = team;
@@ -25,5 +29,6 @@ namespace FST.TournamentPlanner.API.Models
         /// Name of the team
         /// </summary>
         public string Name => _team.Name;
+
     }
 }
