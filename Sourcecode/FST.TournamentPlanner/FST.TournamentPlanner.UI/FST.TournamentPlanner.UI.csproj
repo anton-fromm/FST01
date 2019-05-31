@@ -47,15 +47,23 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.2\lib\net45\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -92,10 +100,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AnonymousCredentials.cs" />
+    <Compile Include="Model\IModelClient.cs" />
+    <Compile Include="Model\ModelClient.cs" />
+    <Compile Include="Model\ModelClientExtensions.cs" />
+    <Compile Include="Model\Models\Match.cs" />
+    <Compile Include="Model\Models\PlayArea.cs" />
+    <Compile Include="Model\Models\Team.cs" />
+    <Compile Include="Model\Models\Tournament.cs" />
     <Compile Include="TournamentMode.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\TournamentMatchTreeViewModel.cs" />
+    <Compile Include="ViewModel\TeamViewModel.cs" />
+    <Compile Include="ViewModel\TournamentMatchViewModel.cs" />
     <Compile Include="ViewModel\TournamentViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\Converter\BottomGraphVisibilityConverter.cs" />
+    <Compile Include="View\Converter\LeftGraphVisibilityConverter.cs" />
+    <Compile Include="View\Converter\MatchResultConverter.cs" />
+    <Compile Include="View\Converter\MatchResultTeamNameDecorationConverter.cs" />
+    <Compile Include="View\Converter\RightGraphVisibilityConverter.cs" />
+    <Compile Include="View\Converter\SingleToListConverter.cs" />
+    <Compile Include="View\Converter\ToListConverter.cs" />
+    <Compile Include="View\TournamentListView.xaml.cs">
+      <DependentUpon>TournamentListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TournamentView.xaml.cs">
       <DependentUpon>TournamentView.xaml</DependentUpon>
     </Compile>
@@ -114,6 +142,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\TournamentMatchTreeItemStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TournamentListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TournamentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,9 +186,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

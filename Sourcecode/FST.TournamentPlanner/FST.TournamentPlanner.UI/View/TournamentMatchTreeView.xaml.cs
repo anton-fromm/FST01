@@ -17,7 +17,7 @@ namespace FST.TournamentPlanner.UI.View
     /// <summary>
     /// Interaktionslogik für TournamentMatchTreeView.xaml
     /// </summary>
-    public partial class TournamentMatchTreeView : Window
+    public partial class TournamentMatchTreeView : UserControl
     {
         public TournamentMatchTreeView()
         {

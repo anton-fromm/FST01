@@ -1,12 +1,81 @@
-﻿<Window x:Class="FST.TournamentPlanner.UI.View.TournamentMatchTreeView"
+﻿<UserControl x:Class="FST.TournamentPlanner.UI.View.TournamentMatchTreeView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FST.TournamentPlanner.UI.View"
-        mc:Ignorable="d"
-        Title="TournamentMatchTreeView" Height="450" Width="800">
-    <Grid>
-        
+        xmlns:v="clr-namespace:FST.TournamentPlanner.UI.View"
+        xmlns:local="clr-namespace:FST.TournamentPlanner.UI.View" d:DesignHeight="500" d:DesignWidth="600"
+             xmlns:vm="clr-namespace:FST.TournamentPlanner.UI.ViewModel"
+        mc:Ignorable="d" 
+        >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="TournamentMatchTreeItemStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <v:ToListConverter x:Key="ToListConverter"/>
+            <v:SingleToListConverter x:Key="SingleToListConverter"/>
+            <v:RightGraphVisibilityConverter x:Key="RightGraphVisibilityConverter"/>
+            <v:LeftGraphVisibilityConverter x:Key="LeftGraphVisibilityConverter"/>
+            <v:BottomGraphVisibilityConverter x:Key="BottomGraphVisibilityConverter"/>
+            <v:MatchResultConverter x:Key="MatchResultConverter"/>
+            <v:MatchResultTeamNameDecorationConverter x:Key="MatchResultTeamNameDecorationConverter"/>
+            <HierarchicalDataTemplate DataType="{x:Type vm:TournamentViewModel}" ItemsSource="{Binding FinalMatch}"/>
+
+
+            <HierarchicalDataTemplate DataType="{x:Type vm:TournamentMatchViewModel}" ItemsSource="{Binding Predecessors}">
+                <Border BorderThickness="0" BorderBrush="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0,1,1,0" BorderBrush="Black" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                Grid.Column="0" Grid.Row="0" 
+                                Grid.ColumnSpan="3" 
+                                Visibility="{Binding Converter={StaticResource LeftGraphVisibilityConverter}}"/>
+                        <Border BorderThickness="1,1,0,0" BorderBrush="Black" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                Grid.Column="3" Grid.Row="0" 
+                                Grid.ColumnSpan="3" 
+                                Visibility="{Binding Converter={StaticResource RightGraphVisibilityConverter}}"/>
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid  Background="BlanchedAlmond" Margin="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding TeamOne.Name}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" TextDecorations="{Binding Converter={StaticResource MatchResultTeamNameDecorationConverter}, ConverterParameter=One}"/>
+                                <TextBlock Text="{Binding Converter={StaticResource MatchResultConverter}}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TeamTwo.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" TextDecorations="{Binding Converter={StaticResource MatchResultTeamNameDecorationConverter}, ConverterParameter=Two}"/>
+                            </Grid>
+                        </Border>
+                        <Border BorderThickness="0,0,1,0" BorderBrush="Black" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                Grid.Column="2" Grid.Row="2" 
+                                Visibility="{Binding Converter={StaticResource BottomGraphVisibilityConverter}}"/>
+                        <Border BorderThickness="1,0,0,0" BorderBrush="Black" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                Grid.Column="3" Grid.Row="2" 
+                                Visibility="{Binding Converter={StaticResource BottomGraphVisibilityConverter}}"/>
+                    </Grid>
+                </Border>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid >
+         <TreeView ItemsSource="{Binding Converter={StaticResource SingleToListConverter}}"></TreeView>
+        <!--<TreeView ItemsSource="{Binding FinalMatch, Converter={StaticResource SingleToListConverter}}" />-->
     </Grid>
-</Window>
+</UserControl>

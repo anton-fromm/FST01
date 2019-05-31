@@ -8,8 +8,8 @@
         xmlns:vm="clr-namespace:FST.TournamentPlanner.UI.ViewModel"
         xmlns:view="clr-namespace:FST.TournamentPlanner.UI.View"
         mc:Ignorable="d"
+        d:DataContext ="{d:DesignInstance {x:Type vm:MainViewModel}, IsDesignTimeCreatable=True}"
         Title="DER Turnierplanner" Height="450" Width="800">
-    
     <DockPanel>
         <ribbon:Ribbon DockPanel.Dock="Top">
             <Ribbon.QuickAccessToolBar>
@@ -29,7 +29,8 @@
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
         <Grid>
-            <view:TournamentView />
+            <view:TournamentMatchTreeView DataContext="{Binding CurrentTournament}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <!-- <view:TournamentView />-->
         </Grid>
 
     </DockPanel>

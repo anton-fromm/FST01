@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
     /// <summary>
     /// Viewmodel representing a tournament
     /// </summary>
-    public class TournamentViewModel : GalaSoft.MvvmLight.ViewModelBase
+    public class TournamentViewModel : ViewModelBase<Model.Models.Tournament>
     {
+
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public TournamentViewModel()
+        public TournamentViewModel(Model.Models.Tournament tournament) : base(tournament)
         {
-            _tournamentId = 5;
+        }
+
+        public ObservableCollection<TeamViewModel> Teams
+        {
+            get
+            {
+                return new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => new TeamViewModel(t)));
+            }
         }
 
         #region TournamentMode
@@ -42,30 +52,20 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _tournamentId;
+                return _model.Id.Value;
             }
         }
         #endregion
 
-        #region TournamentSpaceCount
-        private int _tournamentSpaceCount;
+        #region PlayAreaCount
         /// <summary>
         /// Number of available tournament spaces available for the tournament
         /// </summary>
-        public int TournamentSpaceCount
+        public int PlayAreaCount
         {
             get
             {
-                return _tournamentSpaceCount;
-            }
-            set
-            {
-                if (_tournamentSpaceCount == value)
-                {
-                    return;
-                }
-                _tournamentSpaceCount = value;
-                RaisePropertyChanged(() => TournamentSpaceCount);
+                return _model.PlayAreas.Count();
             }
         }
         #endregion
@@ -102,6 +102,14 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         #endregion
 
+        public string Name
+        {
+            get
+            {
+                return _model.Name;
+            }
+        }
+
         #region Description
         private String _description;
         public String Description
@@ -126,6 +134,18 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        private TournamentMatchViewModel _finalMatch;
+        public List<TournamentMatchViewModel> FinalMatch
+        {
+            get
+            {
+                if (_finalMatch == null)
+                {
+                    _finalMatch = new TournamentMatchViewModel(_model.FinalMatch);
+                }
+                return new List<TournamentMatchViewModel>() { _finalMatch };
+            }
+        }
 
         public override bool Equals(object obj)
         {
