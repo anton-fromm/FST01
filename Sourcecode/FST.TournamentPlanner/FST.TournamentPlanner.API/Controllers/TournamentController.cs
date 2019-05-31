@@ -22,13 +22,12 @@ namespace FST.TournamentPlanner.API.Controllers
         {
             this._service = service;
         }
-
         /// <summary>
         /// Get the tournament by its Id
         /// </summary>
         /// <param name="id">Id of the tournament</param>
         /// <returns>tournament object</returns>
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public Models.Tournament Get(int id)
         {
             Models.Tournament x =  this._service.Get(id);
