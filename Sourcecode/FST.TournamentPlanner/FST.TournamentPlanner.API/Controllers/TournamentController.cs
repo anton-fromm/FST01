@@ -30,7 +30,7 @@ namespace FST.TournamentPlanner.API.Controllers
         [HttpGet("{id}")]
         public Models.Tournament Get(int id)
         {
-            Models.Tournament x =  this._service.Get(id);
+            Models.Tournament x = this._service.Get(id);
             if (x == null)
             {
                 return null;
@@ -55,8 +55,8 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="scoreOne">current score of team one</param>
         /// <param name="scoreTwo">current score of team two</param>
         /// <returns>Resultcode</returns>
-        [HttpPost]
-        public IActionResult SetScoreOnMatch (int matchId, int scoreOne, int scoreTwo)
+        [HttpPost("{matchId}/{scoreOne}/{scoreTwo}")]
+        public IActionResult SetScoreOnMatch(int matchId, int scoreOne, int scoreTwo)
         {
             #region inputValidation
             if (matchId <= 0)
@@ -92,16 +92,52 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         [HttpPost("{tournamentId}/PlayArea/Add/{name}/{description}")]
-        public IActionResult AddPlayArea(int tournamentId, string name, string description)
+        public Task<ActionResult<Models.PlayArea>> AddPlayArea(int tournamentId, string name, string description)
         {
-            return new OkResult();
+            return null;
         }
 
-        [HttpGet("{tournamentId}/PlayArea/Get/{playAreaId}")]
+        [HttpGet("{tournamentId}/PlayArea/{playAreaId}")]
         public Task<ActionResult<Models.PlayArea>> GetPlayArea(int tournamentId, int playAreaId)
         {
             return null;
         }
 
+        [HttpPost("{tournamentId}/PlayArea/{playAreaId}/Remove")]
+        public IActionResult RemovePlayArea(int tournamentId, int playAreaId)
+        {
+            return null;
+        }
+
+        [HttpPost("{tournamentId}/PlayArea")]
+        public IActionResult UpdatePlayArea(PlayArea playArea)
+        {
+            return null;
+        }
+
+        [HttpPost("{tournamentId}/Team/Add/{name}")]
+        public Task<ActionResult<Models.Team>> AddTeam(int tournamentId, string name)
+        {
+            return null;
+
+        }
+
+        [HttpPost("{tournamentId}/Team/{teamId}")]
+        public Task<ActionResult<Models.Team>> GetTeam(int tournamentId, int teamId)
+        {
+            return null;
+        }
+        
+        /// <summary>
+        /// Remove the team from the tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of the tournament</param>
+        /// <param name="teamId">Id of the team</param>
+        /// <returns></returns>
+        [HttpPost("{tournamentId}/Team/{teamId}/Remove")]
+        public Task<ActionResult<Models.Team>> RemoveTeam(int tournamentId, int teamId)
+        {
+            return null;
+        }
     }
 }

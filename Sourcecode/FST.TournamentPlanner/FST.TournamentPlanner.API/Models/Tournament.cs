@@ -89,7 +89,7 @@ namespace FST.TournamentPlanner.API.Models
                 {
                     return null;
                 }
-                return new Match(_tournament.Matches.Single(m => m.Successor == null)); // Select(m => new Match(m)).ToList();
+                return new Match(this, _tournament.Matches.Single(m => m.Successor == null)); // Select(m => new Match(m)).ToList();
             }
         }
 
