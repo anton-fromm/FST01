@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FST.TournamentPlanner.API.Models
 {
+    /// <summary>
+    /// Class representing a play area
+    /// </summary>
     [DebuggerDisplay("{Name} ({Description})")]
     public class PlayArea
     {
@@ -17,16 +20,27 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Id of the play area
         /// </summary>
-        public int Id => _playarea.Id;
+        public int Id
+        {
+            get => _playarea.Id;
+        }
 
         /// <summary>
         /// Name of the play area
         /// </summary>
-        public string Name => _playarea.Name;
+        public string Name
+        {
+            get => _playarea.Name;
+            set => _playarea.Name = value;
+        }
 
         /// <summary>
         /// Description of the play area
         /// </summary>
-        public string Description => _playarea.Description;
+        public string Description
+        {
+            get => _playarea.Description;
+            set => _playarea.Description = value;
+        }
     }
 }

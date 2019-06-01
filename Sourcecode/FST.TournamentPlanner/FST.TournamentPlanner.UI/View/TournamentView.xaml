@@ -8,42 +8,52 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       >
-
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Label Content="Date" Grid.Row="0" Grid.Column="0"/>
-        <DatePicker Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch"/>
-        <Label Content="Start time" Grid.Row="1" Grid.Column="0"/>
-        <xtk:TimePicker Grid.Row="1" Grid.Column="1"/>
-        <Label Content="Mode" Grid.Row="2" Grid.Column="0"/>
-        <ComboBox Grid.Row="2" Grid.Column="1" IsEnabled="False" SelectedIndex="0">
-            <Label Content="Knock-Out"/>
-        </ComboBox>
-        <Label Content="Start date / time" Grid.Row="3" Grid.Column="0"/>
-        <Label Content="Start date / time" Grid.Row="4" Grid.Column="0"/>
-        <Label Content="Start date / time" Grid.Row="5" Grid.Column="0"/>
-        <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Number"/>
-                    <DataGridTextColumn Header="Name" Width="Auto"/>
-                    <DataGridTextColumn Header="Description" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </Grid>
+    <ScrollViewer>
+    <StackPanel Orientation="Vertical">
+        <Expander Header="Stammdaten" IsEnabled="True">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Date" Grid.Row="0" Grid.Column="0"/>
+                <DatePicker Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch"/>
+                <Label Content="Start time" Grid.Row="1" Grid.Column="0"/>
+                <xtk:TimePicker Grid.Row="1" Grid.Column="1"/>
+                <Label Content="Mode" Grid.Row="2" Grid.Column="0"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" IsEnabled="False" SelectedIndex="0">
+                    <Label Content="Knock-Out"/>
+                </ComboBox>
+                <Label Content="Start date / time" Grid.Row="3" Grid.Column="0"/>
+                <Label Content="Start date / time" Grid.Row="4" Grid.Column="0"/>
+                <Label Content="Start date / time" Grid.Row="5" Grid.Column="0"/>
+            </Grid>
+        </Expander>
+        <Expander Header="Teams" IsExpanded="True">
+            
+        </Expander>
+        <Expander Header="Spielplätze" IsExpanded="True">
+            <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
+                <DataGrid ItemsSource="{Binding PlayAreas}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Number" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Expander>
+    </StackPanel>
+    </ScrollViewer>
 </UserControl>

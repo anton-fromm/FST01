@@ -28,7 +28,10 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Name of the team
         /// </summary>
-        public string Name => _team.Name;
-
+        public string Name
+        {
+            get => _team.Name;
+            set => _team.Name = value;
+        }
     }
 }

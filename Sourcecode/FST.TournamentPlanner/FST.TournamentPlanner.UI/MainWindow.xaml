@@ -29,8 +29,8 @@
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
         <Grid>
-            <view:TournamentMatchTreeView DataContext="{Binding CurrentTournament}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <!-- <view:TournamentView />-->
+            <!-- <view:TournamentMatchTreeView DataContext="{Binding CurrentTournament}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+            <view:TournamentView DataContext="{Binding CurrentTournament}"/>
         </Grid>
 
     </DockPanel>

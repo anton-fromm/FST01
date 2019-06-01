@@ -8,6 +8,9 @@ using db = FST.TournamentPlanner.DB.Models;
 
 namespace FST.TournamentPlanner.API.Models
 {
+    /// <summary>
+    /// Knock-out tournament class
+    /// </summary>
     [Serializable]
     public class Tournament
     {
@@ -26,25 +29,41 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Name of the tournament
         /// </summary>
-        public string Name => _tournament.Name;
+        public string Name
+        {
+            get => _tournament.Name;
+            set => _tournament.Name = value;
+        }
         /// <summary>
         /// Description of the tournament
         /// </summary>
-        public string Description => _tournament.Description;
+        public string Description
+        {
+            get => _tournament.Description;
+            set => _tournament.Description = value;
+        }
 
         /// <summary>
         /// Start day and time of the tournament
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public DateTime StartTime => _tournament.Start;
+        public DateTime StartTime
+        {
+            get => _tournament.Start;
+            set => _tournament.Start = value;
+        }
 
         /// <summary>
         /// Duration a single match within the tournament
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public int MatchDuration => _tournament.MatchDuration;
+        public int MatchDuration
+        {
+            get => _tournament.MatchDuration;
+            set => _tournament.MatchDuration = value;
+        }
 
         /// <summary>
         /// Number of teams in the tournament.
@@ -52,7 +71,11 @@ namespace FST.TournamentPlanner.API.Models
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public int TeamCount => _tournament.TeamCount;
+        public int TeamCount
+        {
+            get => _tournament.TeamCount;
+            set => _tournament.TeamCount = value;
+        }
         #endregion
 
         #region Tournament state
@@ -79,7 +102,7 @@ namespace FST.TournamentPlanner.API.Models
         public List<Team> Teams => _tournament.Teams.Select(t => new Team(t)).ToList();
 
         /// <summary>
-        /// List of matches
+        /// Final match
         /// </summary>
         public Match FinalMatch
         {

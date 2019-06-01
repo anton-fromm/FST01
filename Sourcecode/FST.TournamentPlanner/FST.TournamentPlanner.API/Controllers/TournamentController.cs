@@ -55,7 +55,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="scoreOne">current score of team one</param>
         /// <param name="scoreTwo">current score of team two</param>
         /// <returns>Resultcode</returns>
-        [HttpPost("{matchId}/{scoreOne}/{scoreTwo}")]
+        [HttpPost("Match/{matchId}/{scoreOne}/{scoreTwo}")]
         public IActionResult SetScoreOnMatch(int matchId, int scoreOne, int scoreTwo)
         {
             #region inputValidation
@@ -77,6 +77,12 @@ namespace FST.TournamentPlanner.API.Controllers
             #endregion inputValidation
 
             return this._service.SetScore(matchId, scoreOne, scoreTwo);
+        }
+
+        [HttpPost("Match/{matchId}")]
+        public Task<ActionResult<Match>> GetMatch(int matchId)
+        {
+            return null;
         }
 
         /// <summary>

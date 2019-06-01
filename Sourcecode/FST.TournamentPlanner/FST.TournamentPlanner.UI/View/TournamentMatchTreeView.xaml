@@ -23,7 +23,7 @@
             <HierarchicalDataTemplate DataType="{x:Type vm:TournamentViewModel}" ItemsSource="{Binding FinalMatch}"/>
 
 
-            <HierarchicalDataTemplate DataType="{x:Type vm:TournamentMatchViewModel}" ItemsSource="{Binding Predecessors}">
+            <HierarchicalDataTemplate DataType="{x:Type vm:MatchViewModel}" ItemsSource="{Binding Predecessors}">
                 <Border BorderThickness="0" BorderBrush="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
