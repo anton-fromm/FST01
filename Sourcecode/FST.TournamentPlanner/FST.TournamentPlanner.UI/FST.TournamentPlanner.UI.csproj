@@ -108,10 +108,13 @@
     <Compile Include="Model\Models\PlayArea.cs" />
     <Compile Include="Model\Models\Team.cs" />
     <Compile Include="Model\Models\Tournament.cs" />
+    <Compile Include="ViewModel\Messages\MatchFinishedMessage.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="TournamentMode.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PlayAreaViewModel.cs" />
     <Compile Include="ViewModel\TeamViewModel.cs" />
-    <Compile Include="ViewModel\TournamentMatchViewModel.cs" />
+    <Compile Include="ViewModel\MatchViewModel.cs" />
     <Compile Include="ViewModel\TournamentViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\Converter\BottomGraphVisibilityConverter.cs" />

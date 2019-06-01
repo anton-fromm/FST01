@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FST.TournamentPlanner.UI.ViewModel.Messages;
+using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,10 +9,23 @@ using System.Threading.Tasks;
 
 namespace FST.TournamentPlanner.UI.ViewModel
 {
-    public class TournamentMatchViewModel : ViewModelBase<Model.Models.Match>
+    public class MatchViewModel : ViewModelBase<Model.Models.Match>
     {
-        public TournamentMatchViewModel(Model.Models.Match match) : this(match, null)
+        public const int STATE_CREATED = 0;
+        public const int STATE_STARTED = 1;
+        public const int STATE_FINISHED = 2;
+
+        public MatchViewModel(Model.Models.Match match) : this(match, null)
         {
+            // Register message type to get informed about changes in predeseccors
+            MessengerInstance.Register<MatchFinishedMessage>(this, m =>
+            {
+                if (m.Match == FirstPredecessor || m.Match == SecondPredecessor)
+                {
+                    //TODO: Update current match, since one of the previous matches is finished now
+                    // Get fresh version of the match from Rest API
+                }
+            });
         }
 
         public int Id
@@ -21,14 +36,14 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
 
-        public TournamentMatchViewModel(Model.Models.Match match, TournamentMatchViewModel successor) : base(match) => Successor = successor;
+        public MatchViewModel(Model.Models.Match match, MatchViewModel successor) : base(match) => Successor = successor;
 
         #region Successor
-        public TournamentMatchViewModel Successor { get; }
+        public MatchViewModel Successor { get; }
         #endregion
 
         #region Predecessors
-        public List<TournamentMatchViewModel> Predecessors
+        public List<MatchViewModel> Predecessors
         {
             get
             {
@@ -36,14 +51,14 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     return null;
                 }
-                return new List<TournamentMatchViewModel>() { FirstPredecessor, SecondPredecessor };
+                return new List<MatchViewModel>() { FirstPredecessor, SecondPredecessor };
             }
     }
         #endregion 
 
         #region FirstPredecessor
-        private TournamentMatchViewModel _firstPredecessor;
-        public TournamentMatchViewModel FirstPredecessor
+        private MatchViewModel _firstPredecessor;
+        public MatchViewModel FirstPredecessor
         {
             get
             {
@@ -53,7 +68,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (_firstPredecessor == null)
                 {
-                    _firstPredecessor = new TournamentMatchViewModel(_model.FirstPredecessor, this);
+                    _firstPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_model.FirstPredecessor, this);
                 }
                 return _firstPredecessor;
             }
@@ -61,8 +76,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
         #endregion
 
         #region SecondPredecessor
-        private TournamentMatchViewModel _secondPredecessor;
-        public TournamentMatchViewModel SecondPredecessor
+        private MatchViewModel _secondPredecessor;
+        public MatchViewModel SecondPredecessor
         {
             get
             {
@@ -72,7 +87,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (_secondPredecessor == null)
                 {
-                    _secondPredecessor = new TournamentMatchViewModel(_model.SecondPredecessor, this);
+                    _secondPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_model.SecondPredecessor, this);
                 }
                 return _secondPredecessor;
             }
@@ -85,7 +100,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return new TeamViewModel(_model.TeamOne);
+                return ViewModelLocator.Instance.GetTeamViewModel(_model.TeamOne);
             }
         }
 
@@ -97,7 +112,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return new TeamViewModel(_model.TeamTwo);
+                return ViewModelLocator.Instance.GetTeamViewModel(_model.TeamTwo);
             }
         }
 
@@ -141,9 +156,9 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                if (State != 2)
+                if (State != STATE_FINISHED)
                 {
-                    return new TeamViewModel(null);
+                    return null;
                 }
                 if (TeamOneScore > TeamTwoScore)
                 {
@@ -163,5 +178,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
+
+        private RelayCommand _finishCommand;
+        public RelayCommand FinishCommand
+        {
+            get
+            {
+                if (_finishCommand == null)
+                {
+                    _finishCommand = new RelayCommand(() =>
+                    {
+                        // ToDO
+                        MessengerInstance.Send(new MatchFinishedMessage(this));
+                    },
+                    () => State != STATE_FINISHED);
+                }
+                return _finishCommand;
+            }
+        }
     }
 }

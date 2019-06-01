@@ -14,9 +14,9 @@ namespace FST.TournamentPlanner.UI.View
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is TournamentMatchViewModel)
+            if (value is MatchViewModel)
             {
-                var vm = (TournamentMatchViewModel)value;
+                var vm = (MatchViewModel)value;
                 if (vm.Predecessors != null && vm.Predecessors.Count() > 0)
                 {
                     // If there Predecessors, we need this graph

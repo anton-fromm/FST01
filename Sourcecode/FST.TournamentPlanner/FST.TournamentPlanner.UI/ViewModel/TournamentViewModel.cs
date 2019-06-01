@@ -13,19 +13,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
     public class TournamentViewModel : ViewModelBase<Model.Models.Tournament>
     {
 
+        public const int STATE_CREATED = 0;
+        public const int STATE_STARTED = 1;
+        public const int STATE_FINISHED = 2;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public TournamentViewModel(Model.Models.Tournament tournament) : base(tournament)
         {
+            tournament.PlayAreas.ToList().ForEach(p => PlayAreas.Add(ViewModelLocator.Instance.GetPlayAreaViewModel(p)));
         }
 
         public ObservableCollection<TeamViewModel> Teams
         {
             get
             {
-                return new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => new TeamViewModel(t)));
+                return new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(t)));
             }
         }
 
@@ -56,6 +60,15 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
+
+        private ObservableCollection<PlayAreaViewModel> _playAreas = new ObservableCollection<PlayAreaViewModel>();
+        public ObservableCollection<PlayAreaViewModel> PlayAreas
+        {
+            get
+            {
+                return _playAreas;
+            }
+        }
 
         #region PlayAreaCount
         /// <summary>
@@ -134,16 +147,16 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        private TournamentMatchViewModel _finalMatch;
-        public List<TournamentMatchViewModel> FinalMatch
+        private MatchViewModel _finalMatch;
+        public List<MatchViewModel> FinalMatch
         {
             get
             {
                 if (_finalMatch == null)
                 {
-                    _finalMatch = new TournamentMatchViewModel(_model.FinalMatch);
+                    _finalMatch = ViewModelLocator.Instance.GetMatchViewModel(_model.FinalMatch, null);
                 }
-                return new List<TournamentMatchViewModel>() { _finalMatch };
+                return new List<MatchViewModel>() { _finalMatch };
             }
         }
 

@@ -13,7 +13,7 @@ namespace FST.TournamentPlanner.UI.View
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var obj = value as TournamentMatchViewModel;
+            var obj = value as MatchViewModel;
             if (obj == null)
             {
                 return null;

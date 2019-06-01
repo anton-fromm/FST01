@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FST.TournamentPlanner.UI
+namespace FST.TournamentPlanner.UI.Model
 {
     public class AnonymousCredential : ServiceClientCredentials
     {
