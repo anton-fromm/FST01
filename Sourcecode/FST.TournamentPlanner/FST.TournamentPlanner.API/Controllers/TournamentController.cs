@@ -43,7 +43,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// </summary>
         /// <returns>tournaments</returns>
         [HttpGet]
-        public IEnumerable<Models.Tournament> Get()
+        public IEnumerable<Models.Tournament> GetAll()
         {
             return _service.GetAll();
         }
