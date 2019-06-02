@@ -42,7 +42,7 @@ namespace FST.TournamentPlanner.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "DER Turnierplaner - REST API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "ModelClient", Version = "v1" });
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "FST.TournamentPlanner.API.xml");
                 c.IncludeXmlComments(filePath);
             });
@@ -66,7 +66,7 @@ namespace FST.TournamentPlanner.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DER Turnierplaner - REST API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModelClient");
             });
         }
     }

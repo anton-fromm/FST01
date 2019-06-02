@@ -43,7 +43,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// </summary>
         /// <returns>tournaments</returns>
         [HttpGet]
-        public IEnumerable<Models.Tournament> Get()
+        public IEnumerable<Models.Tournament> GetAll()
         {
             return _service.GetAll();
         }
@@ -80,7 +80,7 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         [HttpPost("Match/{matchId}")]
-        public Task<ActionResult<Match>> GetMatch(int matchId)
+        public Task<ActionResult<Models.Match>> GetMatch(int matchId)
         {
             return null;
         }
@@ -116,7 +116,7 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         [HttpPost("{tournamentId}/PlayArea")]
-        public IActionResult UpdatePlayArea(PlayArea playArea)
+        public IActionResult UpdatePlayArea(Models.PlayArea playArea)
         {
             return null;
         }
