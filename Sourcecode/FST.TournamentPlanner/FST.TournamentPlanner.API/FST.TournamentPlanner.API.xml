@@ -123,6 +123,11 @@
             Winner team of this match
             </summary>
         </member>
+        <member name="T:FST.TournamentPlanner.API.Models.PlayArea">
+            <summary>
+            Class representing a play area
+            </summary>
+        </member>
         <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Id">
             <summary>
             Id of the play area
@@ -151,6 +156,11 @@
         <member name="P:FST.TournamentPlanner.API.Models.Team.Name">
             <summary>
             Name of the team
+            </summary>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Models.Tournament">
+            <summary>
+            Knock-out tournament class
             </summary>
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Tournament.Id">
@@ -207,7 +217,7 @@
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Tournament.FinalMatch">
             <summary>
-            List of matches
+            Final match
             </summary>
         </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemovePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
