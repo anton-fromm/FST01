@@ -5,11 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
         xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
         xmlns:local="clr-namespace:FST.TournamentPlanner.UI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:vm="clr-namespace:FST.TournamentPlanner.UI.ViewModel"
         xmlns:view="clr-namespace:FST.TournamentPlanner.UI.View"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         d:DataContext ="{d:DesignInstance {x:Type vm:MainViewModel}, IsDesignTimeCreatable=True}"
         Title="DER Turnierplanner" Height="450" Width="800">
+    <RibbonWindow.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type vm:TournamentViewModel}">
+                <view:TournamentView/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </RibbonWindow.Resources>
     <DockPanel>
         <ribbon:Ribbon DockPanel.Dock="Top">
             <Ribbon.QuickAccessToolBar>
@@ -29,8 +39,44 @@
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
         <Grid>
-            <!-- <view:TournamentMatchTreeView DataContext="{Binding CurrentTournament}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
-            <view:TournamentView DataContext="{Binding CurrentTournament}"/>
+            <xcad:DockingManager Grid.Row="1"
+                           AllowMixedOrientation="False"
+                           BorderBrush="Black"
+                           BorderThickness="1" ActiveContent="{Binding CurrentDocument, Mode=TwoWay}"  DocumentsSource="{Binding OpenedDocuments}"
+                           Theme="{Binding ElementName=_themeCombo, Path=SelectedItem.Tag}">
+                <xcad:DockingManager.DocumentHeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding IconSource}" Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </xcad:DockingManager.DocumentHeaderTemplate>
+                <xcad:DockingManager.LayoutItemContainerStyle>
+                    <!-- you can add additional bindings from the layoutitem to the DockWindowViewModel -->
+                    <Style TargetType="{x:Type xcad:LayoutItem}">
+                        <Setter Property="Title" Value="{Binding Model.Title}" />
+                        <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                        <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                    </Style>
+                </xcad:DockingManager.LayoutItemContainerStyle>
+                <xcad:LayoutRoot x:Name="_layoutRoot" >
+                    <xcad:LayoutPanel Orientation="Horizontal">
+                        <xcad:LayoutDocumentPaneGroup >
+                            <xcad:LayoutDocumentPane>
+                                <xcad:LayoutDocument ContentId="document1" Title="Turniere" CanClose="False"  >
+                                    <view:TournamentListView/>
+                                </xcad:LayoutDocument>
+                                <!--<xcad:LayoutDocument ContentId="document2" Title="Document 2" >
+                                    <TextBox Text="Document 2 Content" AcceptsReturn="True"/>
+                                </xcad:LayoutDocument>-->
+                            </xcad:LayoutDocumentPane>
+                        </xcad:LayoutDocumentPaneGroup >
+                    </xcad:LayoutPanel>
+                </xcad:LayoutRoot>
+            </xcad:DockingManager>
+            <!-- <view:TournamentMatchTreeView DataContext="{Binding CurrentTournament}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <view:TournamentView DataContext="{Binding CurrentTournament}"/>-->
         </Grid>
 
     </DockPanel>

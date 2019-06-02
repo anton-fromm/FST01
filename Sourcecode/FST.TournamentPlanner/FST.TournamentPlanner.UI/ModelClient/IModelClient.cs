@@ -83,7 +83,17 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> SetScoreOnMatchWithHttpMessagesAsync(int? matchId = default(int?), int? scoreOne = default(int?), int? scoreTwo = default(int?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> SetScoreOnMatchWithHttpMessagesAsync(int matchId, int scoreOne, int scoreTwo, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='matchId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Match>> GetMatchWithHttpMessagesAsync(int matchId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Starts the tournament.
@@ -111,7 +121,7 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> AddPlayAreaWithHttpMessagesAsync(int tournamentId, string name, string description, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<PlayArea>> AddPlayAreaWithHttpMessagesAsync(int tournamentId, string name, string description, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <param name='tournamentId'>
         /// </param>
@@ -124,6 +134,71 @@ namespace FST.TournamentPlanner.UI.Model
         /// The cancellation token.
         /// </param>
         Task<HttpOperationResponse<PlayArea>> GetPlayAreaWithHttpMessagesAsync(int tournamentId, int playAreaId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='tournamentId'>
+        /// </param>
+        /// <param name='playAreaId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> RemovePlayAreaWithHttpMessagesAsync(int tournamentId, int playAreaId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='tournamentId'>
+        /// </param>
+        /// <param name='playArea'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> UpdatePlayAreaWithHttpMessagesAsync(string tournamentId, PlayArea playArea = default(PlayArea), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='tournamentId'>
+        /// </param>
+        /// <param name='name'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Team>> AddTeamWithHttpMessagesAsync(int tournamentId, string name, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='tournamentId'>
+        /// </param>
+        /// <param name='teamId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Team>> GetTeamWithHttpMessagesAsync(int tournamentId, int teamId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Remove the team from the tournament
+        /// </summary>
+        /// <param name='tournamentId'>
+        /// Id of the tournament
+        /// </param>
+        /// <param name='teamId'>
+        /// Id of the team
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Team>> RemoveTeamWithHttpMessagesAsync(int tournamentId, int teamId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

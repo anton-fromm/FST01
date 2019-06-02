@@ -11,33 +11,43 @@ namespace FST.TournamentPlanner.UI.Model.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
-    public partial class Team
+    /// <summary>
+    /// Class representing a play area
+    /// </summary>
+    public partial class PlayArea
     {
         /// <summary>
-        /// Initializes a new instance of the Team class.
+        /// Initializes a new instance of the PlayArea class.
         /// </summary>
-        public Team() { }
+        public PlayArea() { }
 
         /// <summary>
-        /// Initializes a new instance of the Team class.
+        /// Initializes a new instance of the PlayArea class.
         /// </summary>
-        public Team(int? id = default(int?), string name = default(string))
+        public PlayArea(int? id = default(int?), string name = default(string), string description = default(string))
         {
             Id = id;
             Name = name;
+            Description = description;
         }
 
         /// <summary>
-        /// Id of the team
+        /// Id of the play area
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public int? Id { get; private set; }
 
         /// <summary>
-        /// Name of the team
+        /// Name of the play area
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Description of the play area
+        /// </summary>
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
     }
 }

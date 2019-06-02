@@ -1,3 +1,4 @@
+using FST.TournamentPlanner.UI.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Rest;
@@ -29,14 +30,21 @@ namespace FST.TournamentPlanner.UI.ViewModel
             if (IsInDesignMode)
             {
                 // Code runs in Blend --> create design time data.
-                CurrentTournament = new TournamentViewModel(CreateDesignTimeVm());
+                CurrentDocument = new TournamentViewModel(CreateDesignTimeVm());
+                OpenedDocuments.Add(CurrentDocument);
             }
             else
             {
-                CurrentTournament = new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body);
+                Tournaments.Add(new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body));
+                //OpenedDocuments.Add(Tournaments[0]);
+                //CurrentDocument = Tournaments[0];
             }
 
-
+            MessengerInstance.Register<OpenTournamentMessage>(this, m =>
+            {
+                OpenedDocuments.Add(m.Tournament);
+                CurrentDocument = m.Tournament;
+            });
 
         }
 
@@ -52,6 +60,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 return _tournaments;
             }
         }
+        public ObservableCollection<Object> OpenedDocuments { get; } = new ObservableCollection<Object>();
 
         #region OpenTournamentCommand
         private RelayCommand _openTournamentCommand;
@@ -72,22 +81,22 @@ namespace FST.TournamentPlanner.UI.ViewModel
         #endregion
 
         #region CurrentTournament
-        private TournamentViewModel _currentTournament;
-        public TournamentViewModel CurrentTournament
+        private Object _currentDocument;
+        public Object CurrentDocument
         {
             get
             {
-                return _currentTournament;
+                return _currentDocument;
             }
             set
             {
-                if ((_currentTournament == null && value == null) || (_currentTournament != null && _currentTournament.Equals(value)))
+                if ((_currentDocument == null && value == null) || (_currentDocument != null && _currentDocument.Equals(value)))
                 {
                     //equal
                     return;
                 }
-                _currentTournament = value;
-                RaisePropertyChanged(() => CurrentTournament);
+                _currentDocument = value;
+                RaisePropertyChanged(() => CurrentDocument);
             }
         }
 

@@ -7,18 +7,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView>
+        <ListView ItemsSource="{Binding Tournaments}">
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Turnier Id"/>
-                        <GridViewColumn Header="Name" />
-                        <GridViewColumn Header="Modus"/>
-                        <GridViewColumn Header="Status"/>
-                        <GridViewColumn Header="Spieldauer (in min)"/>
-                        <GridViewColumn Header="Termin"/>
-                        <GridViewColumn Header="Startuhrzeit"/>
-                        <GridViewColumn Header="Teilnehmeranzahl"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Modus" DisplayMemberBinding="{Binding TournamentMode}" />
+                        <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding State}" />
+                        <GridViewColumn Header="Spieldauer (in min)" DisplayMemberBinding="{Binding MaximumMatchDurationInMinutes}"/>
+                        <GridViewColumn Header="Termin" DisplayMemberBinding="{Binding StartDate, StringFormat=dd.MM.yyyy}"/>
+                        <GridViewColumn Header="Startuhrzeit" DisplayMemberBinding="{Binding StartTime, StringFormat=hh:mm}"/>
+                        <GridViewColumn Header="Teilnehmeranzahl" DisplayMemberBinding="{Binding TeamCount}"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

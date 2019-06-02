@@ -40,6 +40,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
         private Dictionary<int, TeamViewModel> _teams = new Dictionary<int, TeamViewModel>();
         internal TeamViewModel GetTeamViewModel(Model.Models.Team team)
         {
+            if (team == null)
+            {
+                return null;
+            }
             TeamViewModel teamViewModel;
             if (!_teams.TryGetValue(team.Id.Value, out teamViewModel))
             {

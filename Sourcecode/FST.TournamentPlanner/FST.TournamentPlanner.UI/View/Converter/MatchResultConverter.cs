@@ -18,6 +18,10 @@ namespace FST.TournamentPlanner.UI.View
             {
                 return null;
             }
+            if (obj.TeamOne == null && obj.TeamTwo == null)
+            {
+                return string.Empty;
+            }
             if (!obj.TeamOneScore.HasValue)
             {
                 return "vs.";
