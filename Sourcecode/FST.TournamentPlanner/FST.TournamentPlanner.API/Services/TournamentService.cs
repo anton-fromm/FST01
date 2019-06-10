@@ -38,7 +38,7 @@ namespace FST.TournamentPlanner.API.Services
         public IActionResult SetScore(int matchId, int scoreOne, int scoreTwo)
         {
             DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
-            if(match == null)
+            if (match == null)
             {
                 return new NotFoundResult();
             }
@@ -46,7 +46,14 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return new BadRequestResult();
             }
-
+            if (match.TeamOne == null || match.TeamOne.Team == null || match.TeamTwo == null || match.TeamTwo.Team == null)
+            {
+                return new BadRequestResult();
+            }
+            if (match.State == DbModels.MatchState.Planned)
+            {
+                match.State = DbModels.MatchState.Started;
+            }
             match.TeamOne.Score = scoreOne;
             match.TeamTwo.Score = scoreTwo;
 
@@ -55,6 +62,55 @@ namespace FST.TournamentPlanner.API.Services
             return new OkResult();
 
         }
+
+        public ActionResult<Match> EndMatch(int tournamentId, int matchId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            if (match == null)
+            {
+                return new ActionResult<Match>(new NotFoundResult());
+            }
+            //Can´t end matches, which are allready ended
+            if (match.State == DbModels.MatchState.Finished)
+            {
+                return new ActionResult<Match>(new BadRequestResult() );
+            }
+            // If teams are not set or they don´t have scores => error
+            if (match.TeamOne.Team == null || match.TeamTwo.Team == null || !match.TeamOne.Score.HasValue || !match.TeamTwo.Score.HasValue)
+            {
+                return new ActionResult<Match>(new BadRequestResult());
+            }
+            // can´t determinate winner if the score is even...
+            if (match.TeamOne.Score == match.TeamTwo.Score)
+            {
+                return new ActionResult<Match>(new BadRequestResult());
+            }
+            DB.Models.Team winner = (match.TeamOne.Score > match.TeamTwo.Score) ? match.TeamOne.Team : match.TeamTwo.Team;
+            // Winner: TeamOne
+            var nextMatchForWinner = new DbModels.MatchResult()
+            {
+                CreatedAt = DateTime.Now,
+                Match = match.Successor,
+                Team = winner
+            };
+            if (match.Successor.TeamOne == null)
+            {
+                match.Successor.TeamOne = nextMatchForWinner;
+            }
+            else
+            {
+                match.Successor.TeamTwo = nextMatchForWinner;
+            }
+            match.State = DbModels.MatchState.Finished;
+
+            this._repoWrapper.Match.SaveChanges();
+
+            return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
+
+        }
+
+
 
         Tournament ITournamentService.Get(int id)
         {
@@ -100,7 +156,7 @@ namespace FST.TournamentPlanner.API.Services
         }
         #endregion
 
-        #region
+        #region Start
 
         public IActionResult Start(int tournamentId)
         {
