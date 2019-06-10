@@ -5,55 +5,129 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FST.TournamentPlanner.UI.View"
       xmlns:xtk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+              xmlns:view="clr-namespace:FST.TournamentPlanner.UI.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DataGridStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <ScrollViewer>
-    <StackPanel Orientation="Vertical">
-        <Expander Header="Stammdaten" IsEnabled="True">
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="5"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Date" Grid.Row="0" Grid.Column="0"/>
-                <DatePicker Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch"/>
-                <Label Content="Start time" Grid.Row="1" Grid.Column="0"/>
-                <xtk:TimePicker Grid.Row="1" Grid.Column="1"/>
-                <Label Content="Mode" Grid.Row="2" Grid.Column="0"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" IsEnabled="False" SelectedIndex="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Name" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Margin="2" IsEnabled="{Binding TournamentEditable}"/>
+                    <Label Content="Beginn (Datum)" Grid.Row="1" Grid.Column="0"/>
+                    <DatePicker Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Stretch" SelectedDate="{Binding StartDate}" Margin="2" IsEnabled="{Binding TournamentEditable}"/>
+                    <Label Content="Beginn (Uhrzeit)" Grid.Row="2" Grid.Column="0"/>
+                    <xtk:TimePicker Grid.Row="2" Grid.Column="1" Value="{Binding StartTime}"  Margin="2" IsEnabled="{Binding TournamentEditable}"/>
+                    <Label Content="Spielmodus" Grid.Row="3" Grid.Column="0"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" IsEnabled="False" SelectedIndex="0" Margin="2" >
                     <Label Content="Knock-Out"/>
-                </ComboBox>
-                <Label Content="Start date / time" Grid.Row="3" Grid.Column="0"/>
-                <Label Content="Start date / time" Grid.Row="4" Grid.Column="0"/>
-                <Label Content="Start date / time" Grid.Row="5" Grid.Column="0"/>
-            </Grid>
-        </Expander>
-        <Expander Header="Teams" IsExpanded="True">
+                    </ComboBox>
+
+                    <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="8" Margin="2" BorderThickness="1,0,0,0" BorderBrush="Black"/>
+
+
+                    <Label Content="Beschreibung" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" />
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" SpellCheck.IsEnabled="True" AcceptsTab="True" Text="{Binding Description}" Margin="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" IsEnabled="{Binding TournamentEditable}"/>
+                    <Label Content="Teamanzahl" Grid.Row="5" Grid.Column="0"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="2" SelectedValue="{Binding TeamCount}" ItemsSource="{Binding TeamCountChoises}" IsEnabled="{Binding TournamentEditable}"/>
+                    <Label Content="Spieldauer (in min)" Grid.Row="6" Grid.Column="0"/>
+                    <xtk:IntegerUpDown Value="{Binding MaximumMatchDurationInMinutes}" Grid.Row="6" Grid.Column="1" Margin="2" IsEnabled="{Binding TournamentEditable}"/>
+
+            <TabControl VerticalAlignment="Stretch" Grid.ColumnSpan="4" Grid.Row="8" Margin="2">
+                <TabItem Header="Teams">
+                    <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
+                        <DataGrid ItemsSource="{Binding Teams}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Spielplätze">
+                    <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
+                        <DataGrid ItemsSource="{Binding PlayAreas}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Spiele">
+                    <DataGrid ItemsSource="{Binding Matches}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding StartTime}"     Header="Wann?"      IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding PlayArea.Name}" Header="Wo?"        IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding TeamOne.Name}"  Header="Team 1"     IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Punkte 1">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TeamOneScore, Mode=OneWay}" Margin="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding TeamOneScore, UpdateSourceTrigger=LostFocus, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" IsEnabled="{Binding ScoreIsEditable}" Margin="0" Padding="0" BorderThickness="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Punkte 2">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TeamTwoScore, Mode=OneWay}" Margin="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding TeamTwoScore, UpdateSourceTrigger=LostFocus, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" IsEnabled="{Binding ScoreIsEditable}" Margin="0" Padding="0" BorderThickness="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding TeamTwo.Name}"  Header="Team 2"     IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding State}"         Header="StatusCode" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Punkte 2">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding FinishCommand}" Content="Finish"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding FinishCommand}" Content="Finish"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Turnierbaum">
+                    <view:TournamentMatchTreeView />
+                </TabItem>
+            </TabControl>
+        </Grid>
             
-        </Expander>
-        <Expander Header="Spielplätze" IsExpanded="True">
-            <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
-                <DataGrid ItemsSource="{Binding PlayAreas}" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Number" Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </Expander>
-    </StackPanel>
     </ScrollViewer>
 </UserControl>

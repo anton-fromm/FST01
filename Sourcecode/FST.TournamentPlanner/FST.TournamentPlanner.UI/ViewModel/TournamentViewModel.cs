@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,9 +13,19 @@ namespace FST.TournamentPlanner.UI.ViewModel
     /// </summary>
     public class TournamentViewModel : ViewModelBase<Model.Models.Tournament>
     {
-
+        /// <summary>
+        /// Tournament is in created state
+        /// </summary>
         public const int STATE_CREATED = 0;
+
+        /// <summary>
+        /// Tournament is in started state
+        /// </summary>
         public const int STATE_STARTED = 1;
+
+        /// <summary>
+        /// Tournament is in finished state
+        /// </summary>
         public const int STATE_FINISHED = 2;
 
         /// <summary>
@@ -23,8 +34,15 @@ namespace FST.TournamentPlanner.UI.ViewModel
         public TournamentViewModel(Model.Models.Tournament tournament) : base(tournament)
         {
             tournament.PlayAreas.ToList().ForEach(p => PlayAreas.Add(ViewModelLocator.Instance.GetPlayAreaViewModel(p)));
+            _name = tournament.Name;
+            _startDate = tournament.StartTime ?? DateTime.Now;
+            _description = tournament.Description;
+            _maximumMatchDururationInMinutes = tournament.MatchDuration ?? 30;
+            _teamCount = _model.TeamCount ?? 16;
+
         }
 
+        #region Teams
         public ObservableCollection<TeamViewModel> Teams
         {
             get
@@ -32,6 +50,22 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 return new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(t)));
             }
         }
+        #endregion
+
+        #region MasterData
+
+        #region TournamentId
+        /// <summary>
+        /// Id of the tournament
+        /// </summary>
+        public Int32 TournamentId
+        {
+            get
+            {
+                return _model.Id.Value;
+            }
+        }
+        #endregion
 
         #region TournamentMode
         /// <summary>
@@ -47,91 +81,93 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        #region TournamentId
-        private Int32 _tournamentId;
-        /// <summary>
-        /// Id of the tournament
-        /// </summary>
-        public Int32 TournamentId
+        #region Name
+        private string _name;
+        public string Name
         {
+            set
+            {
+                if (State != STATE_CREATED)
+                {
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                }
+                else
+                {
+                    _name = value;
+                }
+                RaisePropertyChanged(() => Name);
+                RaisePropertyChanged(() => Title);
+                RaisePropertyChanged(() => HasChanges);
+            }
             get
             {
-                return _model.Id.Value;
+                return _name;
             }
         }
         #endregion
 
-        private ObservableCollection<PlayAreaViewModel> _playAreas = new ObservableCollection<PlayAreaViewModel>();
-        public ObservableCollection<PlayAreaViewModel> PlayAreas
+        #region StartDate
+        private DateTime _startDate;
+        public DateTime StartDate
         {
             get
             {
-                return _playAreas;
-            }
-        }
-
-        #region PlayAreaCount
-        /// <summary>
-        /// Number of available tournament spaces available for the tournament
-        /// </summary>
-        public int PlayAreaCount
-        {
-            get
-            {
-                return _model.PlayAreas.Count();
-            }
-        }
-        #endregion
-
-        #region MaximumMatchDurationInMinutes
-        private int _maximumMatchDurationInMinutes;
-
-        public int MaximumMatchDurationInMinutes
-        {
-            get { return _maximumMatchDurationInMinutes; }
-            set { _maximumMatchDurationInMinutes = value; }
-        }
-        #endregion
-
-        #region TournamentStart
-        private DateTime _tournamentStart;
-
-        public DateTime TournamentStart
-        {
-            get
-            {
-                return _tournamentStart;
+                return _startDate;
             }
             set
             {
-                if (_tournamentStart == null || _tournamentStart.Equals(value))
+                if (State != STATE_CREATED)
                 {
-                    return;
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
                 }
-                _tournamentStart = value;
-                RaisePropertyChanged(() => TournamentStart);
+                else
+                {
+                    if (_startDate.Date != value.Date)
+                    {
+                        _startDate = value.Add(_startDate.TimeOfDay);
+                    }
+                }
+                RaisePropertyChanged(() => StartDate);
+                RaisePropertyChanged(() => HasChanges);
             }
         }
-
         #endregion
 
-        public string Name
+        #region StartTime
+        public DateTime StartTime
         {
             get
             {
-                return _model.Name;
+                return _startDate;
+            }
+            set
+            {
+                if (State != STATE_CREATED)
+                {
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                }
+                else
+                {
+                    if (_startDate.TimeOfDay != value.TimeOfDay)
+                    {
+                        _startDate = _startDate.Add(value.TimeOfDay);
+                    }
+                }
+                RaisePropertyChanged(() => StartTime);
+                RaisePropertyChanged(() => HasChanges);
             }
         }
+        #endregion
 
         #region Description
-        private String _description;
-        public String Description
+        private string _description;
+        public string Description
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(_description))
+                if (string.IsNullOrWhiteSpace(_description))
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return _description;
             }
@@ -141,40 +177,218 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     return;
                 }
-                _description = value;
+                if (State != STATE_CREATED)
+                {
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                }
+                else
+                {
+                    _description = value;
+                }
                 RaisePropertyChanged(() => Description);
+                RaisePropertyChanged(() => HasChanges);
             }
         }
         #endregion
 
-        private MatchViewModel _finalMatch;
+        #region MaximumMatchDurationInMinutes
+        public int _maximumMatchDururationInMinutes;
+        public int MaximumMatchDurationInMinutes
+        {
+            get
+            {
+                return _maximumMatchDururationInMinutes;
+            }
+            set
+            {
+                if (State != STATE_CREATED)
+                {
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                }
+                else
+                {
+                    _maximumMatchDururationInMinutes = value;
+                }
+                RaisePropertyChanged(() => MaximumMatchDurationInMinutes);
+                RaisePropertyChanged(() => HasChanges);
+            }
+        }
+        #endregion
+
+        #region TeamCount
+        private int _teamCount;
+        public int TeamCount
+        {
+            get
+            {
+                return _teamCount;
+            }
+            set
+            {
+                if (State != STATE_CREATED)
+                {
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                }
+                else
+                {
+                   _teamCount = value;
+                }
+                RaisePropertyChanged(() => TeamCount);
+                RaisePropertyChanged(() => HasChanges);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region State
+        /// <summary>
+        /// State of the tournament
+        /// </summary>
+        public int State
+        {
+            get
+            {
+                return _model.State.Value;
+            }
+        }
+
+        #endregion
+        
+        #region PlayAreas
+        private ObservableCollection<PlayAreaViewModel> _playAreas = new ObservableCollection<PlayAreaViewModel>();
+        /// <summary>
+        /// Play area list of the tournament
+        /// </summary>
+        public ObservableCollection<PlayAreaViewModel> PlayAreas
+        {
+            get
+            {
+                return _playAreas;
+            }
+        }
+        #endregion
+
+        #region TeamCountChoises
+        /// <summary>
+        /// Maximum number of teams within the tournament
+        /// </summary>
+        public List<int> TeamCountChoises => new List<int>() { 4, 8, 16, 32, 64 };
+        #endregion
+
+        #region FinalMatch
         public List<MatchViewModel> FinalMatch
         {
             get
             {
-                if (_finalMatch == null)
+                if (_model.FinalMatch == null)
                 {
-                    _finalMatch = ViewModelLocator.Instance.GetMatchViewModel(_model.FinalMatch, null);
-                }
-                return new List<MatchViewModel>() { _finalMatch };
+                    return new List<MatchViewModel>();
+                }                
+                return new List<MatchViewModel>() { ViewModelLocator.Instance.GetMatchViewModel(_model, _model.FinalMatch, null) };
             }
         }
+        #endregion
 
-        public override bool Equals(object obj)
+        #region Matches
+        public ObservableCollection<MatchViewModel> Matches
         {
-            if (obj == null)
+            get
             {
-                return false;
+                var res = new ObservableCollection<MatchViewModel>();
+                if (FinalMatch.Count() == 0)
+                {
+                    return res;
+                }
+                MatchesRecursion(res, FinalMatch.First());
+                return res;
             }
-            if (obj is TournamentViewModel)
-            {
-                return ((TournamentViewModel)obj).TournamentId == this.TournamentId;
-            }
-            return base.Equals(obj);
         }
-        public override int GetHashCode()
+        private void MatchesRecursion(ObservableCollection<MatchViewModel> result, MatchViewModel match)
         {
-            return TournamentId;
+            result.Add(match);
+            match.Predecessors.ForEach(p => MatchesRecursion(result, p));            
         }
+        #endregion
+
+        #region Avalon Dock Stuff
+
+        public string Title => Name;
+        
+
+        #region CanClose
+        public bool CanClose
+        {
+            get
+            {
+                return true;
+            }
+        }
+        #endregion  
+
+        #region CloseCommand
+        private RelayCommand _closeCommand;
+        public RelayCommand CloseCommand
+        {
+            get
+            {
+                if (_closeCommand == null)
+                {
+                    _closeCommand = new RelayCommand(() => { }, CanClose);
+                }
+                return _closeCommand;
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region HasChanges
+        public bool HasChanges
+        {
+            get
+            {
+                return
+                    _model.Name != Name ||
+                    _model.Description != Description ||
+                    _model.TeamCount != TeamCount ||
+                    _model.StartTime != _startDate ||
+                    _model.MatchDuration != _maximumMatchDururationInMinutes;
+            }
+        }
+        #endregion
+
+        #region TournamentEditable
+        public bool TournamentEditable
+        {
+            get
+            {
+                return State == STATE_CREATED;
+            }
+        }
+        #endregion
+
+        #region StartCommand
+        private RelayCommand _startCommand;
+        public RelayCommand StartCommand
+        {
+            get
+            {
+                if (_startCommand == null)
+                {
+                    _startCommand = new RelayCommand(() =>
+                    {
+                        // PlayArea-Count != 0
+                        // TeamCount == Teams.Count
+                        // Neues Modell holen
+                        // Alle Properties => RaisePropertyChanged / Command.CanExecute updaten
+
+                    }, State == STATE_CREATED);
+                }
+                return StartCommand;
+            }
+        }
+        #endregion
     }
 }

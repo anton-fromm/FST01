@@ -15,8 +15,22 @@ namespace FST.TournamentPlanner.UI.ViewModel
         public const int STATE_STARTED = 1;
         public const int STATE_FINISHED = 2;
 
-        public MatchViewModel(Model.Models.Match match) : this(match, null)
+        private Model.Models.Tournament _tournament;
+
+        #region Constructors
+        public MatchViewModel(Model.Models.Tournament tournament, Model.Models.Match match) : this(tournament, match, null)
         {
+        }
+
+        public MatchViewModel(Model.Models.Tournament tournament, Model.Models.Match match, MatchViewModel successor) : base(match)
+        {
+            if (tournament == null)
+            {
+                throw new NullReferenceException();
+            }
+            _tournament = tournament;
+            Successor = successor;
+
             // Register message type to get informed about changes in predeseccors
             MessengerInstance.Register<MatchFinishedMessage>(this, m =>
             {
@@ -26,8 +40,27 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     // Get fresh version of the match from Rest API
                 }
             });
+
+            // Init values from model object
+            UpdateValuesFromModel();
+        }
+        #endregion
+
+        private void UpdateValuesFromModel()
+        {
+            _teamOneScore = _model.TeamOneScore;
+            RaisePropertyChanged(() => TeamOneScore);
+            _teamTwoScore = _model.TeamTwoScore;
+            RaisePropertyChanged(() => TeamTwoScore);
+            RaisePropertyChanged(() => TeamOne);
+            RaisePropertyChanged(() => TeamTwo);
+            RaisePropertyChanged(() => Winner);
+            RaisePropertyChanged(() => State);
+            RaisePropertyChanged(() => ScoreIsEditable);
+            FinishCommand.RaiseCanExecuteChanged();
         }
 
+        #region Id
         public int Id
         {
             get
@@ -35,8 +68,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 return _model.Id.Value;
             }
         }
-
-        public MatchViewModel(Model.Models.Match match, MatchViewModel successor) : base(match) => Successor = successor;
+        #endregion
 
         #region Successor
         public MatchViewModel Successor { get; }
@@ -47,9 +79,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
+                var res = new List<MatchViewModel>();
                 if (FirstPredecessor == null)
                 {
-                    return null;
+                    return res;
                 }
                 return new List<MatchViewModel>() { FirstPredecessor, SecondPredecessor };
             }
@@ -68,7 +101,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (_firstPredecessor == null)
                 {
-                    _firstPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_model.FirstPredecessor, this);
+                    _firstPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, _model.FirstPredecessor, this);
                 }
                 return _firstPredecessor;
             }
@@ -87,7 +120,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (_secondPredecessor == null)
                 {
-                    _secondPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_model.SecondPredecessor, this);
+                    _secondPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, _model.SecondPredecessor, this);
                 }
                 return _secondPredecessor;
             }
@@ -120,32 +153,38 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         #region TeamOneScore
         private int? _teamOneScore;
-
         public int? TeamOneScore
         {
             get
             {
-                return _model.TeamOneScore;
+                return _teamOneScore;
             }
             set
             {
-                _teamOneScore = value;
+                if (ScoreIsEditable)
+                {
+                    _teamOneScore = value;
+                    RaisePropertyChanged(() => TeamOneScore);
+                }
             }
         }
         #endregion
 
         #region TeamTwoScore
         private int? _teamTwoScore;
-
         public int? TeamTwoScore
         {
             get
             {
-                return _model.TeamTwoScore;
+                return _teamTwoScore;
             }
             set
             {
-                _teamTwoScore = value;
+                if (ScoreIsEditable)
+                {
+                    _teamTwoScore = value;
+                    RaisePropertyChanged(() => TeamTwoScore);
+                }
             }
         }
 
@@ -179,6 +218,47 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        #region ScoreIsEditable
+        public bool ScoreIsEditable
+        {
+            get
+            {
+                return TeamOne != null && TeamTwo != null && State != STATE_FINISHED && !CurrentlyFinishing;
+            }
+        }
+        #endregion
+
+        #region PlayArea
+        public PlayAreaViewModel PlayArea => ViewModelLocator.Instance.GetPlayAreaViewModel(_model.PlayArea);
+        #endregion
+
+        #region StartTime
+        public TimeSpan StartTime => _model.Start.Value.TimeOfDay;
+        #endregion
+
+        #region CurrentlyFinishing
+        private bool _currentlyFinishing = false;
+        protected bool CurrentlyFinishing
+        {
+            get
+            {
+                return _currentlyFinishing;
+            }
+            set
+            {
+                if (_currentlyFinishing == value)
+                {
+                    return;
+                }
+                _currentlyFinishing = value;
+                RaisePropertyChanged(() => ScoreIsEditable);
+                RaisePropertyChanged(() => CurrentlyFinishing);
+                FinishCommand.RaiseCanExecuteChanged();
+            }
+        }
+        #endregion
+
+        #region FinishCommand
         private RelayCommand _finishCommand;
         public RelayCommand FinishCommand
         {
@@ -188,13 +268,35 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     _finishCommand = new RelayCommand(() =>
                     {
-                        // ToDO
-                        MessengerInstance.Send(new MatchFinishedMessage(this));
+                   
+                        MessengerInstance.Send(
+                            new AreYouSureMessage(
+                                "Spiel abschließen", 
+                                "Änderungen an dem Ergebnis sind nach Abschluss nicht mehr möglich.\nSind Sie sicher, dass Sie das Spiel beenden wollen?",
+                                async () =>
+                                {                                    
+                                    try
+                                    {
+                                        CurrentlyFinishing = true;
+                                        var res = await App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
+                                        _model = res.Body;
+                                        UpdateValuesFromModel();
+                                        // Inform successor about finished prematch
+                                        MessengerInstance.Send(new MatchFinishedMessage(this));
+                                        CurrentlyFinishing = false;
+                                    }
+                                    catch (Microsoft.Rest.HttpOperationException)
+                                    {
+                                        MessengerInstance.Send(new CommunicationErrorMessage());
+                                        CurrentlyFinishing = false;
+                                    }
+                                }));                        
                     },
-                    () => State != STATE_FINISHED);
+                    () => ScoreIsEditable);
                 }
                 return _finishCommand;
             }
         }
+        #endregion
     }
 }

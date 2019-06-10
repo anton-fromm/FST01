@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FST.TournamentPlanner.UI.ViewModel;
+using FST.TournamentPlanner.UI.ViewModel.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,11 @@ namespace FST.TournamentPlanner.UI.View
         public TournamentListView()
         {
             InitializeComponent();
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            GalaSoft.MvvmLight.Messaging.Messenger.Default.Send(new OpenTournamentMessage((TournamentViewModel) ((ListViewItem) sender).DataContext));
         }
     }
 }

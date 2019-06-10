@@ -79,6 +79,12 @@ namespace FST.TournamentPlanner.API.Controllers
             return this._service.SetScore(matchId, scoreOne, scoreTwo);
         }
 
+        [HttpPost("{tournamentId}/Match/{matchId}/End")]
+        public ActionResult<Models.Match> EndMatch(int tournamentId, int matchId)
+        {
+            return _service.EndMatch(tournamentId, matchId);
+        }
+
         [HttpPost("Match/{matchId}")]
         public Task<ActionResult<Models.Match>> GetMatch(int matchId)
         {

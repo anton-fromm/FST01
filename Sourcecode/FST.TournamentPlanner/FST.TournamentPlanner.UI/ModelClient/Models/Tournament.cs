@@ -11,6 +11,9 @@ namespace FST.TournamentPlanner.UI.Model.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
 
+    /// <summary>
+    /// Knock-out tournament class
+    /// </summary>
     public partial class Tournament
     {
         /// <summary>
@@ -45,13 +48,13 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Name of the tournament
         /// </summary>
         [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Description of the tournament
         /// </summary>
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Start day and time of the tournament
@@ -60,7 +63,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Created-StateFST.TournamentPlanner.DB.Models.TournamentState
         /// </summary>
         [JsonProperty(PropertyName = "startTime")]
-        public DateTime? StartTime { get; private set; }
+        public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Duration a single match within the tournament
@@ -69,7 +72,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Created-StateFST.TournamentPlanner.DB.Models.TournamentState
         /// </summary>
         [JsonProperty(PropertyName = "matchDuration")]
-        public int? MatchDuration { get; private set; }
+        public int? MatchDuration { get; set; }
 
         /// <summary>
         /// Number of teams in the tournament.
@@ -79,7 +82,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Created-StateFST.TournamentPlanner.DB.Models.TournamentState
         /// </summary>
         [JsonProperty(PropertyName = "teamCount")]
-        public int? TeamCount { get; private set; }
+        public int? TeamCount { get; set; }
 
         /// <summary>
         /// Current state of the tournament
@@ -100,7 +103,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         public IList<Team> Teams { get; private set; }
 
         /// <summary>
-        /// List of matches
+        /// Final match
         /// </summary>
         [JsonProperty(PropertyName = "finalMatch")]
         public Match FinalMatch { get; private set; }
