@@ -21,23 +21,18 @@
         </ResourceDictionary>
     </RibbonWindow.Resources>
     <DockPanel>
-        <ribbon:Ribbon DockPanel.Dock="Top">
-            <Ribbon.QuickAccessToolBar>
-                <RibbonQuickAccessToolBar>
-                    <RibbonButton ToolTip="Open Tournament" Label="Open Tournament"/>
-                </RibbonQuickAccessToolBar>
-            </Ribbon.QuickAccessToolBar>
-            <Ribbon.ApplicationMenu>
-            <RibbonApplicationMenu>
-                <RibbonApplicationMenuItem Header="Open Tournament"/>
-                <RibbonSeparator/>
-                <RibbonApplicationMenuItem Header="E_xit"/>
-            </RibbonApplicationMenu>
-                </Ribbon.ApplicationMenu>
-                    <ribbon:RibbonTab Header="Banana">
-                
-            </ribbon:RibbonTab>
-        </ribbon:Ribbon>
+        <Ribbon DockPanel.Dock="Top">
+            <RibbonTab Header="Verwaltung">
+                <RibbonGroup Header="Neu">
+                    <RibbonButton Label="Neues Turnier" SmallImageSource="Icons/Document_16x.png" LargeImageSource="Icons/Document_32x.png"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <RibbonTab Header="Turnier">
+                <RibbonGroup>
+                    <RibbonButton Label="Speichern" SmallImageSource="Icons/Save_16x.png" LargeImageSource="Icons/Save_32x.png"  />
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
         <Grid>
             <xcad:DockingManager Grid.Row="1"
                            AllowMixedOrientation="False"

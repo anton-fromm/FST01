@@ -27,6 +27,7 @@ namespace FST.TournamentPlanner.UI
         private const string MESSAGEBOX_TITLE = "Turnierverwaltung";
         private const string TOURNAMENT_STARTED = "Die Änderung der Turnierstammdaten ist nach Beginn des Turnieres nicht mehr möglich.";
         private const string TEAMCOUNT_MISMATCH = "Die Anzahl der registrierten Teams stimmt nicht mit der Teilnehmeranzahl überein!\nIst: {0}\nSoll: {1}";
+        private const string COMMUNICATION_ERROR = "Fehler bei der Kommunikation mit dem Webdienst";
         private const string MATCH_FINISHED = "";
 
         public MainWindow()
@@ -45,6 +46,20 @@ namespace FST.TournamentPlanner.UI
             {
                 MessageBox.Show(this, MATCH_FINISHED, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
             });
+            MessengerInstance.Register<msg.AreYouSureMessage>(this, (m) =>
+            {
+                if (MessageBox.Show(this, m.Message, m.Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    m.CallBack.Invoke();
+                }
+            });
+            MessengerInstance.Register<msg.CommunicationErrorMessage>(this, (m) =>
+            {
+                MessageBox.Show(this, COMMUNICATION_ERROR, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+            });
+
+
+
             DataContext = new ViewModel.MainViewModel();
         }
     }

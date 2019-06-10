@@ -71,12 +71,12 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         #region GetMatchViewModel
         private Dictionary<int, MatchViewModel> _matches = new Dictionary<int, MatchViewModel>();
-        internal MatchViewModel GetMatchViewModel(Model.Models.Match match, MatchViewModel successor)
+        internal MatchViewModel GetMatchViewModel(Model.Models.Tournament tournament, Model.Models.Match match, MatchViewModel successor)
         {
             MatchViewModel matchViewModel;
             if (!_matches.TryGetValue(match.Id.Value, out matchViewModel))
             {
-                matchViewModel = new MatchViewModel(match, successor);
+                matchViewModel = new MatchViewModel(tournament, match, successor);
                 _matches.Add(match.Id.Value, matchViewModel);
             }
             return matchViewModel;

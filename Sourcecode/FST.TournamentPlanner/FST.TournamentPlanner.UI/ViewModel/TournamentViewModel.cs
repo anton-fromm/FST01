@@ -278,17 +278,37 @@ namespace FST.TournamentPlanner.UI.ViewModel
         #endregion
 
         #region FinalMatch
-        private MatchViewModel _finalMatch;
         public List<MatchViewModel> FinalMatch
         {
             get
             {
-                if (_finalMatch == null)
+                if (_model.FinalMatch == null)
                 {
-                    _finalMatch = ViewModelLocator.Instance.GetMatchViewModel(_model.FinalMatch, null);
-                }
-                return new List<MatchViewModel>() { _finalMatch };
+                    return new List<MatchViewModel>();
+                }                
+                return new List<MatchViewModel>() { ViewModelLocator.Instance.GetMatchViewModel(_model, _model.FinalMatch, null) };
             }
+        }
+        #endregion
+
+        #region Matches
+        public ObservableCollection<MatchViewModel> Matches
+        {
+            get
+            {
+                var res = new ObservableCollection<MatchViewModel>();
+                if (FinalMatch.Count() == 0)
+                {
+                    return res;
+                }
+                MatchesRecursion(res, FinalMatch.First());
+                return res;
+            }
+        }
+        private void MatchesRecursion(ObservableCollection<MatchViewModel> result, MatchViewModel match)
+        {
+            result.Add(match);
+            match.Predecessors.ForEach(p => MatchesRecursion(result, p));            
         }
         #endregion
 

@@ -127,6 +127,36 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
+            /// <param name='matchId'>
+            /// </param>
+            public static Match EndMatch(this IModelClient operations, int tournamentId, int matchId)
+            {
+                return Task.Factory.StartNew(s => ((IModelClient)s).EndMatchAsync(tournamentId, matchId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
+            /// <param name='matchId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Match> EndMatchAsync(this IModelClient operations, int tournamentId, int matchId, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.EndMatchWithHttpMessagesAsync(tournamentId, matchId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='matchId'>
             /// </param>
             public static Match GetMatch(this IModelClient operations, int matchId)

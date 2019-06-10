@@ -9,6 +9,13 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DataGridStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <ScrollViewer>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
@@ -70,7 +77,51 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Spiele">
-
+                    <DataGrid ItemsSource="{Binding Matches}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding StartTime}"     Header="Wann?"      IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding PlayArea.Name}" Header="Wo?"        IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding TeamOne.Name}"  Header="Team 1"     IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Punkte 1">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TeamOneScore, Mode=OneWay}" Margin="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding TeamOneScore, UpdateSourceTrigger=LostFocus, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" IsEnabled="{Binding ScoreIsEditable}" Margin="0" Padding="0" BorderThickness="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Punkte 2">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TeamTwoScore, Mode=OneWay}" Margin="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding TeamTwoScore, UpdateSourceTrigger=LostFocus, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" IsEnabled="{Binding ScoreIsEditable}" Margin="0" Padding="0" BorderThickness="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding TeamTwo.Name}"  Header="Team 2"     IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding State}"         Header="StatusCode" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Punkte 2">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding FinishCommand}" Content="Finish"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding FinishCommand}" Content="Finish"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </TabItem>
                 <TabItem Header="Turnierbaum">
                     <view:TournamentMatchTreeView />
