@@ -22,6 +22,18 @@ namespace FST.TournamentPlanner.API.Controllers
         {
             this._service = service;
         }
+
+        #region Tournament CRUD
+        /// <summary>
+        /// Create a new tournament
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("New")]
+        public Task<ActionResult<Models.Tournament>> NewTournament()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Get the tournament by its Id
         /// </summary>
@@ -39,6 +51,17 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         /// <summary>
+        /// Delete the given tournament by its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Delete/{id}")]
+        public IActionResult DeleteTournament(int id)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Get the list of all tournaments
         /// </summary>
         /// <returns>tournaments</returns>
@@ -47,6 +70,18 @@ namespace FST.TournamentPlanner.API.Controllers
         {
             return _service.GetAll();
         }
+
+        /// <summary>
+        /// Update the tournament´s master data
+        /// </summary>
+        /// <param name="tournament">tournament to update</param>
+        /// <returns>updated tournament</returns>
+        [HttpPost("Update")]
+        public Task<ActionResult<Models.Tournament>> UpdateTournament(Models.Tournament tournament)
+        {
+            return null;
+        }
+        #endregion
 
         /// <summary>
         /// Set the score for a match. This call is only valid if the match is not finished yet
@@ -103,33 +138,40 @@ namespace FST.TournamentPlanner.API.Controllers
             return this._service.Start(tournamentId);
         }
 
+        #region Play area CRUD
         [HttpPost("{tournamentId}/PlayArea/Add/{name}/{description}")]
         public Task<ActionResult<Models.PlayArea>> AddPlayArea(int tournamentId, string name, string description)
         {
+            // Only update while tournament not started
             return null;
         }
 
         [HttpGet("{tournamentId}/PlayArea/{playAreaId}")]
         public Task<ActionResult<Models.PlayArea>> GetPlayArea(int tournamentId, int playAreaId)
         {
+            // Only update while tournament not started
             return null;
         }
 
         [HttpPost("{tournamentId}/PlayArea/{playAreaId}/Remove")]
         public IActionResult RemovePlayArea(int tournamentId, int playAreaId)
         {
+            // Only update while tournament not started
             return null;
         }
 
         [HttpPost("{tournamentId}/PlayArea")]
         public IActionResult UpdatePlayArea(Models.PlayArea playArea)
         {
+            // Only update while tournament not started
             return null;
         }
+        #endregion
 
         [HttpPost("{tournamentId}/Team/Add/{name}")]
         public Task<ActionResult<Models.Team>> AddTeam(int tournamentId, string name)
         {
+            // Only update while tournament not started
             return null;
 
         }
@@ -147,8 +189,16 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="teamId">Id of the team</param>
         /// <returns></returns>
         [HttpPost("{tournamentId}/Team/{teamId}/Remove")]
-        public Task<ActionResult<Models.Team>> RemoveTeam(int tournamentId, int teamId)
+        public ActionResult RemoveTeam(int tournamentId, int teamId)
         {
+            // Only update while tournament not started
+            return new OkResult();
+        }
+
+        [HttpPost("{tournamentId}/Team/Update")]
+        public Task<ActionResult<Models.Team>> UpdateTeam(int tournamentId, Models.Team team)
+        {
+            // Only update while tournament not started
             return null;
         }
     }

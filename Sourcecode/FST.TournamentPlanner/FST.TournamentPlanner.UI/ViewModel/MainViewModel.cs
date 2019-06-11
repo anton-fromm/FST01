@@ -5,6 +5,7 @@ using Microsoft.Rest;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace FST.TournamentPlanner.UI.ViewModel
 {
@@ -48,7 +49,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         }
 
+        #region Tournaments
         private ObservableCollection<TournamentViewModel> _tournaments;
+        /// <summary>
+        /// List of tournaments
+        /// </summary>
         public ObservableCollection<TournamentViewModel> Tournaments
         {
             get
@@ -60,6 +65,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 return _tournaments;
             }
         }
+        #endregion
+
         public ObservableCollection<Object> OpenedDocuments { get; } = new ObservableCollection<Object>();
 
         #region OpenTournamentCommand
@@ -80,7 +87,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        #region CurrentTournament
+        #region CurrentDocument
         private Object _currentDocument;
         public Object CurrentDocument
         {
@@ -97,9 +104,56 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 _currentDocument = value;
                 RaisePropertyChanged(() => CurrentDocument);
+                RaisePropertyChanged(() => TournamentRibbonVisibility);
             }
         }
 
+        #endregion
+
+        #region 
+        #endregion
+
+        #region NewTournamentCommand
+        private RelayCommand _newTournamentCommand;
+        public RelayCommand NewTournamentCommand
+        {
+            get
+            {
+                if (_newTournamentCommand == null)
+                {
+                    _newTournamentCommand = new RelayCommand(async () =>
+                    {
+                        try
+                        {
+                            var res = await App.RestClient.NewTournamentWithHttpMessagesAsync();
+                            var tournament = ViewModelLocator.Instance.GetTournamentViewModel(res.Body);
+                            Tournaments.Add(tournament);
+                            OpenedDocuments.Add(tournament);
+                            CurrentDocument = tournament;
+                        }
+                        catch (Microsoft.Rest.HttpOperationException)
+                        {
+                            MessengerInstance.Send(new CommunicationErrorMessage());
+                        }
+                    });                    
+                }
+                return _newTournamentCommand;
+            }
+        }
+        #endregion
+
+        #region TournamentRibbonVisibility
+        public Visibility TournamentRibbonVisibility
+        {
+            get
+            {
+                if (CurrentDocument is TournamentViewModel)
+                {
+                    return Visibility.Visible;
+                }
+                return Visibility.Hidden;
+            }
+        }
         #endregion
 
         private Model.Models.Tournament CreateDesignTimeVm()

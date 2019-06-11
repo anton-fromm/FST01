@@ -15,6 +15,12 @@
             </summary>
             <param name="service"></param>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.NewTournament">
+            <summary>
+            Create a new tournament
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Get(System.Int32)">
             <summary>
             Get the tournament by its Id

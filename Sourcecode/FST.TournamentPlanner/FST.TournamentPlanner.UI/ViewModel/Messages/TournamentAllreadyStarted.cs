@@ -8,9 +8,11 @@ namespace FST.TournamentPlanner.UI.ViewModel.Messages
 {
     public class TournamentAllreadyStarted : GalaSoft.MvvmLight.Messaging.MessageBase
     {
-        public TournamentAllreadyStarted()
+        public TournamentAllreadyStarted(int tournamentID)
         {
-
+            TournamentId = tournamentID;
         }
+        
+        public int TournamentId { get; private set; }
     }
 }

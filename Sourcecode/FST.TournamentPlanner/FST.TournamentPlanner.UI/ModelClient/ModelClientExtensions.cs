@@ -18,6 +18,34 @@ namespace FST.TournamentPlanner.UI.Model
     public static partial class ModelClientExtensions
     {
             /// <summary>
+            /// Create a new tournament
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            public static Tournament NewTournament(this IModelClient operations)
+            {
+                return Task.Factory.StartNew(s => ((IModelClient)s).NewTournamentAsync(), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create a new tournament
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Tournament> NewTournamentAsync(this IModelClient operations, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.NewTournamentWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Get the tournament by its Id
             /// </summary>
             /// <param name='operations'>

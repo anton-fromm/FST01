@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:FST.TournamentPlanner.UI.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:TournamentStateToTextConverter x:Key="TournamentStateToTextConverter"/>
+    </UserControl.Resources>
     <Grid>
         <ListView ItemsSource="{Binding Tournaments}">
             <ListView.Resources>
@@ -18,7 +21,7 @@
                     <GridView.Columns>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Header="Modus" DisplayMemberBinding="{Binding TournamentMode}" />
-                        <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding State}" />
+                        <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding State, Converter={StaticResource TournamentStateToTextConverter}}" />
                         <GridViewColumn Header="Spieldauer (in min)" DisplayMemberBinding="{Binding MaximumMatchDurationInMinutes}"/>
                         <GridViewColumn Header="Termin" DisplayMemberBinding="{Binding StartDate, StringFormat=dd.MM.yyyy}"/>
                         <GridViewColumn Header="Startuhrzeit" DisplayMemberBinding="{Binding StartTime, StringFormat=hh:mm}"/>
