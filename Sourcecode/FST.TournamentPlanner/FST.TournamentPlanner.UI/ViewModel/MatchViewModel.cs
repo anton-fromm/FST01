@@ -34,7 +34,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             // Register message type to get informed about changes in predeseccors
             MessengerInstance.Register<MatchFinishedMessage>(this, m =>
             {
-                if (m.Match == FirstPredecessor || m.Match == SecondPredecessor)
+                if (m.TournamentId == tournament.Id && m.Match == FirstPredecessor || m.Match == SecondPredecessor)
                 {
                     //TODO: Update current match, since one of the previous matches is finished now
                     // Get fresh version of the match from Rest API
@@ -282,7 +282,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                                         _model = res.Body;
                                         UpdateValuesFromModel();
                                         // Inform successor about finished prematch
-                                        MessengerInstance.Send(new MatchFinishedMessage(this));
+                                        MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
                                         CurrentlyFinishing = false;
                                     }
                                     catch (Microsoft.Rest.HttpOperationException)

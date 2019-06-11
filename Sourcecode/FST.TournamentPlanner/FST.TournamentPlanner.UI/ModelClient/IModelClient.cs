@@ -40,6 +40,17 @@ namespace FST.TournamentPlanner.UI.Model
 
 
             /// <summary>
+        /// Create a new tournament
+        /// </summary>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Tournament>> NewTournamentWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Get the tournament by its Id
         /// </summary>
         /// <param name='id'>

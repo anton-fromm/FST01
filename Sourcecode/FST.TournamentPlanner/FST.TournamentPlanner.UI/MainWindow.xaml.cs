@@ -57,6 +57,10 @@ namespace FST.TournamentPlanner.UI
             {
                 MessageBox.Show(this, COMMUNICATION_ERROR, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
             });
+            MessengerInstance.Register<msg.OpenTournamentMessage>(this, (m) =>
+            {
+                tournamentRibbon.IsSelected = true;
+            });
 
 
 

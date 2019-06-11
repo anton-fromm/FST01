@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using FST.TournamentPlanner.UI.ViewModel.Messages;
+using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -89,7 +90,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -118,7 +119,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -144,7 +145,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -179,7 +180,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -203,7 +204,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -227,7 +228,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted());
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
                 }
                 else
                 {
@@ -359,6 +360,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        private RelayCommand _saveChangesCommand;
+        public RelayCommand SaveChangesCommand
+        {
+            get
+            {
+                if (_saveChangesCommand == null)
+                {
+                    _saveChangesCommand = new RelayCommand(() =>
+                    {
+                        MessengerInstance.Send(new AreYouSureMessage(
+                            "fuck", "you", () => { }));
+                    }, () => HasChanges);
+                }
+                return _saveChangesCommand;
+            }
+        }
+
         #region TournamentEditable
         public bool TournamentEditable
         {
@@ -384,9 +402,99 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         // Neues Modell holen
                         // Alle Properties => RaisePropertyChanged / Command.CanExecute updaten
 
-                    }, State == STATE_CREATED);
+                    }, () => State == STATE_CREATED);
                 }
-                return StartCommand;
+                return _startCommand;
+            }
+        }
+        #endregion
+
+        #region EndTournamentCommand
+        private RelayCommand _endTournamentCommand;
+        public RelayCommand EndTournamentCommand
+        {
+            get
+            {
+                if (_endTournamentCommand == null)
+                {
+                    _endTournamentCommand = new RelayCommand(() =>
+                    {
+
+                    }, () => State == STATE_STARTED);
+                }
+                return _endTournamentCommand;
+            }
+        }
+        #endregion
+
+        #region AddTeamCommand
+        private RelayCommand _addTeamCommand;
+        public RelayCommand AddTeamCommand
+        {
+            get
+            {
+                if (_addTeamCommand == null)
+                {
+                    _addTeamCommand = new RelayCommand(() =>
+                    {
+
+                    }, () => State == STATE_CREATED);
+                }
+                return _addTeamCommand;
+            }
+        }
+        #endregion
+
+        #region RemoveTeamCommand
+        private RelayCommand _removeTeamCommand;
+        public RelayCommand RemoveTeamCommand
+        {
+            get
+            {
+                if (_removeTeamCommand == null)
+                {
+                    _removeTeamCommand = new RelayCommand(() =>
+                    {
+
+                    }, () => State == STATE_CREATED);
+                }
+                return _removeTeamCommand;
+            }
+        }
+        #endregion
+
+        #region AddPlayAreaCommand
+        private RelayCommand _addPlayAreaCommand;
+        public RelayCommand AddPlayAreaCommand
+        {
+            get
+            {
+                if (_addPlayAreaCommand == null)
+                {
+                    _addPlayAreaCommand = new RelayCommand(() =>
+                    {
+
+                    }, () => State == STATE_CREATED);
+                }
+                return _addPlayAreaCommand;
+            }
+        }
+        #endregion
+
+        #region RemovePlayAreaCommand
+        private RelayCommand _removePlayAreaCommand;
+        public RelayCommand RemovePlayAreaCommand
+        {
+            get
+            {
+                if (_removePlayAreaCommand == null)
+                {
+                    _removePlayAreaCommand = new RelayCommand(() =>
+                    {
+
+                    }, () => State == STATE_CREATED);
+                }
+                return _removePlayAreaCommand;
             }
         }
         #endregion

@@ -12,7 +12,7 @@
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         d:DataContext ="{d:DesignInstance {x:Type vm:MainViewModel}, IsDesignTimeCreatable=True}"
-        Title="DER Turnierplanner" Height="450" Width="800">
+        Title="DER Turnierplanner" Height="750" Width="900">
     <RibbonWindow.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type vm:TournamentViewModel}">
@@ -22,14 +22,30 @@
     </RibbonWindow.Resources>
     <DockPanel>
         <Ribbon DockPanel.Dock="Top">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu Visibility="Collapsed"/>
+            </Ribbon.ApplicationMenu>
             <RibbonTab Header="Verwaltung">
                 <RibbonGroup Header="Neu">
-                    <RibbonButton Label="Neues Turnier" SmallImageSource="Icons/Document_16x.png" LargeImageSource="Icons/Document_32x.png"/>
+                    <RibbonButton Label="Neues Turnier" SmallImageSource="Icons/Document_16x.png" LargeImageSource="Icons/Document_32x.png" Command="{Binding NewTournamentCommand}"/>
                 </RibbonGroup>
             </RibbonTab>
-            <RibbonTab Header="Turnier">
-                <RibbonGroup>
-                    <RibbonButton Label="Speichern" SmallImageSource="Icons/Save_16x.png" LargeImageSource="Icons/Save_32x.png"  />
+            <RibbonTab Header="Turnier" Visibility="{Binding TournamentRibbonVisibility}" x:Name="tournamentRibbon">
+                <RibbonGroup Header="Speichern">
+                    <RibbonButton Label="Speichern" SmallImageSource="Icons/Save_16x.png" LargeImageSource="Icons/Save_32x.png" Command="{Binding CurrentDocument.SaveChangesCommand}" />
+                </RibbonGroup>
+                <RibbonGroup Header="Verwaltung">
+                    <RibbonButton Label="Turnier starten" LargeImageSource="Icons/Run_32x.png" Command="{Binding CurrentDocument.StartCommand}"/>
+                    <RibbonButton Label="Turnier beenden" LargeImageSource="Icons/Flag_32x.png" Command="{Binding CurrentDocument.EndTournamentCommand}"/>
+                    <RibbonButton Label="Turnierbaum anzeigen" />
+                </RibbonGroup>
+                <RibbonGroup Header="Spielfelder">
+                    <RibbonButton Label="Spielfeld hinzufügen" LargeImageSource="Icons/AddPlayArea.png" Command="{Binding CurrentDocument.AddPlayAreaCommand}"/>
+                    <RibbonButton Label="Spielfeld löschen" LargeImageSource="Icons/RemovePlayArea.png" Command="{Binding CurrentDocument.RemovePlayAreaCommand}"/>
+                </RibbonGroup>
+                <RibbonGroup Header="Teams">
+                    <RibbonButton Label="Team hinzufügen" LargeImageSource="Icons/AddTeam.png" Command="{Binding CurrentDocument.AddTeamCommand}"/>
+                    <RibbonButton Label="Team löschen" LargeImageSource="Icons/RemoveTeam.png" Command="{Binding CurrentDocument.RemoveTeamCommand}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

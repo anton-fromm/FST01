@@ -36,6 +36,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        #region GetTournamentViewModel
+        private Dictionary<int, TournamentViewModel> _tournament = new Dictionary<int, TournamentViewModel>();
+        internal TournamentViewModel GetTournamentViewModel(Model.Models.Tournament tournament)
+        {
+            if (tournament == null)
+            {
+                return null;
+            }
+            TournamentViewModel tournamentViewModel;
+            if (!_tournament.TryGetValue(tournament.Id.Value, out tournamentViewModel))
+            {
+                tournamentViewModel = new TournamentViewModel(tournament);
+                _tournament.Add(tournament.Id.Value, tournamentViewModel);
+            }
+            return tournamentViewModel;
+        }
+        #endregion
         #region GetTeamViewModel
         private Dictionary<int, TeamViewModel> _teams = new Dictionary<int, TeamViewModel>();
         internal TeamViewModel GetTeamViewModel(Model.Models.Team team)
@@ -67,7 +84,6 @@ namespace FST.TournamentPlanner.UI.ViewModel
             return playAreaViewModel;
         }
         #endregion
-
 
         #region GetMatchViewModel
         private Dictionary<int, MatchViewModel> _matches = new Dictionary<int, MatchViewModel>();

@@ -8,9 +8,11 @@ namespace FST.TournamentPlanner.UI.ViewModel.Messages
 {
     public class TeamCountInvalidMessage : GalaSoft.MvvmLight.Messaging.MessageBase
     {
-        public TeamCountInvalidMessage()
+        public TeamCountInvalidMessage(int tournamentID)
         {
-
+            TournamentId = tournamentID;
         }
+
+        public int TournamentId { get; private set; }
     }
 }
