@@ -121,9 +121,9 @@ namespace FST.TournamentPlanner.API.Controllers
         }
 
         [HttpPost("Match/{matchId}")]
-        public Task<ActionResult<Models.Match>> GetMatch(int matchId)
+        public ActionResult<Models.Match> GetMatch(int tournamentId, int matchId)
         {
-            return null;
+            return _service.GetMatch(tournamentId, matchId);
         }
 
         /// <summary>
@@ -140,17 +140,15 @@ namespace FST.TournamentPlanner.API.Controllers
 
         #region Play area CRUD
         [HttpPost("{tournamentId}/PlayArea/Add/{name}/{description}")]
-        public Task<ActionResult<Models.PlayArea>> AddPlayArea(int tournamentId, string name, string description)
+        public ActionResult<Models.PlayArea> AddPlayArea(int tournamentId, string name, string description)
         {
-            // Only update while tournament not started
-            return null;
+            return this._service.AddPlayArea(tournamentId, name, description);
         }
 
         [HttpGet("{tournamentId}/PlayArea/{playAreaId}")]
-        public Task<ActionResult<Models.PlayArea>> GetPlayArea(int tournamentId, int playAreaId)
+        public ActionResult<Models.PlayArea> GetPlayArea(int tournamentId, int playAreaId)
         {
-            // Only update while tournament not started
-            return null;
+            return this._service.GetPlayArea(tournamentId, playAreaId);
         }
 
         [HttpPost("{tournamentId}/PlayArea/{playAreaId}/Remove")]

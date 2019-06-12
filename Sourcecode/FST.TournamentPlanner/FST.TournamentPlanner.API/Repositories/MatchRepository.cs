@@ -13,6 +13,7 @@ namespace FST.TournamentPlanner.API.Repositories
         public MatchRepository(PlannerContext context) : base(context)
         {
         }
+
         public override Match GetById(int id)
         {
             return PlannerContext.Set<Match>()

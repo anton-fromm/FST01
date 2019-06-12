@@ -107,10 +107,7 @@ namespace FST.TournamentPlanner.API.Services
             this._repoWrapper.Match.SaveChanges();
 
             return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
-
         }
-
-
 
         Tournament ITournamentService.Get(int id)
         {
@@ -119,7 +116,7 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return null;
             }
-            return new Tournament(_repoWrapper.Tournament.GetById(id));
+            return new Tournament(tournament);
         }
 
         #region PlayArea stuff
@@ -315,6 +312,67 @@ namespace FST.TournamentPlanner.API.Services
                 });
             }
 
+        }
+
+        /// <summary>
+        /// Rerurn a match for a tournament
+        /// </summary>
+        /// <param name="torunamentId"></param>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public ActionResult<Match> GetMatch(int torunamentId, int matchId)
+        {
+            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            if (match == null)
+            {
+                return new ActionResult<Match>(new NotFoundResult());
+            }
+           
+            return new ActionResult<Match>(new Match(new Tournament(this._repoWrapper.Tournament.GetById(torunamentId)), match));
+        }
+
+        public ActionResult<PlayArea> AddPlayArea(int tournamentId, string name, string description)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+            
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+            DbModels.PlayArea playarea = new DbModels.PlayArea
+            {
+                Tournament = tournament,
+                Description = description,
+                Name = name
+            };
+
+            this._repoWrapper.PlayArea.Create(playarea);
+            this._repoWrapper.PlayArea.SaveChanges();
+
+            return new ActionResult<PlayArea>(new PlayArea(playarea));
+        }
+
+        public ActionResult<PlayArea> GetPlayArea(int tournamentId, int playAreaId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            DbModels.PlayArea playarea = _repoWrapper.PlayArea.GetById(playAreaId);
+            if (playarea == null)
+            {
+                return new NotFoundResult();
+            }
+
+            return new ActionResult<PlayArea>(new PlayArea(playarea));
         }
 
         #endregion

@@ -12,8 +12,7 @@ namespace FST.TournamentPlanner.API.Repositories
         private TournamentRepository _tournament;
         private MatchRepository _match;
         private PlayAreaBookingRepository _playAreaBooking;
-
-
+        private PlayAreaRepository _playArea;
 
         public TournamentRepository Tournament
         {
@@ -52,6 +51,18 @@ namespace FST.TournamentPlanner.API.Repositories
                     _playAreaBooking = new PlayAreaBookingRepository(_ctx);
                 }
                 return _playAreaBooking;
+            }
+        }
+
+        public PlayAreaRepository PlayArea
+        {
+            get
+            {
+                if (_playArea == null)
+                {
+                    _playArea = new PlayAreaRepository(_ctx);
+                }
+                return _playArea;
             }
         }
 
