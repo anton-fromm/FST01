@@ -237,6 +237,7 @@
     <Compile Include="ViewModel\Messages\AreYouSureMessage.cs" />
     <Compile Include="ViewModel\Messages\CommunicationErrorMessage.cs" />
     <Compile Include="ViewModel\Messages\MatchFinishedMessage.cs" />
+    <Compile Include="ViewModel\Messages\MaximumTeamCountReachedMessage.cs" />
     <Compile Include="ViewModel\Messages\OpenTournamentMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountInvalidMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountMismatchMessage.cs" />
@@ -260,6 +261,9 @@
     <Compile Include="View\Converter\ToListConverter.cs" />
     <Compile Include="View\TournamentListView.xaml.cs">
       <DependentUpon>TournamentListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TournamentMatchTreePopup.xaml.cs">
+      <DependentUpon>TournamentMatchTreePopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TournamentView.xaml.cs">
       <DependentUpon>TournamentView.xaml</DependentUpon>
@@ -288,6 +292,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\TournamentListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TournamentMatchTreePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -60,7 +60,7 @@
             <TabControl VerticalAlignment="Stretch" Grid.ColumnSpan="4" Grid.Row="8" Margin="2">
                 <TabItem Header="Teams">
                     <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
-                        <DataGrid ItemsSource="{Binding Teams}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid ItemsSource="{Binding Teams}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False" SelectedItem="{Binding SelectedTeam, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
                             </DataGrid.Columns>
@@ -69,7 +69,7 @@
                 </TabItem>
                 <TabItem Header="Spielfelder">
                     <Grid Grid.Row="6" Grid.ColumnSpan="3" MinHeight="250">
-                        <DataGrid ItemsSource="{Binding PlayAreas}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False">
+                        <DataGrid ItemsSource="{Binding PlayAreas}" AutoGenerateColumns="False" IsEnabled="{Binding TournamentEditable}" CanUserAddRows="False" CanUserDeleteRows="False" SelectedItem="{Binding SelectedPlayArea, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>

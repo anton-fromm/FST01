@@ -9,28 +9,26 @@ using System.Windows.Data;
 
 namespace FST.TournamentPlanner.UI.View
 {
-    public class MatchResultConverter : IValueConverter
+    public class MatchResultConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var obj = value as MatchViewModel;
-            if (obj == null)
+            var teamOne = values[0] as TeamViewModel;
+            var teamTwo = values[1] as TeamViewModel;
+            var resTeamOne = values[2] as int?;
+            var resTeamTwo = values[3] as int?;
+            if (teamOne == null && teamTwo == null)
             {
-                return null;
+                return String.Empty;
             }
-            if (obj.TeamOne == null && obj.TeamTwo == null)
-            {
-                return string.Empty;
-            }
-            if (!obj.TeamOneScore.HasValue)
+            if (!resTeamOne.HasValue || !resTeamTwo.HasValue)
             {
                 return "vs.";
             }
-            return $"{obj.TeamOneScore.Value} : {obj.TeamTwoScore.Value}";
-            
+            return $"{resTeamOne.Value} : {resTeamTwo.Value}";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
