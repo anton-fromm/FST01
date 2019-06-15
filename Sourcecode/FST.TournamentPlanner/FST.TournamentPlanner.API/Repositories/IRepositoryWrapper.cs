@@ -11,5 +11,7 @@ namespace FST.TournamentPlanner.API.Repositories
         TournamentRepository Tournament { get; }
         MatchRepository Match { get; }
         PlayAreaBookingRepository PlayAreaBooking { get; }
+        PlayAreaRepository PlayArea { get; }
+        TeamRepository Team { get; }
     }
 }

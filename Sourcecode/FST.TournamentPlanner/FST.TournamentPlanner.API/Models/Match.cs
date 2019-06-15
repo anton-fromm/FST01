@@ -12,12 +12,13 @@ namespace FST.TournamentPlanner.API.Models
     {
         private DB.Models.Match _match;
         private Tournament _tournament;
+
         internal Match(Tournament tournament, DB.Models.Match match)
         {
             _match = match;
             _tournament = tournament;
         }
-        
+
         /// <summary>
         /// Id of this match
         /// </summary>
