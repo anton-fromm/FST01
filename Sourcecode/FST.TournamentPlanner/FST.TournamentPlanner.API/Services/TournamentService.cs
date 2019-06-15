@@ -9,14 +9,23 @@ using DbModels = FST.TournamentPlanner.DB.Models;
 
 namespace FST.TournamentPlanner.API.Services
 {
+    /// <summary>
+    /// Business Logic
+    /// </summary>
     public class TournamentService : ITournamentService
     {
         private IRepositoryWrapper _repoWrapper;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="repoWrapper"></param>
         public TournamentService(IRepositoryWrapper repoWrapper)
         {
             _repoWrapper = repoWrapper;
         }
+
+        #region Tournament Handling
 
         public Tournament Get(int id)
         {
@@ -28,85 +37,9 @@ namespace FST.TournamentPlanner.API.Services
             return new Tournament(tournament);
         }
 
-        public IEnumerable<Models.Tournament> GetAll()
+        public IEnumerable<Tournament> GetAll()
         {
-            var bla = _repoWrapper.Tournament.GetAll().ToList();
-            var blubb = bla.Select(t => new Tournament(t));
-            return blubb;
-        }
-
-        public IActionResult SetScore(int matchId, int scoreOne, int scoreTwo)
-        {
-            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
-            if (match == null)
-            {
-                return new NotFoundResult();
-            }
-            if (match.State == DbModels.MatchState.Finished)
-            {
-                return new BadRequestResult();
-            }
-            if (match.TeamOne == null || match.TeamOne.Team == null || match.TeamTwo == null || match.TeamTwo.Team == null)
-            {
-                return new BadRequestResult();
-            }
-            if (match.State == DbModels.MatchState.Planned)
-            {
-                match.State = DbModels.MatchState.Started;
-            }
-            match.TeamOne.Score = scoreOne;
-            match.TeamTwo.Score = scoreTwo;
-
-            this._repoWrapper.Match.SaveChanges();
-
-            return new OkResult();
-
-        }
-
-        public ActionResult<Match> EndMatch(int tournamentId, int matchId)
-        {
-            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
-            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
-            if (match == null)
-            {
-                return new ActionResult<Match>(new NotFoundResult());
-            }
-            //Can´t end matches, which are allready ended
-            if (match.State == DbModels.MatchState.Finished)
-            {
-                return new ActionResult<Match>(new BadRequestResult() );
-            }
-            // If teams are not set or they don´t have scores => error
-            if (match.TeamOne.Team == null || match.TeamTwo.Team == null || !match.TeamOne.Score.HasValue || !match.TeamTwo.Score.HasValue)
-            {
-                return new ActionResult<Match>(new BadRequestResult());
-            }
-            // can´t determinate winner if the score is even...
-            if (match.TeamOne.Score == match.TeamTwo.Score)
-            {
-                return new ActionResult<Match>(new BadRequestResult());
-            }
-            DB.Models.Team winner = (match.TeamOne.Score > match.TeamTwo.Score) ? match.TeamOne.Team : match.TeamTwo.Team;
-            // Winner: TeamOne
-            var nextMatchForWinner = new DbModels.MatchResult()
-            {
-                CreatedAt = DateTime.Now,
-                Match = match.Successor,
-                Team = winner
-            };
-            if (match.Successor.TeamOne == null)
-            {
-                match.Successor.TeamOne = nextMatchForWinner;
-            }
-            else
-            {
-                match.Successor.TeamTwo = nextMatchForWinner;
-            }
-            match.State = DbModels.MatchState.Finished;
-
-            this._repoWrapper.Match.SaveChanges();
-
-            return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
+            return this._repoWrapper.Tournament.GetAll().Select(t => new Tournament(t)).ToList();
         }
 
         Tournament ITournamentService.Get(int id)
@@ -119,42 +52,15 @@ namespace FST.TournamentPlanner.API.Services
             return new Tournament(tournament);
         }
 
-        #region PlayArea stuff
-
-        /// <summary>
-        /// Adds a new play area to this tournament
-        /// 
-        /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
-        /// </summary>
-        /// <param name="name">name of the play area</param>
-        /// <param name="description">description of the play area</param>
-        //PlayArea AddPlayArea(string name, string description);
-
-        /// <summary>
-        /// Adds a new play area to this tournament
-        /// 
-        /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
-        /// </summary>
-        /// <param name="playArea">play area to add</param>
-        //PlayArea AddPlayArea(PlayArea playArea)
-        //{
-
-        //}
-
-        /// <summary>
-        /// Remove the given play area from the tournament
-        /// 
-        /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
-        /// </summary>
-        /// <param name="playArea">play area to remove</param>
-        void RemovePlayArea(int tournamentId, PlayArea playArea)
-        {
-
-        }
         #endregion
 
         #region Start
 
+        /// <summary>
+        /// Start tournament
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <returns></returns>
         public IActionResult Start(int tournamentId)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
@@ -180,6 +86,7 @@ namespace FST.TournamentPlanner.API.Services
                 return new BadRequestObjectResult(e.Message);
             }
         }
+
         private void GenerateMatchPlan(DbModels.Tournament tournament)
         {
             //
@@ -264,6 +171,11 @@ namespace FST.TournamentPlanner.API.Services
             return result;
         }
 
+        /// <summary>
+        /// create bookings
+        /// </summary>
+        /// <param name="tournament"></param>
+        /// <returns></returns>
         protected DbModels.PlayAreaBooking CreateBookingForPlayArea(DbModels.Tournament tournament)
         {
             // Get the earliest available time slot on any play area
@@ -314,6 +226,10 @@ namespace FST.TournamentPlanner.API.Services
 
         }
 
+        #endregion
+
+        #region Match Handling
+
         /// <summary>
         /// Rerurn a match for a tournament
         /// </summary>
@@ -331,6 +247,104 @@ namespace FST.TournamentPlanner.API.Services
             return new ActionResult<Match>(new Match(new Tournament(this._repoWrapper.Tournament.GetById(torunamentId)), match));
         }
 
+        /// <summary>
+        /// Set or update a score on match 
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <param name="scoreOne"></param>
+        /// <param name="scoreTwo"></param>
+        /// <returns></returns>
+        public IActionResult SetScore(int matchId, int scoreOne, int scoreTwo)
+        {
+            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            if (match == null)
+            {
+                return new NotFoundResult();
+            }
+            if (match.State == DbModels.MatchState.Finished)
+            {
+                return new BadRequestResult();
+            }
+            if (match.TeamOne == null || match.TeamOne.Team == null || match.TeamTwo == null || match.TeamTwo.Team == null)
+            {
+                return new BadRequestResult();
+            }
+            if (match.State == DbModels.MatchState.Planned)
+            {
+                match.State = DbModels.MatchState.Started;
+            }
+            match.TeamOne.Score = scoreOne;
+            match.TeamTwo.Score = scoreTwo;
+
+            this._repoWrapper.Match.SaveChanges();
+
+            return new OkResult();
+
+        }
+
+        /// <summary>
+        /// End a match
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public ActionResult<Match> EndMatch(int tournamentId, int matchId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            if (match == null)
+            {
+                return new ActionResult<Match>(new NotFoundResult());
+            }
+            //Can´t end matches, which are allready ended
+            if (match.State == DbModels.MatchState.Finished)
+            {
+                return new ActionResult<Match>(new BadRequestResult());
+            }
+            // If teams are not set or they don´t have scores => error
+            if (match.TeamOne.Team == null || match.TeamTwo.Team == null || !match.TeamOne.Score.HasValue || !match.TeamTwo.Score.HasValue)
+            {
+                return new ActionResult<Match>(new BadRequestResult());
+            }
+            // can´t determinate winner if the score is even...
+            if (match.TeamOne.Score == match.TeamTwo.Score)
+            {
+                return new ActionResult<Match>(new BadRequestResult());
+            }
+            DB.Models.Team winner = (match.TeamOne.Score > match.TeamTwo.Score) ? match.TeamOne.Team : match.TeamTwo.Team;
+            // Winner: TeamOne
+            var nextMatchForWinner = new DbModels.MatchResult()
+            {
+                CreatedAt = DateTime.Now,
+                Match = match.Successor,
+                Team = winner
+            };
+            if (match.Successor.TeamOne == null)
+            {
+                match.Successor.TeamOne = nextMatchForWinner;
+            }
+            else
+            {
+                match.Successor.TeamTwo = nextMatchForWinner;
+            }
+            match.State = DbModels.MatchState.Finished;
+
+            this._repoWrapper.Match.SaveChanges();
+
+            return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
+        }
+
+        #endregion
+
+        #region PlayArea Handling
+        
+        /// <summary>
+        /// Add a new play area
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
         public ActionResult<PlayArea> AddPlayArea(int tournamentId, string name, string description)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
@@ -358,6 +372,12 @@ namespace FST.TournamentPlanner.API.Services
             return new ActionResult<PlayArea>(new PlayArea(playarea));
         }
 
+        /// <summary>
+        /// Get an existing play area
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="playAreaId"></param>
+        /// <returns></returns>
         public ActionResult<PlayArea> GetPlayArea(int tournamentId, int playAreaId)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
@@ -373,6 +393,198 @@ namespace FST.TournamentPlanner.API.Services
             }
 
             return new ActionResult<PlayArea>(new PlayArea(playarea));
+        }
+
+        /// <summary>
+        /// Remove the given play area from the tournament
+        /// 
+        /// Only valid while the tournament is in Created-State<see cref="DbModels.TournamentState"/>
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="playAreaId"></param>
+        /// <returns></returns>
+        public IActionResult RemovePlayArea(int tournamentId, int playAreaId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+            DbModels.PlayArea playarea = _repoWrapper.PlayArea.GetById(playAreaId);
+            if (playarea == null)
+            {
+                return new NotFoundResult();
+            }
+
+            _repoWrapper.PlayArea.Delete(playarea);
+            _repoWrapper.PlayArea.SaveChanges();
+
+            return new OkResult();
+        }
+
+        /// <summary>
+        /// update a play area
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="playArea"></param>
+        /// <returns></returns>
+        public IActionResult UpdatePlayArea(int tournamentId, Models.PlayArea playArea)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+            DbModels.PlayArea dbPlayArea = _repoWrapper.PlayArea.GetById(playArea.Id);
+            if (dbPlayArea == null)
+            {
+                return new NotFoundResult();
+            }
+
+            dbPlayArea.Name = playArea.Name;
+            dbPlayArea.Description = playArea.Description;
+
+            _repoWrapper.PlayArea.SaveChanges();
+
+            return new OkResult();
+        }
+
+        #endregion
+
+        #region Team Handling
+
+        /// <summary>
+        /// Update an existing team
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public ActionResult<Team> UpdateTeam(int tournamentId, Team team)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+            DbModels.Team dbTeam = _repoWrapper.Team.GetById(team.Id);
+            if (dbTeam == null)
+            {
+                return new NotFoundResult();
+            }
+
+            dbTeam.Name = team.Name;
+
+            _repoWrapper.Team.SaveChanges();
+
+            return new OkResult();
+        }
+
+        /// <summary>
+        /// Remove a team
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        public ActionResult RemoveTeam(int tournamentId, int teamId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+            DbModels.Team dbTeam = _repoWrapper.Team.GetById(teamId);
+            if (dbTeam == null)
+            {
+                return new NotFoundResult();
+            }
+
+            _repoWrapper.Team.Delete(dbTeam);
+            _repoWrapper.Team.SaveChanges();
+
+            return new OkResult();
+        }
+
+        /// <summary>
+        /// Get a team
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        public ActionResult<Team> GetTeam(int tournamentId, int teamId)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            DbModels.Team dbTeam = _repoWrapper.Team.GetById(teamId);
+            if (dbTeam == null)
+            {
+                return new NotFoundResult();
+            }
+
+            return new ActionResult<Team>(new Team(dbTeam));
+        }
+
+        /// <summary>
+        /// Add a new team
+        /// </summary>
+        /// <param name="tournamentId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ActionResult<Team> AddTeam(int tournamentId, string name)
+        {
+            DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
+            if (tournament == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Only update while tournament not started
+            if (tournament.State != DbModels.TournamentState.Created)
+            {
+                return new BadRequestObjectResult("Tournament allready started of finished");
+            }
+
+
+            DbModels.Team team = new DbModels.Team
+            {
+                Name = name
+            };
+
+            this._repoWrapper.Team.Create(team);
+            this._repoWrapper.Team.SaveChanges();
+
+            return new ActionResult<Team>(new Team(team));
         }
 
         #endregion

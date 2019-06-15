@@ -15,6 +15,12 @@
             </summary>
             <param name="service"></param>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.NewTournament">
+            <summary>
+            Create a new tournament
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Get(System.Int32)">
             <summary>
             Get the tournament by its Id
@@ -22,11 +28,25 @@
             <param name="id">Id of the tournament</param>
             <returns>tournament object</returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Get">
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.DeleteTournament(System.Int32)">
+            <summary>
+            Delete the given tournament by its Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.GetAll">
             <summary>
             Get the list of all tournaments
             </summary>
             <returns>tournaments</returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTournament(FST.TournamentPlanner.API.Models.Tournament)">
+            <summary>
+            Update the tournament´s master data
+            </summary>
+            <param name="tournament">tournament to update</param>
+            <returns>updated tournament</returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.SetScoreOnMatch(System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -37,6 +57,22 @@
             <param name="scoreTwo">current score of team two</param>
             <returns>Resultcode</returns>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.EndMatch(System.Int32,System.Int32)">
+            <summary>
+            end a match
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="matchId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.GetMatch(System.Int32,System.Int32)">
+            <summary>
+            Get a match
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="matchId"></param>
+            <returns></returns>
+        </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.Start(System.Int32)">
             <summary>
             Starts the tournament. 
@@ -45,12 +81,69 @@
             <param name="tournamentId"></param>
             <returns></returns>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.AddPlayArea(System.Int32,System.String,System.String)">
+            <summary>
+            create a play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="name"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.GetPlayArea(System.Int32,System.Int32)">
+            <summary>
+            get a play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.RemovePlayArea(System.Int32,System.Int32)">
+            <summary>
+            remove a play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdatePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+            <summary>
+            update play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playArea"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.AddTeam(System.Int32,System.String)">
+            <summary>
+            Add a new team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.GetTeam(System.Int32,System.Int32)">
+            <summary>
+            Get a team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="teamId"></param>
+            <returns></returns>
+        </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.RemoveTeam(System.Int32,System.Int32)">
             <summary>
             Remove the team from the tournament
             </summary>
             <param name="tournamentId">Id of the tournament</param>
             <param name="teamId">Id of the team</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTeam(System.Int32,FST.TournamentPlanner.API.Models.Team)">
+            <summary>
+            Update an existing team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="team"></param>
             <returns></returns>
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Match.Id">
@@ -123,6 +216,11 @@
             Winner team of this match
             </summary>
         </member>
+        <member name="T:FST.TournamentPlanner.API.Models.PlayArea">
+            <summary>
+            Class representing a play area
+            </summary>
+        </member>
         <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Id">
             <summary>
             Id of the play area
@@ -151,6 +249,11 @@
         <member name="P:FST.TournamentPlanner.API.Models.Team.Name">
             <summary>
             Name of the team
+            </summary>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Models.Tournament">
+            <summary>
+            Knock-out tournament class
             </summary>
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Tournament.Id">
@@ -207,16 +310,26 @@
         </member>
         <member name="P:FST.TournamentPlanner.API.Models.Tournament.FinalMatch">
             <summary>
-            List of matches
+            Final match
             </summary>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemovePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+        <member name="T:FST.TournamentPlanner.API.Services.TournamentService">
             <summary>
-            Remove the given play area from the tournament
-            
-            Only valid while the tournament is in Created-State<see cref="!:TournamentState"/>
+            Business Logic
             </summary>
-            <param name="playArea">play area to remove</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.#ctor(FST.TournamentPlanner.API.Repositories.IRepositoryWrapper)">
+            <summary>
+            ctor
+            </summary>
+            <param name="repoWrapper"></param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.Start(System.Int32)">
+            <summary>
+            Start tournament
+            </summary>
+            <param name="tournamentId"></param>
+            <returns></returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateRoundLists(FST.TournamentPlanner.DB.Models.Match)">
             <summary>
@@ -224,6 +337,105 @@
             </summary>
             <param name="finalMatch">root element to start navigation from</param>
             <returns>dictionary</returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.CreateBookingForPlayArea(FST.TournamentPlanner.DB.Models.Tournament)">
+            <summary>
+            create bookings
+            </summary>
+            <param name="tournament"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GetMatch(System.Int32,System.Int32)">
+            <summary>
+            Rerurn a match for a tournament
+            </summary>
+            <param name="torunamentId"></param>
+            <param name="matchId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.SetScore(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Set or update a score on match 
+            </summary>
+            <param name="matchId"></param>
+            <param name="scoreOne"></param>
+            <param name="scoreTwo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.EndMatch(System.Int32,System.Int32)">
+            <summary>
+            End a match
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="matchId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.AddPlayArea(System.Int32,System.String,System.String)">
+            <summary>
+            Add a new play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="name"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GetPlayArea(System.Int32,System.Int32)">
+            <summary>
+            Get an existing play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemovePlayArea(System.Int32,System.Int32)">
+            <summary>
+            Remove the given play area from the tournament
+            
+            Only valid while the tournament is in Created-State<see cref="T:FST.TournamentPlanner.DB.Models.TournamentState"/>
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdatePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+            <summary>
+            update a play area
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="playArea"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdateTeam(System.Int32,FST.TournamentPlanner.API.Models.Team)">
+            <summary>
+            Update an existing team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="team"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemoveTeam(System.Int32,System.Int32)">
+            <summary>
+            Remove a team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="teamId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GetTeam(System.Int32,System.Int32)">
+            <summary>
+            Get a team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="teamId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.AddTeam(System.Int32,System.String)">
+            <summary>
+            Add a new team
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="name"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
