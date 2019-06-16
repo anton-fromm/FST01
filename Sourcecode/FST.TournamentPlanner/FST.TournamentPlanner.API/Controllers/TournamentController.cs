@@ -195,12 +195,13 @@ namespace FST.TournamentPlanner.API.Controllers
         /// update play area
         /// </summary>
         /// <param name="tournamentId"></param>
+        /// <param name="playAreaId"></param>
         /// <param name="playArea"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/PlayArea")]
-        public IActionResult UpdatePlayArea(int tournamentId, Models.PlayArea playArea)
+        [HttpPost("{tournamentId}/PlayArea/{playAreaId}")]
+        public IActionResult UpdatePlayArea(int tournamentId, int playAreaId, Models.PlayArea playArea)
         {
-            return this._service.UpdatePlayArea(tournamentId, playArea);
+            return this._service.UpdatePlayArea(tournamentId, playAreaId, playArea);
         }
 
         #endregion
@@ -246,13 +247,14 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <summary>
         /// Update an existing team
         /// </summary>
-        /// <param name="tournamentId"></param>
+        /// <param name="tournamentId"></param>        
+        /// <param name="teamId">Id of the team</param>
         /// <param name="team"></param>
         /// <returns></returns>
         [HttpPost("{tournamentId}/Team/Update")]
-        public ActionResult<Models.Team> UpdateTeam(int tournamentId, Models.Team team)
+        public ActionResult<Models.Team> UpdateTeam(int tournamentId, int teamId, Models.Team team)
         {
-            return this._service.UpdateTeam(tournamentId, team);
+            return this._service.UpdateTeam(tournamentId, teamId, team);
         }
         #endregion
     }

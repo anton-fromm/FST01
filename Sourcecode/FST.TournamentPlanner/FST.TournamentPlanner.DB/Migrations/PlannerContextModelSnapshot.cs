@@ -213,7 +213,7 @@ namespace FST.TournamentPlanner.DB.Migrations
 
             modelBuilder.Entity("FST.TournamentPlanner.DB.Models.Team", b =>
                 {
-                    b.HasOne("FST.TournamentPlanner.DB.Models.Tournament")
+                    b.HasOne("FST.TournamentPlanner.DB.Models.Tournament", "Tournament")
                         .WithMany("Teams")
                         .HasForeignKey("TournamentId");
                 });
