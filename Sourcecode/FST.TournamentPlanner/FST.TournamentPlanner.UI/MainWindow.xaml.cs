@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 using msg = FST.TournamentPlanner.UI.ViewModel.Messages;
 using FST.TournamentPlanner.UI.View;
+using System.Windows.Xps.Packaging;
 
 namespace FST.TournamentPlanner.UI
 {
@@ -70,8 +71,16 @@ namespace FST.TournamentPlanner.UI
 
             MessengerInstance.Register<msg.GenerateWinnerCertificatesMessage>(this, (m) =>
             {
+                XpsDocument doc= WinnerCertificateHelper.Generate(m.FirstPlace, 1, "Tunier1", "Dortmund", "16.06.2019");
+
                 var popup = new WinnerCertificatesView();
+                popup.documentviewWord.Document = doc.GetFixedDocumentSequence();
                 popup.Show();
+
+                XpsDocument doc2 = WinnerCertificateHelper.Generate(m.SecondPlace, 2, "Tunier1", "Dortmund", "16.06.2019");
+                var popup2 = new WinnerCertificatesView();
+                popup2.documentviewWord.Document = doc2.GetFixedDocumentSequence();
+                popup2.Show();
             });
 
             DataContext = new ViewModel.MainViewModel();
