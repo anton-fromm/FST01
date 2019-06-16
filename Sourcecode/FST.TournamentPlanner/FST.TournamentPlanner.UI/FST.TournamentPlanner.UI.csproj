@@ -348,7 +348,9 @@
     <None Include="WinnerCertificatesTemplate\Urkunde_v2.docm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="WinnerCertificatesTemplate\Urkunde_v2_final.docm" />
+    <None Include="WinnerCertificatesTemplate\Urkunde_v2_final.docm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
