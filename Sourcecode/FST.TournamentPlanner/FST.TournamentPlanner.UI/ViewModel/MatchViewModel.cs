@@ -220,6 +220,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        #region Looser
+        public TeamViewModel Looser
+        {
+            get
+            {
+                if (State != STATE_FINISHED)
+                {
+                    return null;
+                }
+                if (TeamOneScore < TeamTwoScore)
+                {
+                    return TeamOne;
+                }
+                return TeamTwo;
+            }
+        }
+        #endregion
         #region State
         public int State
         {

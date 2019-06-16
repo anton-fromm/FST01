@@ -628,5 +628,27 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
+
+        #region WinnerCertificatesCommand
+        private RelayCommand _winnerCertificatesCommand;
+        public RelayCommand WinnerCertificatesCommand
+        {
+            get
+            {
+                if (_winnerCertificatesCommand == null)
+                {
+                    _winnerCertificatesCommand = new RelayCommand(() =>
+                    {
+                        //TODO: echte namen aus dem final-match übergeben
+                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage("fuck", "you"));
+                    },
+                    //TODO richtiger bedingung setzen...
+                    true);
+                    //() => State == STATE_FINISHED);
+                }
+                return _winnerCertificatesCommand;
+            }
+        }
+        #endregion
     }
 }

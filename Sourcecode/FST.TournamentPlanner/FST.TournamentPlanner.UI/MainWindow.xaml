@@ -40,6 +40,7 @@
                     <RibbonButton Label="Turnier starten" LargeImageSource="Icons/Run_32x.png" Command="{Binding CurrentDocument.StartCommand}"/>
                     <RibbonButton Label="Turnier beenden" LargeImageSource="Icons/Flag_32x.png" Command="{Binding CurrentDocument.EndTournamentCommand}"/>
                     <RibbonButton Label="Turnierbaum anzeigen" Click="RibbonButton_Click" IsEnabled="{Binding CurrentDocument.State, Converter={StaticResource TabItemVisibilityConverter}}" />
+                    <RibbonButton Label="Urkunden generieren" Command="{Binding CurrentDocument.WinnerCertificatesCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="Spielfelder">
                     <RibbonButton Label="Spielfeld hinzufügen" LargeImageSource="Icons/AddPlayArea.png" Command="{Binding CurrentDocument.AddPlayAreaCommand}"/>

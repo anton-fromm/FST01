@@ -236,6 +236,7 @@
     <Compile Include="ModelClient\Models\Tournament.cs" />
     <Compile Include="ViewModel\Messages\AreYouSureMessage.cs" />
     <Compile Include="ViewModel\Messages\CommunicationErrorMessage.cs" />
+    <Compile Include="ViewModel\Messages\GenerateWinnerCertificatesMessage.cs" />
     <Compile Include="ViewModel\Messages\MatchFinishedMessage.cs" />
     <Compile Include="ViewModel\Messages\MaximumTeamCountReachedMessage.cs" />
     <Compile Include="ViewModel\Messages\OpenTournamentMessage.cs" />
@@ -271,6 +272,10 @@
     <Compile Include="View\TournamentMatchTreeView.xaml.cs">
       <DependentUpon>TournamentMatchTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WinnerCertificatesView.xaml.cs">
+      <DependentUpon>WinnerCertificatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WinnerCertificateHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -307,6 +312,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\WinnerCertificatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -330,6 +339,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="WinnerCertificatesTemplate\Urkunde_v2.docm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

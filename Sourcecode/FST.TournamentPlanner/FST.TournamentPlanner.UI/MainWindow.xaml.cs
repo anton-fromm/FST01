@@ -68,7 +68,11 @@ namespace FST.TournamentPlanner.UI
                 MessageBox.Show(this, MAXIMUM_TEAM_COUNT_REACHED, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
             });
 
-
+            MessengerInstance.Register<msg.GenerateWinnerCertificatesMessage>(this, (m) =>
+            {
+                var popup = new WinnerCertificatesView();
+                popup.Show();
+            });
 
             DataContext = new ViewModel.MainViewModel();
         }
