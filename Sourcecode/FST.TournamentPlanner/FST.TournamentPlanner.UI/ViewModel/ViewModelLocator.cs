@@ -73,12 +73,12 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         #region GetPlayAreaViewModel
         private Dictionary<int, PlayAreaViewModel> _playAreas = new Dictionary<int, PlayAreaViewModel>();
-        internal PlayAreaViewModel GetPlayAreaViewModel(Model.Models.PlayArea playArea)
+        internal PlayAreaViewModel GetPlayAreaViewModel(Model.Models.Tournament tournament, Model.Models.PlayArea playArea)
         {
             PlayAreaViewModel playAreaViewModel;
             if (!_playAreas.TryGetValue(playArea.Id.Value, out playAreaViewModel))
             {
-                playAreaViewModel = new PlayAreaViewModel(playArea);
+                playAreaViewModel = new PlayAreaViewModel(tournament, playArea);
                 _playAreas.Add(playArea.Id.Value, playAreaViewModel);
             }
             return playAreaViewModel;

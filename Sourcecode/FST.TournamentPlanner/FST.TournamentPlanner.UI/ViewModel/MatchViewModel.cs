@@ -164,6 +164,12 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 if (ScoreIsEditable)
                 {
                     _teamOneScore = value;
+                    if (TeamTwoScore == null)
+                    {
+                        // In case this is the first time a result is entered, initialize the other score with 0
+                        TeamTwoScore = 0;
+                    }
+                    App.RestClient.SetScoreOnMatchWithHttpMessagesAsync(this.Id, TeamOneScore.Value, TeamTwoScore.Value);
                     RaisePropertyChanged(() => TeamOneScore);
                 }
             }
@@ -183,6 +189,12 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 if (ScoreIsEditable)
                 {
                     _teamTwoScore = value;
+                    if (TeamOneScore == null)
+                    {
+                        // In case this is the first time a result is entered, initialize the other score with 0
+                        TeamOneScore = 0;
+                    }
+                    App.RestClient.SetScoreOnMatchWithHttpMessagesAsync(this.Id, TeamOneScore.Value, TeamTwoScore.Value);
                     RaisePropertyChanged(() => TeamTwoScore);
                 }
             }
@@ -208,6 +220,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
+        #region Looser
+        public TeamViewModel Looser
+        {
+            get
+            {
+                if (State != STATE_FINISHED)
+                {
+                    return null;
+                }
+                if (TeamOneScore < TeamTwoScore)
+                {
+                    return TeamOne;
+                }
+                return TeamTwo;
+            }
+        }
+        #endregion
         #region State
         public int State
         {
@@ -229,7 +258,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         #endregion
 
         #region PlayArea
-        public PlayAreaViewModel PlayArea => ViewModelLocator.Instance.GetPlayAreaViewModel(_model.PlayArea);
+        public PlayAreaViewModel PlayArea => ViewModelLocator.Instance.GetPlayAreaViewModel(_tournament, _model.PlayArea);
         #endregion
 
         #region StartTime

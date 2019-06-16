@@ -14,7 +14,20 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         }
 
-        public string Name => _model?.Name;
+        public int? Id => _model?.Id.Value;
+
+        public string Name
+        {
+            get
+            {
+                return _model.Name;
+            }
+            set
+            {
+                _model.Name = value;
+                //App.RestClient.Team
+            }
+        }
 
         public bool Equals(TeamViewModel obj)
         {
@@ -25,23 +38,5 @@ namespace FST.TournamentPlanner.UI.ViewModel
             return obj._model.Id == _model.Id;
         }
 
-        //public static bool operator ==(TeamViewModel team1, TeamViewModel team2)
-        //{
-        //    if (team1 == null && team2 == null)
-        //    {
-        //        return true;
-        //    }
-        //    if (team1 == null)
-        //    {
-        //        return false;
-        //    }
-        //    return team1.Equals(team2);
-        //}
-
-
-        //public static bool operator !=(TeamViewModel team1, TeamViewModel team2)
-        //{
-        //    return !team1.Equals(team2);
-        //}
     }
 }

@@ -10,7 +10,7 @@
         <local:TournamentStateToTextConverter x:Key="TournamentStateToTextConverter"/>
     </UserControl.Resources>
     <Grid>
-        <ListView ItemsSource="{Binding Tournaments}">
+        <ListView ItemsSource="{Binding Tournaments}" SelectedItem="{Binding SelectedTournament}">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>

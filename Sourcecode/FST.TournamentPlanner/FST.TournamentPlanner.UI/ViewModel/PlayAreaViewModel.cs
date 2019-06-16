@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FST.TournamentPlanner.UI.ViewModel.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,12 @@ namespace FST.TournamentPlanner.UI.ViewModel
 {
     public class PlayAreaViewModel : ViewModelBase<Model.Models.PlayArea>
     {
-        public PlayAreaViewModel(Model.Models.PlayArea playArea) : base(playArea)
+        private Model.Models.Tournament _tournament;
+        public PlayAreaViewModel(Model.Models.Tournament tournament, Model.Models.PlayArea playArea) : base(playArea)
         {
-
+            _tournament = tournament;
+            _name = playArea.Name;
+            Description = playArea.Description;
         }
 
         public int Id
@@ -21,20 +25,49 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
 
+        private string _name;
         public string Name
         {
             get
             {
-                return _model.Name;
+                return _name;
+            }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    try
+                    {
+                        var newModel = new Model.Models.PlayArea(_model.Id, value, Description);
+                        App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.ToString(), newModel);
+                        _name = value;
+                        _model = newModel;
+                    }
+                    catch (Exception e)
+                    {
+                        if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                        {
+                            MessengerInstance.Send(new CommunicationErrorMessage());
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
+                }
+                RaisePropertyChanged(() => Name);
             }
         }
 
-        public string Description
+        public string Description { get; set; }
+        
+        public bool Equals(PlayAreaViewModel obj)
         {
-            get
+            if (obj == null)
             {
-                return _model.Description;
+                return false;
             }
+            return obj._model.Id == _model.Id;
         }
     }
 }

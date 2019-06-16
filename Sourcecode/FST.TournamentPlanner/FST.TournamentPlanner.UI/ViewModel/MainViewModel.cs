@@ -10,16 +10,7 @@ using System.Windows;
 namespace FST.TournamentPlanner.UI.ViewModel
 {
     /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
+    /// ViewModel of the main window
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
@@ -36,7 +27,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
             else
             {
-                Tournaments.Add(new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body));
+                new List<Model.Models.Tournament>(App.RestClient.GetAllWithHttpMessagesAsync().Result.Body).ForEach(t => Tournaments.Add(new TournamentViewModel(t)));
+                //Tournaments.Add(new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body));
                 //OpenedDocuments.Add(Tournaments[0]);
                 //CurrentDocument = Tournaments[0];
             }
@@ -67,7 +59,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        public ObservableCollection<Object> OpenedDocuments { get; } = new ObservableCollection<Object>();
+        public ObservableCollection<object> OpenedDocuments { get; } = new ObservableCollection<Object>();
 
         #region OpenTournamentCommand
         private RelayCommand _openTournamentCommand;
@@ -87,9 +79,9 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        #region CurrentDocument
-        private Object _currentDocument;
-        public Object CurrentDocument
+        #region CurrentDocuments
+        private object _currentDocument;
+        public object CurrentDocument
         {
             get
             {
@@ -108,9 +100,6 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
 
-        #endregion
-
-        #region 
         #endregion
 
         #region NewTournamentCommand
@@ -138,6 +127,48 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     });                    
                 }
                 return _newTournamentCommand;
+            }
+        }
+        #endregion
+
+        #region DeleteTournamentCommand
+        private RelayCommand _deleteTournamentCommand;
+        public RelayCommand DeleteTournamentCommand
+        {
+            get
+            {
+                if (_deleteTournamentCommand == null)
+                {
+                    _deleteTournamentCommand = new RelayCommand(() =>
+                    {
+                        MessengerInstance.Send(new AreYouSureMessage("Turnier löschen", "Das Turnier sowie alle Ergebnisse werden unwiederbringlich gelöscht.\nSind Sie sicher?", () =>
+                        {
+                            //App.RestClient.DeleteTournamet
+                        }));
+                    });
+                }
+                return _deleteTournamentCommand;
+            }
+        }
+        #endregion
+
+        #region SelectedTournament
+        private TournamentViewModel _selectedTournament;
+        public TournamentViewModel SelectedTournament
+        {
+            get
+            {
+                return _selectedTournament;
+            }
+            set
+            {
+                if ((_selectedTournament == null && value == null) || (_selectedTournament != null && value != null && _selectedTournament.TournamentId == value.TournamentId))
+                {
+                    //Nothing changed
+                    return;
+                }
+                _selectedTournament = value;    
+                RaisePropertyChanged(() => SelectedTournament);
             }
         }
         #endregion

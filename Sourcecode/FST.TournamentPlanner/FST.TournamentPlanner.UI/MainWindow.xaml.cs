@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Ribbon;
 using msg = FST.TournamentPlanner.UI.ViewModel.Messages;
+using FST.TournamentPlanner.UI.View;
 
 namespace FST.TournamentPlanner.UI
 {
@@ -28,6 +29,7 @@ namespace FST.TournamentPlanner.UI
         private const string TOURNAMENT_STARTED = "Die Änderung der Turnierstammdaten ist nach Beginn des Turnieres nicht mehr möglich.";
         private const string TEAMCOUNT_MISMATCH = "Die Anzahl der registrierten Teams stimmt nicht mit der Teilnehmeranzahl überein!\nIst: {0}\nSoll: {1}";
         private const string COMMUNICATION_ERROR = "Fehler bei der Kommunikation mit dem Webdienst";
+        private const string MAXIMUM_TEAM_COUNT_REACHED = "Die maximale Anzahl an Teams für dieses Turnier ist erreicht.";
         private const string MATCH_FINISHED = "";
 
         public MainWindow()
@@ -61,10 +63,25 @@ namespace FST.TournamentPlanner.UI
             {
                 tournamentRibbon.IsSelected = true;
             });
+            MessengerInstance.Register<msg.MaximumTeamCountReachedMessage>(this, (m) =>
+            {
+                MessageBox.Show(this, MAXIMUM_TEAM_COUNT_REACHED, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
+            });
 
-
+            MessengerInstance.Register<msg.GenerateWinnerCertificatesMessage>(this, (m) =>
+            {
+                var popup = new WinnerCertificatesView();
+                popup.Show();
+            });
 
             DataContext = new ViewModel.MainViewModel();
+        }
+
+        private void RibbonButton_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = new TournamentMatchTreePopup();
+            popup.DataContext = ((ViewModel.MainViewModel)DataContext).CurrentDocument;
+            popup.Show();
         }
     }
 }
