@@ -433,9 +433,10 @@ namespace FST.TournamentPlanner.API.Services
         /// update a play area
         /// </summary>
         /// <param name="tournamentId"></param>
+        /// <param name="playAreaId"></param>
         /// <param name="playArea"></param>
         /// <returns></returns>
-        public IActionResult UpdatePlayArea(int tournamentId, Models.PlayArea playArea)
+        public IActionResult UpdatePlayArea(int tournamentId, int playAreaId, Models.PlayArea playArea)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
             if (tournament == null)
@@ -449,7 +450,7 @@ namespace FST.TournamentPlanner.API.Services
                 return new BadRequestObjectResult("Tournament allready started of finished");
             }
 
-            DbModels.PlayArea dbPlayArea = _repoWrapper.PlayArea.GetById(playArea.Id);
+            DbModels.PlayArea dbPlayArea = _repoWrapper.PlayArea.GetById(playAreaId);
             if (dbPlayArea == null)
             {
                 return new NotFoundResult();
@@ -471,9 +472,10 @@ namespace FST.TournamentPlanner.API.Services
         /// Update an existing team
         /// </summary>
         /// <param name="tournamentId"></param>
+        /// <param name="teamId"></param>
         /// <param name="team"></param>
         /// <returns></returns>
-        public ActionResult<Team> UpdateTeam(int tournamentId, Team team)
+        public ActionResult<Team> UpdateTeam(int tournamentId, int teamId, Team team)
         {
             DbModels.Tournament tournament = _repoWrapper.Tournament.GetById(tournamentId);
             if (tournament == null)
@@ -487,7 +489,7 @@ namespace FST.TournamentPlanner.API.Services
                 return new BadRequestObjectResult("Tournament allready started of finished");
             }
 
-            DbModels.Team dbTeam = _repoWrapper.Team.GetById(team.Id);
+            DbModels.Team dbTeam = _repoWrapper.Team.GetById(teamId);
             if (dbTeam == null)
             {
                 return new NotFoundResult();
@@ -583,6 +585,9 @@ namespace FST.TournamentPlanner.API.Services
 
             this._repoWrapper.Team.Create(team);
             this._repoWrapper.Team.SaveChanges();
+
+            tournament.Teams.Add(team);
+            this._repoWrapper.Tournament.SaveChanges();
 
             return new ActionResult<Team>(new Team(team));
         }

@@ -12,5 +12,7 @@ namespace FST.TournamentPlanner.DB.Models
     {
         public String Name { get; set; }
 
+        public Tournament Tournament { get; set; }
+
     }
 }
