@@ -32,9 +32,8 @@ namespace FST.TournamentPlanner.UI
 
             Word.Documents wDocs = wApp.Documents;
             object missing = System.Reflection.Missing.Value;
-
-            Word.Document wDoc = wDocs.Open(
-                @"C:\Users\s.stadtler\source\repos\FST01\Sourcecode\FST.TournamentPlanner\FST.TournamentPlanner.UI\WinnerCertificatesTemplate\Urkunde_v2_final.docm",
+            string templatePath = AppDomain.CurrentDomain.BaseDirectory + @"WinnerCertificatesTemplate\Urkunde_v2_final.docm";
+            Word.Document wDoc = wDocs.Open(templatePath,
                 missing,
                 ReadOnly: false,
                 Visible: false,
