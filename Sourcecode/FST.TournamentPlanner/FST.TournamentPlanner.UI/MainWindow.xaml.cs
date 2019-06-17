@@ -71,13 +71,13 @@ namespace FST.TournamentPlanner.UI
 
             MessengerInstance.Register<msg.GenerateWinnerCertificatesMessage>(this, (m) =>
             {
-                XpsDocument doc= WinnerCertificateHelper.Generate(m.FirstPlace, 1, "Tunier1", "Dortmund", "16.06.2019");
+                XpsDocument doc= WinnerCertificateHelper.Generate(m.FirstPlace, 1, m.TournamentName, "... Das haben wir nicht! ....", m.Date.ToString("dd.MM.yyyy"));
 
                 var popup = new WinnerCertificatesView();
                 popup.documentviewWord.Document = doc.GetFixedDocumentSequence();
                 popup.Show();
 
-                XpsDocument doc2 = WinnerCertificateHelper.Generate(m.SecondPlace, 2, "Tunier1", "Dortmund", "16.06.2019");
+                XpsDocument doc2 = WinnerCertificateHelper.Generate(m.SecondPlace, 2, m.TournamentName, "... Das haben wir nicht! ....", m.Date.ToString("dd.MM.yyyy"));
                 var popup2 = new WinnerCertificatesView();
                 popup2.documentviewWord.Document = doc2.GetFixedDocumentSequence();
                 popup2.Show();
