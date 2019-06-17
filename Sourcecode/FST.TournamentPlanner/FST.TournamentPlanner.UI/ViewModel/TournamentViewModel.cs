@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Device.Location;
+using System.Globalization;
+using FST.TournamentPlanner.UI.ViewModel.Models;
+using System.Net.Http;
 
 namespace FST.TournamentPlanner.UI.ViewModel
 {
@@ -29,6 +31,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
         /// </summary>
         public const int STATE_FINISHED = 2;
 
+        private GeoCoordinateWatcher _watcher;
+        private double _latitude;
+        private double _longitude;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -41,6 +47,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
             _maximumMatchDururationInMinutes = tournament.MatchDuration ?? 30;
             _teamCount = _model.TeamCount ?? 16;
 
+            _watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+            _watcher.PositionChanged += this.Watcher_PositionChanged;
+            _watcher.StatusChanged += this.Watcher_StatusChanged;
+            _watcher.Start();
         }
 
         #region Teams
@@ -237,7 +247,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 else
                 {
-                   _teamCount = value;
+                    _teamCount = value;
                 }
                 RaisePropertyChanged(() => TeamCount);
                 RaisePropertyChanged(() => HasChanges);
@@ -261,7 +271,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
 
         #endregion
-        
+
         #region PlayAreas
         private ObservableCollection<PlayAreaViewModel> _playAreas = new ObservableCollection<PlayAreaViewModel>();
         /// <summary>
@@ -291,7 +301,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 if (_model.FinalMatch == null)
                 {
                     return new List<MatchViewModel>();
-                }                
+                }
                 return new List<MatchViewModel>() { ViewModelLocator.Instance.GetMatchViewModel(_model, _model.FinalMatch, null) };
             }
         }
@@ -314,14 +324,14 @@ namespace FST.TournamentPlanner.UI.ViewModel
         private void MatchesRecursion(ObservableCollection<MatchViewModel> result, MatchViewModel match)
         {
             result.Add(match);
-            match.Predecessors.ForEach(p => MatchesRecursion(result, p));            
+            match.Predecessors.ForEach(p => MatchesRecursion(result, p));
         }
         #endregion
 
         #region Avalon Dock Stuff
 
         public string Title => Name;
-        
+
 
         #region CanClose
         public bool CanClose
@@ -383,7 +393,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
-        
+
         #region TournamentEditable
         public bool TournamentEditable
         {
@@ -566,7 +576,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     _addPlayAreaCommand = new RelayCommand(() =>
                     {
                         try
-                        { 
+                        {
                             Model.Models.PlayArea playArea = App.RestClient.AddPlayAreaWithHttpMessagesAsync(_model.Id.Value, "Neues Spielfeld", "Beschreibung hier einfügen").Result.Body;
                             var playAreaViewModel = ViewModelLocator.Instance.GetPlayAreaViewModel(_model, playArea);
                             PlayAreas.Add(playAreaViewModel);
@@ -640,7 +650,18 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     _winnerCertificatesCommand = new RelayCommand(() =>
                     {
                         //TODO: echte namen aus dem final-match übergeben
-                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage("fuck", "you"));
+
+                        var finalMatch = this.FinalMatch.FirstOrDefault();
+                        string winner = string.Empty;
+                        string looser = string.Empty;
+
+                        if (finalMatch != null && finalMatch.Winner != null && finalMatch.Looser != null)
+                        {
+                            winner = finalMatch.Winner.Name;
+                            looser = finalMatch.Looser.Name;
+                        }
+
+                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage(winner, looser, this.Name, GetStreetAddressForCoordinates(), DateTime.Now));
                     },
                     //TODO richtiger bedingung setzen...
                     true);
@@ -648,6 +669,47 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 return _winnerCertificatesCommand;
             }
+        }
+
+        private void Watcher_StatusChanged(object sender, GeoPositionStatusChangedEventArgs e)
+        {
+            GeoCoordinate coordinate = _watcher.Position.Location;
+            if (!coordinate.IsUnknown)
+            {
+                _latitude = coordinate.Latitude;
+                _longitude = coordinate.Longitude;
+            }
+        }
+
+        private void Watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            GeoCoordinate coordinate = _watcher.Position.Location;
+            if (!coordinate.IsUnknown)
+            {
+                _latitude = coordinate.Latitude;
+                _longitude = coordinate.Longitude;
+            }
+        }
+
+
+        private string GetStreetAddressForCoordinates()
+        {
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("http://nominatim.openstreetmap.org");
+            httpClient.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            httpClient.DefaultRequestHeaders.Add("Referer", "http://www.microsoft.com");
+
+            HttpResponseMessage httpResult = httpClient.GetAsync(String.Format("reverse?format=json&lat={0}&lon={1}", _latitude.ToString("G", CultureInfo.InvariantCulture), _longitude.ToString("G", CultureInfo.InvariantCulture))).Result;
+
+            string jsonData = httpResult.Content.ReadAsStringAsync().Result;
+
+            LocationObject rootObject = Newtonsoft.Json.JsonConvert.DeserializeObject<LocationObject>(jsonData);
+            if (rootObject.address.city != null)
+            {
+                return rootObject.address.city;
+            }
+
+            return rootObject.address.village;
         }
         #endregion
     }

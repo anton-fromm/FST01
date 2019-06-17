@@ -152,6 +152,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.1\lib\netstandard2.0\System.Memory.dll</HintPath>
@@ -248,6 +249,7 @@
     <Compile Include="ViewModel\Messages\TeamCountInvalidMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountMismatchMessage.cs" />
     <Compile Include="ViewModel\Messages\TournamentAllreadyStarted.cs" />
+    <Compile Include="ViewModel\Models\LocationObject.cs" />
     <Compile Include="View\Converter\TournamentStateToTextConverter.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="TournamentMode.cs" />
