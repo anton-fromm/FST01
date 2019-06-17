@@ -106,11 +106,12 @@
             <param name="playAreaId"></param>
             <returns></returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdatePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdatePlayArea(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
             <summary>
             update play area
             </summary>
             <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
             <param name="playArea"></param>
             <returns></returns>
         </member>
@@ -138,11 +139,12 @@
             <param name="teamId">Id of the team</param>
             <returns></returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTeam(System.Int32,FST.TournamentPlanner.API.Models.Team)">
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTeam(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.Team)">
             <summary>
             Update an existing team
             </summary>
-            <param name="tournamentId"></param>
+            <param name="tournamentId"></param>        
+            <param name="teamId">Id of the team</param>
             <param name="team"></param>
             <returns></returns>
         </member>
@@ -397,19 +399,21 @@
             <param name="playAreaId"></param>
             <returns></returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdatePlayArea(System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdatePlayArea(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
             <summary>
             update a play area
             </summary>
             <param name="tournamentId"></param>
+            <param name="playAreaId"></param>
             <param name="playArea"></param>
             <returns></returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdateTeam(System.Int32,FST.TournamentPlanner.API.Models.Team)">
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdateTeam(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.Team)">
             <summary>
             Update an existing team
             </summary>
             <param name="tournamentId"></param>
+            <param name="teamId"></param>
             <param name="team"></param>
             <returns></returns>
         </member>
