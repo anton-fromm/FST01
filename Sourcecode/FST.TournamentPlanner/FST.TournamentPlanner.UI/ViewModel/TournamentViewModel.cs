@@ -640,7 +640,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     _winnerCertificatesCommand = new RelayCommand(() =>
                     {
                         //TODO: echte namen aus dem final-match übergeben
-                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage(Name, StartDate, "fuck", "you"));
+                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage("fuck", "you"));
                     },
                     //TODO richtiger bedingung setzen...
                     true);
