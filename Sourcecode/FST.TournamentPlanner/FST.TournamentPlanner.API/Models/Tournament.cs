@@ -14,56 +14,48 @@ namespace FST.TournamentPlanner.API.Models
     [Serializable]
     public class Tournament
     {
-        db.Tournament _tournament;
+        private db.Tournament _tournament;
+
         internal Tournament(db.Tournament tournament)
         {
             _tournament = tournament;
+            Id = tournament.Id;
+            Description = tournament.Description;
+            Name = tournament.Name;
+            StartTime = tournament.Start;
+            MatchDuration = tournament.MatchDuration;
+            TeamCount = tournament.TeamCount;
         }
 
         #region Master data stuff
         /// <summary>
         /// Id of the tournament
         /// </summary>
-        public int Id => _tournament.Id;
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the tournament
         /// </summary>
-        public string Name
-        {
-            get => _tournament.Name;
-            set => _tournament.Name = value;
-        }
+        public string Name { get; set; }
+        
         /// <summary>
         /// Description of the tournament
         /// </summary>
-        public string Description
-        {
-            get => _tournament.Description;
-            set => _tournament.Description = value;
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// Start day and time of the tournament
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public DateTime StartTime
-        {
-            get => _tournament.Start;
-            set => _tournament.Start = value;
-        }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// Duration a single match within the tournament
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public int MatchDuration
-        {
-            get => _tournament.MatchDuration;
-            set => _tournament.MatchDuration = value;
-        }
+        public int MatchDuration { get; set; }
 
         /// <summary>
         /// Number of teams in the tournament.
@@ -71,11 +63,7 @@ namespace FST.TournamentPlanner.API.Models
         /// 
         /// Only valid while the tournament is in Created-State<see cref="TournamentState"/>
         /// </summary>
-        public int TeamCount
-        {
-            get => _tournament.TeamCount;
-            set => _tournament.TeamCount = value;
-        }
+        public int TeamCount { get; set; }
         #endregion
 
         #region Tournament state

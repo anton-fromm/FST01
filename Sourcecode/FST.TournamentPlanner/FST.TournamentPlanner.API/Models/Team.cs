@@ -13,25 +13,20 @@ namespace FST.TournamentPlanner.API.Models
     [DebuggerDisplay("{Id} - {Name}")]
     public class Team
     {
-        private db.Team _team;
-
         internal Team(db.Team team)
         {
-            _team = team;
+            Id = team.Id;
+            Name = team.Name;
         }
 
         /// <summary>
         /// Id of the team
         /// </summary>
-        public int Id => _team.Id;
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the team
         /// </summary>
-        public string Name
-        {
-            get => _team.Name;
-            set => _team.Name = value;
-        }
+        public string Name { get; set; }
     }
 }

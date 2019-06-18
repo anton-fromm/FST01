@@ -20,8 +20,11 @@ namespace FST.TournamentPlanner.API.Services
         IActionResult RemovePlayArea(int tournamentId, int playAreaId);
         IActionResult UpdatePlayArea(int tournamentId, int playAreaId1, Models.PlayArea playAreaId);
         ActionResult<Team> UpdateTeam(int tournamentId, int teamId, Team team);
+        ActionResult<Tournament> AddTournament(Tournament tournament);
         ActionResult RemoveTeam(int tournamentId, int teamId);
         ActionResult<Team> GetTeam(int tournamentId, int teamId);
         ActionResult<Team> AddTeam(int tournamentId, string name);
+        IActionResult RemoveTournament(int tournamentId);
+        IActionResult UpdateTournament(int tournamentId, Tournament tournament);
     }
 }
