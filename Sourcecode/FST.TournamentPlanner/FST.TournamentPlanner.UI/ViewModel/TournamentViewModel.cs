@@ -8,6 +8,7 @@ using System.Device.Location;
 using System.Globalization;
 using FST.TournamentPlanner.UI.ViewModel.Models;
 using System.Net.Http;
+using msg = FST.TournamentPlanner.UI.ViewModel.Messages;
 
 namespace FST.TournamentPlanner.UI.ViewModel
 {
@@ -51,6 +52,16 @@ namespace FST.TournamentPlanner.UI.ViewModel
             _watcher.PositionChanged += this.Watcher_PositionChanged;
             _watcher.StatusChanged += this.Watcher_StatusChanged;
             _watcher.Start();
+
+            MessengerInstance.Register<msg.MatchFinishedMessage>(this, (m) =>
+            {
+                if (Matches.Contains(m.Match) && m.Match.Successor == null)
+                {
+                    // Final match of this tournament is finished => finish the tournament
+                    Finish();
+                }
+            });
+
         }
 
         #region Teams
@@ -61,7 +72,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (_teams == null)
                 {
-                    _teams = new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(t)));
+                    _teams = new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(_model, t)));
                 }
                 return _teams;
             }
@@ -426,21 +437,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        #region EndTournamentCommand
-        private RelayCommand _endTournamentCommand;
-        public RelayCommand EndTournamentCommand
+        #region Finish()
+        private void Finish()
         {
-            get
-            {
-                if (_endTournamentCommand == null)
-                {
-                    _endTournamentCommand = new RelayCommand(() =>
-                    {
 
-                    }, () => State == STATE_STARTED);
-                }
-                return _endTournamentCommand;
-            }
         }
         #endregion
 
@@ -499,7 +499,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                             try
                             {
                                 var teamModel = App.RestClient.AddTeamWithHttpMessagesAsync(_model.Id.Value, "Neues Team").Result.Body;
-                                var teamViewModel = ViewModelLocator.Instance.GetTeamViewModel(teamModel);
+                                var teamViewModel = ViewModelLocator.Instance.GetTeamViewModel(_model, teamModel);
                                 Teams.Add(teamViewModel);
                                 SelectedTeam = teamViewModel;
                             }

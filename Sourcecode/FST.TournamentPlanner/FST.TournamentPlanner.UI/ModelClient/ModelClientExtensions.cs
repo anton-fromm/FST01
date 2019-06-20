@@ -18,97 +18,6 @@ namespace FST.TournamentPlanner.UI.Model
     public static partial class ModelClientExtensions
     {
             /// <summary>
-            /// Create a new tournament
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            public static Tournament NewTournament(this IModelClient operations)
-            {
-                return Task.Factory.StartNew(s => ((IModelClient)s).NewTournamentAsync(), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Create a new tournament
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<Tournament> NewTournamentAsync(this IModelClient operations, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.NewTournamentWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Get the tournament by its Id
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the tournament
-            /// </param>
-            public static Tournament Get(this IModelClient operations, int id)
-            {
-                return Task.Factory.StartNew(s => ((IModelClient)s).GetAsync(id), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get the tournament by its Id
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// Id of the tournament
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task<Tournament> GetAsync(this IModelClient operations, int id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                using (var _result = await operations.GetWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Delete the given tournament by its Id
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// </param>
-            public static void DeleteTournament(this IModelClient operations, int id)
-            {
-                Task.Factory.StartNew(s => ((IModelClient)s).DeleteTournamentAsync(id), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Delete the given tournament by its Id
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task DeleteTournamentAsync(this IModelClient operations, int id, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                await operations.DeleteTournamentWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false);
-            }
-
-            /// <summary>
             /// Get the list of all tournaments
             /// </summary>
             /// <param name='operations'>
@@ -137,17 +46,69 @@ namespace FST.TournamentPlanner.UI.Model
             }
 
             /// <summary>
-            /// Update the tournament´s master data
+            /// Create a new tournament
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='tournament'>
-            /// tournament to update
             /// </param>
-            public static Tournament UpdateTournament(this IModelClient operations, Tournament tournament = default(Tournament))
+            public static Tournament NewTournament(this IModelClient operations, Tournament tournament = default(Tournament))
             {
-                return Task.Factory.StartNew(s => ((IModelClient)s).UpdateTournamentAsync(tournament), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return Task.Factory.StartNew(s => ((IModelClient)s).NewTournamentAsync(tournament), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create a new tournament
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournament'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Tournament> NewTournamentAsync(this IModelClient operations, Tournament tournament = default(Tournament), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.NewTournamentWithHttpMessagesAsync(tournament, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Get the tournament by its Id
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// Id of the tournament
+            /// </param>
+            public static Tournament Get(this IModelClient operations, int tournamentId)
+            {
+                return Task.Factory.StartNew(s => ((IModelClient)s).GetAsync(tournamentId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get the tournament by its Id
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// Id of the tournament
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<Tournament> GetAsync(this IModelClient operations, int tournamentId, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.GetWithHttpMessagesAsync(tournamentId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>
@@ -156,18 +117,62 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
+            /// <param name='tournament'>
+            /// tournament to update
+            /// </param>
+            public static void UpdateTournament(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament))
+            {
+                Task.Factory.StartNew(s => ((IModelClient)s).UpdateTournamentAsync(tournamentId, tournament), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Update the tournament´s master data
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
             /// <param name='tournament'>
             /// tournament to update
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Tournament> UpdateTournamentAsync(this IModelClient operations, Tournament tournament = default(Tournament), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task UpdateTournamentAsync(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateTournamentWithHttpMessagesAsync(tournament, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                await operations.UpdateTournamentWithHttpMessagesAsync(tournamentId, tournament, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <summary>
+            /// Delete the given tournament by its Id
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
+            public static void DeleteTournament(this IModelClient operations, int tournamentId)
+            {
+                Task.Factory.StartNew(s => ((IModelClient)s).DeleteTournamentAsync(tournamentId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete the given tournament by its Id
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='tournamentId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task DeleteTournamentAsync(this IModelClient operations, int tournamentId, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                await operations.DeleteTournamentWithHttpMessagesAsync(tournamentId, null, cancellationToken).ConfigureAwait(false);
             }
 
             /// <summary>
