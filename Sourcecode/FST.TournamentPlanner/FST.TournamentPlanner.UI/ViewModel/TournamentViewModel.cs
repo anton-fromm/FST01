@@ -70,11 +70,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         #region MasterData
 
-        #region TournamentId
+        #region Id
         /// <summary>
         /// Id of the tournament
         /// </summary>
-        public Int32 TournamentId
+        public Int32 Id
         {
             get
             {
@@ -639,36 +639,40 @@ namespace FST.TournamentPlanner.UI.ViewModel
         }
         #endregion
 
-        #region WinnerCertificatesCommand
-        private RelayCommand _winnerCertificatesCommand;
-        public RelayCommand WinnerCertificatesCommand
+        #region GenerateWinnerCertificatesCommand
+        private RelayCommand _generateWinnerCertificatesCommand;
+        public RelayCommand GenerateWinnerCertificatesCommand
         {
             get
             {
-                if (_winnerCertificatesCommand == null)
+                if (_generateWinnerCertificatesCommand == null)
                 {
-                    _winnerCertificatesCommand = new RelayCommand(() =>
+                    _generateWinnerCertificatesCommand = new RelayCommand(() =>
                     {
-                        //TODO: echte namen aus dem final-match übergeben
-
-                        var finalMatch = this.FinalMatch.FirstOrDefault();
-                        string winner = string.Empty;
-                        string looser = string.Empty;
-
-                        if (finalMatch != null && finalMatch.Winner != null && finalMatch.Looser != null)
-                        {
-                            winner = finalMatch.Winner.Name;
-                            looser = finalMatch.Looser.Name;
-                        }
-
-                        MessengerInstance.Send(new GenerateWinnerCertificatesMessage(winner, looser, this.Name, GetStreetAddressForCoordinates(), DateTime.Now));
+                        GenerateWinnerCertificates();
                     },
                     //TODO richtiger bedingung setzen...
                     true);
                     //() => State == STATE_FINISHED);
                 }
-                return _winnerCertificatesCommand;
+                return _generateWinnerCertificatesCommand;
             }
+        }
+        private void GenerateWinnerCertificates()
+        {
+            //TODO: echte namen aus dem final-match übergeben
+
+            var finalMatch = this.FinalMatch.FirstOrDefault();
+            string winner = string.Empty;
+            string looser = string.Empty;
+
+            if (finalMatch != null && finalMatch.Winner != null && finalMatch.Looser != null)
+            {
+                winner = finalMatch.Winner.Name;
+                looser = finalMatch.Looser.Name;
+            }
+
+            MessengerInstance.Send(new GenerateWinnerCertificatesMessage(winner, looser, this.Name, GetStreetAddressForCoordinates(), DateTime.Now));
         }
 
         private void Watcher_StatusChanged(object sender, GeoPositionStatusChangedEventArgs e)
@@ -690,8 +694,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 _longitude = coordinate.Longitude;
             }
         }
-
-
+        
         private string GetStreetAddressForCoordinates()
         {
             HttpClient httpClient = new HttpClient();

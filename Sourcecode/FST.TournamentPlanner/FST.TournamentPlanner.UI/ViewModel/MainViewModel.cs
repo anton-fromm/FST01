@@ -162,7 +162,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
             set
             {
-                if ((_selectedTournament == null && value == null) || (_selectedTournament != null && value != null && _selectedTournament.TournamentId == value.TournamentId))
+                if ((_selectedTournament == null && value == null) || (_selectedTournament != null && value != null && _selectedTournament.Id == value.Id))
                 {
                     //Nothing changed
                     return;

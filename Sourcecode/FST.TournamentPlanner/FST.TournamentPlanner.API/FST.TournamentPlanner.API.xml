@@ -15,7 +15,7 @@
             </summary>
             <param name="service"></param>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.NewTournament">
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.NewTournament(FST.TournamentPlanner.API.Models.Tournament)">
             <summary>
             Create a new tournament
             </summary>
@@ -25,14 +25,14 @@
             <summary>
             Get the tournament by its Id
             </summary>
-            <param name="id">Id of the tournament</param>
+            <param name="tournamentId">Id of the tournament</param>
             <returns>tournament object</returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.DeleteTournament(System.Int32)">
             <summary>
             Delete the given tournament by its Id
             </summary>
-            <param name="id"></param>
+            <param name="tournamentId"></param>
             <returns></returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.GetAll">
@@ -41,11 +41,12 @@
             </summary>
             <returns>tournaments</returns>
         </member>
-        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTournament(FST.TournamentPlanner.API.Models.Tournament)">
+        <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.UpdateTournament(System.Int32,FST.TournamentPlanner.API.Models.Tournament)">
             <summary>
             Update the tournament´s master data
             </summary>
             <param name="tournament">tournament to update</param>
+            <param name="tournamentId"></param>
             <returns>updated tournament</returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Controllers.TournamentController.SetScoreOnMatch(System.Int32,System.Int32,System.Int32)">
@@ -330,6 +331,41 @@
             ctor
             </summary>
             <param name="repoWrapper"></param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.Get(System.Int32)">
+            <summary>
+            Get a specific tournament
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GetAll">
+            <summary>
+            Get all tournaments
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.AddTournament(FST.TournamentPlanner.API.Models.Tournament)">
+            <summary>
+            Add a new tournament
+            </summary>
+            <param name="tournament"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemoveTournament(System.Int32)">
+            <summary>
+            remove a tournament
+            </summary>
+            <param name="tournamentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.UpdateTournament(System.Int32,FST.TournamentPlanner.API.Models.Tournament)">
+            <summary>
+            Update Tournament
+            </summary>
+            <param name="tournamentId"></param>
+            <param name="tournament"></param>
+            <returns></returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.Start(System.Int32)">
             <summary>

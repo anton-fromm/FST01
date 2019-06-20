@@ -39,7 +39,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     try
                     {
                         var newModel = new Model.Models.PlayArea(_model.Id, value, Description);
-                        App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.ToString(), newModel);
+                        App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
                         _name = value;
                         _model = newModel;
                     }
