@@ -133,7 +133,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return ViewModelLocator.Instance.GetTeamViewModel(_model.TeamOne);
+                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, _model.TeamOne);
             }
         }
 
@@ -145,7 +145,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return ViewModelLocator.Instance.GetTeamViewModel(_model.TeamTwo);
+                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, _model.TeamTwo);
             }
         }
 

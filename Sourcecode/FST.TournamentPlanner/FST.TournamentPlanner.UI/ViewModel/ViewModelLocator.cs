@@ -53,9 +53,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
             return tournamentViewModel;
         }
         #endregion
+
         #region GetTeamViewModel
         private Dictionary<int, TeamViewModel> _teams = new Dictionary<int, TeamViewModel>();
-        internal TeamViewModel GetTeamViewModel(Model.Models.Team team)
+        internal TeamViewModel GetTeamViewModel(Model.Models.Tournament tournament, Model.Models.Team team)
         {
             if (team == null)
             {
@@ -64,7 +65,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             TeamViewModel teamViewModel;
             if (!_teams.TryGetValue(team.Id.Value, out teamViewModel))
             {
-                teamViewModel = new TeamViewModel(team);
+                teamViewModel = new TeamViewModel(tournament, team);
                 _teams.Add(team.Id.Value, teamViewModel);
             }
             return teamViewModel;

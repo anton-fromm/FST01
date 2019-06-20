@@ -35,7 +35,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Id of the play area
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public int? Id { get; private set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// Name of the play area

@@ -42,7 +42,7 @@ namespace FST.TournamentPlanner.UI.Model.Models
         /// Id of this match
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public int? Id { get; private set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// First Team in this match

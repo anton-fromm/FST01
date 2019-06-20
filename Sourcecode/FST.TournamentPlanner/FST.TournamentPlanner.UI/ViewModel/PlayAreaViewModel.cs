@@ -14,9 +14,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             _tournament = tournament;
             _name = playArea.Name;
-            Description = playArea.Description;
+            _description = playArea.Description;
         }
 
+        #region Id
         public int Id
         {
             get
@@ -24,7 +25,9 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 return _model.Id.Value;
             }
         }
+        #endregion
 
+        #region Name
         private string _name;
         public string Name
         {
@@ -58,9 +61,44 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 RaisePropertyChanged(() => Name);
             }
         }
+        #endregion
 
-        public string Description { get; set; }
-        
+        #region Description
+        private string _description;
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    try
+                    {
+                        var newModel = new Model.Models.PlayArea(_model.Id, Name, _description);
+                        App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
+                        _description = value;
+                        _model = newModel;
+                    }
+                    catch (Exception e)
+                    {
+                        if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                        {
+                            MessengerInstance.Send(new CommunicationErrorMessage());
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
+                }
+                RaisePropertyChanged(() => Description);
+            }
+        }
+        #endregion
+
         public bool Equals(PlayAreaViewModel obj)
         {
             if (obj == null)

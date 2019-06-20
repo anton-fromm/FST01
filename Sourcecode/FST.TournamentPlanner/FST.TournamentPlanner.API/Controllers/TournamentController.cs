@@ -252,7 +252,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="teamId">Id of the team</param>
         /// <param name="team"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/Team/Update")]
+        [HttpPost("{tournamentId}/Team/Update/{teamId}")]
         public ActionResult<Models.Team> UpdateTeam(int tournamentId, int teamId, Models.Team team)
         {
             return this._service.UpdateTeam(tournamentId, teamId, team);

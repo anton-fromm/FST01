@@ -40,44 +40,6 @@ namespace FST.TournamentPlanner.UI.Model
 
 
             /// <summary>
-        /// Create a new tournament
-        /// </summary>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<Tournament>> NewTournamentWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Get the tournament by its Id
-        /// </summary>
-        /// <param name='id'>
-        /// Id of the tournament
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse<Tournament>> GetWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Delete the given tournament by its Id
-        /// </summary>
-        /// <param name='id'>
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        Task<HttpOperationResponse> DeleteTournamentWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
         /// Get the list of all tournaments
         /// </summary>
         /// <param name='customHeaders'>
@@ -89,8 +51,37 @@ namespace FST.TournamentPlanner.UI.Model
         Task<HttpOperationResponse<IList<Tournament>>> GetAllWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Create a new tournament
+        /// </summary>
+        /// <param name='tournament'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Tournament>> NewTournamentWithHttpMessagesAsync(Tournament tournament = default(Tournament), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Get the tournament by its Id
+        /// </summary>
+        /// <param name='tournamentId'>
+        /// Id of the tournament
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<Tournament>> GetWithHttpMessagesAsync(int tournamentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Update the tournament´s master data
         /// </summary>
+        /// <param name='tournamentId'>
+        /// </param>
         /// <param name='tournament'>
         /// tournament to update
         /// </param>
@@ -100,7 +91,20 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<Tournament>> UpdateTournamentWithHttpMessagesAsync(Tournament tournament = default(Tournament), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> UpdateTournamentWithHttpMessagesAsync(int tournamentId, Tournament tournament = default(Tournament), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Delete the given tournament by its Id
+        /// </summary>
+        /// <param name='tournamentId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> DeleteTournamentWithHttpMessagesAsync(int tournamentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Set the score for a match. This call is only valid if the match is
