@@ -237,6 +237,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             }
         }
         #endregion
+
         #region State
         public int State
         {
@@ -297,34 +298,38 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     _finishCommand = new RelayCommand(() =>
                     {
-                   
-                        MessengerInstance.Send(
-                            new AreYouSureMessage(
-                                "Spiel abschließen", 
-                                "Änderungen an dem Ergebnis sind nach Abschluss nicht mehr möglich.\nSind Sie sicher, dass Sie das Spiel beenden wollen?",
-                                async () =>
-                                {                                    
-                                    try
-                                    {
-                                        CurrentlyFinishing = true;
-                                        var res = await App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
-                                        _model = res.Body;
-                                        UpdateValuesFromModel();
-                                        // Inform successor about finished prematch
-                                        MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
-                                        CurrentlyFinishing = false;
-                                    }
-                                    catch (Microsoft.Rest.HttpOperationException)
-                                    {
-                                        MessengerInstance.Send(new CommunicationErrorMessage());
-                                        CurrentlyFinishing = false;
-                                    }
-                                }));                        
+                        Finish();
                     },
                     () => ScoreIsEditable);
                 }
                 return _finishCommand;
             }
+        }
+
+        private void Finish()
+        {
+            MessengerInstance.Send(
+                new AreYouSureMessage(
+                    "Spiel abschließen",
+                    "Änderungen an dem Ergebnis sind nach Abschluss nicht mehr möglich.\nSind Sie sicher, dass Sie das Spiel beenden wollen?",
+                    async () =>
+                    {
+                        try
+                        {
+                            CurrentlyFinishing = true;
+                            var res = await App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
+                            _model = res.Body;
+                            UpdateValuesFromModel();
+                            // Inform successor about finished prematch
+                            MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
+                            CurrentlyFinishing = false;
+                        }
+                        catch (Microsoft.Rest.HttpOperationException)
+                        {
+                            MessengerInstance.Send(new CommunicationErrorMessage());
+                            CurrentlyFinishing = false;
+                        }
+                    }));
         }
         #endregion
     }
