@@ -13,6 +13,8 @@ namespace FST.TournamentPlanner.API.Models
     [DebuggerDisplay("{Id} - {Name}")]
     public class Team
     {
+        internal Team() { }
+
         internal Team(db.Team team)
         {
             Id = team.Id;

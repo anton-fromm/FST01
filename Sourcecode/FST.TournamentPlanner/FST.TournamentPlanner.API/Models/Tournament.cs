@@ -16,6 +16,9 @@ namespace FST.TournamentPlanner.API.Models
     {
         private db.Tournament _tournament;
 
+        internal Tournament() { }
+
+
         internal Tournament(db.Tournament tournament)
         {
             _tournament = tournament;

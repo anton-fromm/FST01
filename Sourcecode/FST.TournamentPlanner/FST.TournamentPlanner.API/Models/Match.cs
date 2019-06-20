@@ -13,6 +13,8 @@ namespace FST.TournamentPlanner.API.Models
         private DB.Models.Match _match;
         private Tournament _tournament;
 
+        internal Match() { }
+
         internal Match(Tournament tournament, DB.Models.Match match)
         {
             _match = match;
