@@ -12,35 +12,30 @@ namespace FST.TournamentPlanner.API.Models
     [DebuggerDisplay("{Name} ({Description})")]
     public class PlayArea
     {
-        private DB.Models.PlayArea  _playarea;
+        /// <summary>
+        /// empty c'tor for API Model mapping
+        /// </summary>
+        internal PlayArea() { }
+
         internal PlayArea(DB.Models.PlayArea playarea)
         {
-            _playarea = playarea;
+            Name = playarea.Name;
+            Description = playarea.Description;
+            Id = playarea.Id;
         }
         /// <summary>
         /// Id of the play area
         /// </summary>
-        public int Id
-        {
-            get => _playarea.Id;
-        }
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the play area
         /// </summary>
-        public string Name
-        {
-            get => _playarea.Name;
-            set => _playarea.Name = value;
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Description of the play area
         /// </summary>
-        public string Description
-        {
-            get => _playarea.Description;
-            set => _playarea.Description = value;
-        }
+        public string Description { get; set; }
     }
 }

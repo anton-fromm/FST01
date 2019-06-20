@@ -16,13 +16,14 @@ namespace FST.TournamentPlanner.API.Models
         internal Match(Tournament tournament, DB.Models.Match match)
         {
             _match = match;
+            Id = match.Id;
             _tournament = tournament;
         }
 
         /// <summary>
         /// Id of this match
         /// </summary>
-        public int Id => _match.Id;
+        public int Id { get; set; }
 
         /// <summary>
         /// First Team in this match

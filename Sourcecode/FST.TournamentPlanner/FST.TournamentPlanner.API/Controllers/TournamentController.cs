@@ -30,37 +30,37 @@ namespace FST.TournamentPlanner.API.Controllers
         /// Create a new tournament
         /// </summary>
         /// <returns></returns>
-        [HttpGet("New")]
-        public Task<ActionResult<Models.Tournament>> NewTournament()
+        [HttpPost]
+        public ActionResult<Models.Tournament> NewTournament(Models.Tournament tournament)
         {
-            return null;
+            return this._service.AddTournament(tournament);
         }
 
         /// <summary>
         /// Get the tournament by its Id
         /// </summary>
-        /// <param name="id">Id of the tournament</param>
+        /// <param name="tournamentId">Id of the tournament</param>
         /// <returns>tournament object</returns>
-        [HttpGet("{id}")]
-        public Models.Tournament Get(int id)
+        [HttpGet("{tournamentId}")]
+        public Models.Tournament Get(int tournamentId)
         {
-            Models.Tournament x = this._service.Get(id);
-            if (x == null)
+            Models.Tournament tournament = this._service.Get(tournamentId);
+            if (tournament == null)
             {
                 return null;
             }
-            return x;
+            return tournament;
         }
 
         /// <summary>
         /// Delete the given tournament by its Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="tournamentId"></param>
         /// <returns></returns>
-        [HttpGet("Delete/{id}")]
-        public IActionResult DeleteTournament(int id)
+        [HttpDelete("{tournamentId}/Remove")]
+        public IActionResult DeleteTournament(int tournamentId)
         {
-            return null;
+            return this._service.RemoveTournament(tournamentId);
         }
 
         /// <summary>
@@ -77,11 +77,12 @@ namespace FST.TournamentPlanner.API.Controllers
         /// Update the tournament´s master data
         /// </summary>
         /// <param name="tournament">tournament to update</param>
+        /// <param name="tournamentId"></param>
         /// <returns>updated tournament</returns>
-        [HttpPost("Update")]
-        public Task<ActionResult<Models.Tournament>> UpdateTournament(Models.Tournament tournament)
+        [HttpPost("{tournamentId}")]
+        public IActionResult UpdateTournament(int tournamentId, Models.Tournament tournament)
         {
-            return null;
+            return this._service.UpdateTournament(tournamentId, tournament);
         }
         #endregion
 
@@ -134,7 +135,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId"></param>
         /// <param name="matchId"></param>
         /// <returns></returns>
-        [HttpPost("Match/{matchId}")]
+        [HttpGet("Match/{matchId}")]
         public ActionResult<Models.Match> GetMatch(int tournamentId, int matchId)
         {
             return _service.GetMatch(tournamentId, matchId);
@@ -226,7 +227,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId"></param>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/Team/{teamId}")]
+        [HttpGet("{tournamentId}/Team/{teamId}")]
         public ActionResult<Models.Team> GetTeam(int tournamentId, int teamId)
         {
             return this._service.GetTeam(tournamentId, teamId);

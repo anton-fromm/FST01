@@ -223,6 +223,11 @@
             Class representing a play area
             </summary>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Models.PlayArea.#ctor">
+            <summary>
+            empty c'tor for API Model mapping
+            </summary>
+        </member>
         <member name="P:FST.TournamentPlanner.API.Models.PlayArea.Id">
             <summary>
             Id of the play area
