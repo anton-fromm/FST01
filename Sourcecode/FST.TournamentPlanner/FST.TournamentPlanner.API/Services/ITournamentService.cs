@@ -43,7 +43,7 @@ namespace FST.TournamentPlanner.API.Services
         /// </summary>
         /// <param name="tournamentId">The tournament identifier.</param>
         /// <returns></returns>
-        IActionResult Start(int tournamentId);
+        ActionResult<Tournament> Start(int tournamentId);
 
         /// <summary>
         /// Gets the match.

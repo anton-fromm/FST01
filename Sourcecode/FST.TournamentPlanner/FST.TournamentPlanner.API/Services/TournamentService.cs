@@ -32,7 +32,7 @@ namespace FST.TournamentPlanner.API.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Tournament Get(int id)
+        public ActionResult<Tournament> Get(int id)
         {
             DB.Models.Tournament tournament = this._repoWrapper.Tournament.GetById(id);
             if (tournament == null)
@@ -153,7 +153,7 @@ namespace FST.TournamentPlanner.API.Services
         /// </summary>
         /// <param name="tournamentId"></param>
         /// <returns></returns>
-        public IActionResult Start(int tournamentId)
+        public ActionResult<Tournament> Start(int tournamentId)
         {
             DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
             if (tournament == null)
@@ -171,7 +171,7 @@ namespace FST.TournamentPlanner.API.Services
             this._repoWrapper.PlayAreaBooking.SaveChanges();
             this._repoWrapper.Match.SaveChanges();
 
-            return new OkResult();
+            return this.Get(tournamentId);
         }
 
         /// <summary>
