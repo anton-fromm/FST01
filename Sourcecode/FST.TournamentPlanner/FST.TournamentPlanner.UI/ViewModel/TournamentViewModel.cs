@@ -41,12 +41,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
         /// </summary>
         public TournamentViewModel(Model.Models.Tournament tournament) : base(tournament)
         {
-            tournament.PlayAreas.ToList().ForEach(p => PlayAreas.Add(ViewModelLocator.Instance.GetPlayAreaViewModel(_model, p)));
-            _name = tournament.Name;
-            _startDate = tournament.StartTime ?? DateTime.Now;
-            _description = tournament.Description;
-            _maximumMatchDururationInMinutes = tournament.MatchDuration ?? 30;
-            _teamCount = _model.TeamCount ?? 16;
+            tournament.PlayAreas.ToList().ForEach(p => PlayAreas.Add(ViewModelLocator.Instance.GetPlayAreaViewModel(Model, p)));
+            UpdateFromModel(tournament);
 
             _watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
             _watcher.PositionChanged += this.Watcher_PositionChanged;
@@ -64,6 +60,40 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         }
 
+        private void UpdateFromModel(Model.Models.Tournament tournament)
+        {
+            //Set values
+            _name = tournament.Name;
+            _startDate = tournament.StartTime ?? DateTime.Now;
+            _description = tournament.Description;
+            _maximumMatchDururationInMinutes = tournament.MatchDuration ?? 30;
+            _teamCount = Model.TeamCount ?? 16;
+
+            //Raise property changed for values
+            RaisePropertyChanged(() => Name);
+            RaisePropertyChanged(() => Description);
+            RaisePropertyChanged(() => MaximumMatchDurationInMinutes);
+            RaisePropertyChanged(() => TeamCount);
+
+            //Raise property changed for calculated values
+            RaisePropertyChanged(() => StartDate);
+            RaisePropertyChanged(() => StartTime);
+            RaisePropertyChanged(() => State);
+            RaisePropertyChanged(() => FinalMatch);
+            RaisePropertyChanged(() => Matches);
+            RaisePropertyChanged(() => HasChanges);
+            RaisePropertyChanged(() => TournamentEditable);
+
+            //Raise property changed for commands
+            SaveChangesCommand.RaiseCanExecuteChanged();
+            StartCommand.RaiseCanExecuteChanged();
+            AddTeamCommand.RaiseCanExecuteChanged();
+            RemoveTeamCommand.RaiseCanExecuteChanged();
+            AddPlayAreaCommand.RaiseCanExecuteChanged();
+            RemovePlayAreaCommand.RaiseCanExecuteChanged();
+            GenerateWinnerCertificatesCommand.RaiseCanExecuteChanged();
+        }
+
         #region Teams
         private ObservableCollection<TeamViewModel> _teams;
         public ObservableCollection<TeamViewModel> Teams
@@ -72,7 +102,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (_teams == null)
                 {
-                    _teams = new ObservableCollection<TeamViewModel>(_model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(_model, t)));
+                    _teams = new ObservableCollection<TeamViewModel>(Model.Teams.Select(t => ViewModelLocator.Instance.GetTeamViewModel(Model, t)));
                 }
                 return _teams;
             }
@@ -89,7 +119,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _model.Id.Value;
+                return Model.Id.Value;
             }
         }
         #endregion
@@ -116,7 +146,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -145,7 +175,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -171,7 +201,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -206,7 +236,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -230,7 +260,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -254,7 +284,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (State != STATE_CREATED)
                 {
-                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(_model.Id.Value));
+                    MessengerInstance.Send(new Messages.TournamentAllreadyStarted(Model.Id.Value));
                 }
                 else
                 {
@@ -277,7 +307,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _model.State.Value;
+                return Model.State.Value;
             }
         }
 
@@ -309,11 +339,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                if (_model.FinalMatch == null)
+                if (Model.FinalMatch == null)
                 {
                     return new List<MatchViewModel>();
                 }
-                return new List<MatchViewModel>() { ViewModelLocator.Instance.GetMatchViewModel(_model, _model.FinalMatch, null) };
+                return new List<MatchViewModel>() { ViewModelLocator.Instance.GetMatchViewModel(Model, Model.FinalMatch, null) };
             }
         }
         #endregion
@@ -362,10 +392,25 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (_closeCommand == null)
                 {
-                    _closeCommand = new RelayCommand(() => { }, CanClose);
+                    _closeCommand = new RelayCommand(() => 
+                    {
+                        Close(true);
+                    }, CanClose);
                 }
                 return _closeCommand;
             }
+        }
+        internal void Close(bool askSaveChanges)
+        {
+            if (HasChanges && askSaveChanges)
+            {
+                MessengerInstance.Send(new AreYouSureMessage("Änderungen", "Sollen die Änderungen gespeichert werden?", () =>
+                {
+                    //Save changes
+                    SaveChangesCommand.Execute(null);
+                }));
+            }
+            MessengerInstance.Send(new CloseTournamentMessage(this));
         }
         #endregion
 
@@ -377,11 +422,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
             get
             {
                 return
-                    _model.Name != Name ||
-                    _model.Description != Description ||
-                    _model.TeamCount != TeamCount ||
-                    _model.StartTime != _startDate ||
-                    _model.MatchDuration != _maximumMatchDururationInMinutes;
+                    Model.Name != Name ||
+                    Model.Description != Description ||
+                    Model.TeamCount != TeamCount ||
+                    Model.StartTime != _startDate ||
+                    Model.MatchDuration != _maximumMatchDururationInMinutes;
             }
         }
         #endregion
@@ -394,15 +439,37 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (_saveChangesCommand == null)
                 {
-                    _saveChangesCommand = new RelayCommand(() =>
+                    _saveChangesCommand = new RelayCommand(async () =>
                     {
-                        MessengerInstance.Send(new AreYouSureMessage(
-                            "fuck", "you", () => { }));
+                        try
+                        {
+                            await App.RestClient.UpdateTournamentWithHttpMessagesAsync(Model.Id.Value,
+                                new Model.Models.Tournament(Model.Id.Value,
+                                Name,
+                                Description,
+                                _startDate,
+                                MaximumMatchDurationInMinutes,
+                                TeamCount,
+                                State,
+                                PlayAreas.Select(a => a.Model).ToList(),
+                                Teams.Select(t => t.Model).ToList()));
+                        }
+                        catch (Exception e)
+                        {
+                            if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                            {
+                                MessengerInstance.Send(new CommunicationErrorMessage());
+                            }
+                            else
+                            {
+                                throw e;
+                            }
+                        }
                     }, () => HasChanges);
                 }
                 return _saveChangesCommand;
             }
-        }
+        } 
         #endregion
 
         #region TournamentEditable
@@ -425,15 +492,61 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     _startCommand = new RelayCommand(() =>
                     {
-                        // PlayArea-Count != 0
-                        // TeamCount == Teams.Count
-                        // Neues Modell holen
-                        // Alle Properties => RaisePropertyChanged / Command.CanExecute updaten
-
+                        Start();
                     }, () => State == STATE_CREATED);
                 }
                 return _startCommand;
             }
+        }
+        private void Start()
+        {
+            if (PlayAreas.Count == 0)
+            {
+                MessengerInstance.Send(new NoPlayAreaDefinedMessage());
+                return;
+            }
+            if (TeamCount != Teams.Count())
+            {
+                MessengerInstance.Send(new TeamCountMismatchMessage(Model.Id.Value, Teams.Count, TeamCount));
+                return;
+            }
+            if (HasChanges)
+            {
+                bool abortStart = true;
+                MessengerInstance.Send(new AreYouSureMessage("Ungespeicherte Änderungen", "Es gibt noch ungespeicherte Änderungen.\nDiese müssen gespeichert werden vor dem Start.\nWollen Sie jetzt speichern und fortfahren?", () =>
+                {
+                    abortStart = false;
+                }));
+                if (abortStart)
+                {
+                    return;
+                }
+                SaveChangesCommand.Execute(null);
+            }
+            try
+            {
+                var resp = App.RestClient.StartWithHttpMessagesAsync(Id);
+                resp.ContinueWith(t =>
+                {
+                    Model = resp.Result.Body;
+                    UpdateFromModel(Model);
+                }
+                );
+                
+            }
+            catch (Exception e)
+            {
+                if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                {
+                    MessengerInstance.Send(new CommunicationErrorMessage());
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+            // Alle Properties => RaisePropertyChanged / Command.CanExecute updaten
+
         }
         #endregion
 
@@ -498,8 +611,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         {
                             try
                             {
-                                var teamModel = App.RestClient.AddTeamWithHttpMessagesAsync(_model.Id.Value, "Neues Team").Result.Body;
-                                var teamViewModel = ViewModelLocator.Instance.GetTeamViewModel(_model, teamModel);
+                                var teamModel = App.RestClient.AddTeamWithHttpMessagesAsync(Model.Id.Value, "Neues Team").Result.Body;
+                                var teamViewModel = ViewModelLocator.Instance.GetTeamViewModel(Model, teamModel);
                                 Teams.Add(teamViewModel);
                                 SelectedTeam = teamViewModel;
                             }
@@ -540,7 +653,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         {
                             return;
                         }
-                        await App.RestClient.RemoveTeamWithHttpMessagesAsync(_model.Id.Value, SelectedTeam.Id.Value);
+                        await App.RestClient.RemoveTeamWithHttpMessagesAsync(Model.Id.Value, SelectedTeam.Id.Value);
 
                         int index = Teams.IndexOf(SelectedTeam);
                         Teams.Remove(SelectedTeam);
@@ -577,8 +690,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         try
                         {
-                            Model.Models.PlayArea playArea = App.RestClient.AddPlayAreaWithHttpMessagesAsync(_model.Id.Value, "Neues Spielfeld", "Beschreibung hier einfügen").Result.Body;
-                            var playAreaViewModel = ViewModelLocator.Instance.GetPlayAreaViewModel(_model, playArea);
+                            Model.Models.PlayArea playArea = App.RestClient.AddPlayAreaWithHttpMessagesAsync(Model.Id.Value, "Neues Spielfeld", "Beschreibung hier einfügen").Result.Body;
+                            var playAreaViewModel = ViewModelLocator.Instance.GetPlayAreaViewModel(Model, playArea);
                             PlayAreas.Add(playAreaViewModel);
                             SelectedPlayArea = playAreaViewModel;
                         }
@@ -615,7 +728,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         {
                             return;
                         }
-                        await App.RestClient.RemovePlayAreaWithHttpMessagesAsync(_model.Id.Value, SelectedPlayArea.Id);
+                        await App.RestClient.RemovePlayAreaWithHttpMessagesAsync(Model.Id.Value, SelectedPlayArea.Id);
                         int index = PlayAreas.IndexOf(SelectedPlayArea);
                         PlayAreas.Remove(SelectedPlayArea);
                         //select an other playarea from the list as selected
@@ -715,5 +828,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             return rootObject.address.village;
         }
         #endregion
+
+        
     }
 }

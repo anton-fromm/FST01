@@ -17,7 +17,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             _name = team.Name;
         }
 
-        public int? Id => _model?.Id.Value;
+        public int? Id => Model?.Id.Value;
 
         #region Name
         private string _name;
@@ -33,10 +33,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     try
                     {
-                        var newModel = new Model.Models.Team(_model.Id, value);
+                        var newModel = new Model.Models.Team(Model.Id, value);
                         App.RestClient.UpdateTeamWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
                         _name = value;
-                        _model = newModel;
+                        Model = newModel;
                     }
                     catch (Exception e)
                     {
@@ -61,7 +61,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 return false;
             }
-            return obj._model.Id == _model.Id;
+            return obj.Model.Id == Model.Id;
         }
 
     }

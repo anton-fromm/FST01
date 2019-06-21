@@ -241,10 +241,12 @@
     <Compile Include="ModelClient\Models\Team.cs" />
     <Compile Include="ModelClient\Models\Tournament.cs" />
     <Compile Include="ViewModel\Messages\AreYouSureMessage.cs" />
+    <Compile Include="ViewModel\Messages\CloseTournamentMessage.cs" />
     <Compile Include="ViewModel\Messages\CommunicationErrorMessage.cs" />
     <Compile Include="ViewModel\Messages\GenerateWinnerCertificatesMessage.cs" />
     <Compile Include="ViewModel\Messages\MatchFinishedMessage.cs" />
     <Compile Include="ViewModel\Messages\MaximumTeamCountReachedMessage.cs" />
+    <Compile Include="ViewModel\Messages\NoPlayAreaDefinedMessage.cs" />
     <Compile Include="ViewModel\Messages\OpenTournamentMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountInvalidMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountMismatchMessage.cs" />

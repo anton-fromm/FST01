@@ -22,7 +22,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _model.Id.Value;
+                return Model.Id.Value;
             }
         }
         #endregion
@@ -41,10 +41,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     try
                     {
-                        var newModel = new Model.Models.PlayArea(_model.Id, value, Description);
+                        var newModel = new Model.Models.PlayArea(Model.Id, value, Description);
                         App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
                         _name = value;
-                        _model = newModel;
+                        Model = newModel;
                     }
                     catch (Exception e)
                     {
@@ -77,10 +77,10 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     try
                     {
-                        var newModel = new Model.Models.PlayArea(_model.Id, Name, _description);
+                        var newModel = new Model.Models.PlayArea(Model.Id, Name, _description);
                         App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
                         _description = value;
-                        _model = newModel;
+                        Model = newModel;
                     }
                     catch (Exception e)
                     {
@@ -105,7 +105,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 return false;
             }
-            return obj._model.Id == _model.Id;
+            return obj.Model.Id == Model.Id;
         }
     }
 }
