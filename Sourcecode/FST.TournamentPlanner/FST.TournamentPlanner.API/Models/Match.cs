@@ -60,17 +60,17 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Play area this match is held
         /// </summary>
-        public PlayArea PlayArea => new PlayArea(_match.PlayAreaBooking.PlayArea);
+        public PlayArea PlayArea => new PlayArea(_match?.PlayAreaBooking?.PlayArea);
 
         /// <summary>
         /// Start time of this match
         /// </summary>
-        public DateTime Start => _match.PlayAreaBooking.Start;
+        public DateTime? Start => _match.PlayAreaBooking?.Start;
 
         /// <summary>
         /// End time of this match
         /// </summary>
-        public DateTime End => _match.PlayAreaBooking.End;
+        public DateTime? End => _match.PlayAreaBooking?.End;
 
         /// <summary>
         /// Score of team one
