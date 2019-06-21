@@ -313,15 +313,21 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 new AreYouSureMessage(
                     "Spiel abschließen",
                     "Änderungen an dem Ergebnis sind nach Abschluss nicht mehr möglich.\nSind Sie sicher, dass Sie das Spiel beenden wollen?",
-                    async () =>
+                    () =>
                     {
                         try
                         {
                             CurrentlyFinishing = true;
-                            var res = await App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
-                            Model = res.Body;
-                            UpdateValuesFromModel();
-                            // Inform successor about finished prematch
+                            UpdateMatch();
+                            if (Successor != null)
+                            {
+                                // Inform successor about finished prematch
+                                Successor.UpdateMatch();
+                            }
+                            else
+                            {
+                                
+                            }
                             MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
                             CurrentlyFinishing = false;
                         }
@@ -331,6 +337,13 @@ namespace FST.TournamentPlanner.UI.ViewModel
                             CurrentlyFinishing = false;
                         }
                     }));
+        }
+
+        private void UpdateMatch()
+        {
+            var res = App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
+            Model = res.Result.Body;
+            UpdateValuesFromModel();
         }
         #endregion
     }
