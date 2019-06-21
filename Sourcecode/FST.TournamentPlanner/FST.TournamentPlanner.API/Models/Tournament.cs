@@ -16,6 +16,9 @@ namespace FST.TournamentPlanner.API.Models
     {
         private db.Tournament _tournament;
 
+        internal Tournament() { }
+
+
         internal Tournament(db.Tournament tournament)
         {
             _tournament = tournament;
@@ -37,7 +40,7 @@ namespace FST.TournamentPlanner.API.Models
         /// Name of the tournament
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// Description of the tournament
         /// </summary>
@@ -70,7 +73,7 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Current state of the tournament
         /// </summary>
-        public db.TournamentState State => _tournament.State;
+        public db.TournamentState? State => _tournament?.State;
         #endregion
 
         /// <summary>
@@ -80,6 +83,10 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
+                if (_tournament == null || _tournament.PlayAreas == null || _tournament.PlayAreas.Count() == 0)
+                {
+                    return new List<PlayArea>();
+                }
                 return _tournament.PlayAreas.Select(p => new PlayArea(p)).ToList();
             }
         }
@@ -87,7 +94,17 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// List of teams
         /// </summary>
-        public List<Team> Teams => _tournament.Teams.Select(t => new Team(t)).ToList();
+        public List<Team> Teams
+        {
+            get
+            {
+                if (_tournament == null || _tournament.Teams == null || _tournament.Teams.Count() == 0)
+                {
+                    return new List<Team>();
+                }
+                return _tournament.Teams.Select(t => new Team(t)).ToList();
+            }
+        }
 
         /// <summary>
         /// Final match
@@ -96,7 +113,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_tournament.Matches == null || _tournament.Matches.Count() == 0)
+                if (_tournament == null || _tournament.Matches == null || _tournament.Matches.Count() == 0)
                 {
                     return null;
                 }

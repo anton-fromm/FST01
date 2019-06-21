@@ -80,9 +80,11 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId"></param>
         /// <returns>updated tournament</returns>
         [HttpPost("{tournamentId}")]
-        public IActionResult UpdateTournament(int tournamentId, Models.Tournament tournament)
+        public ActionResult<Models.Tournament> UpdateTournament(int tournamentId, Models.Tournament tournament)
         {
-            return this._service.UpdateTournament(tournamentId, tournament);
+            this._service.UpdateTournament(tournamentId, tournament);
+
+            return this._service.Get(tournamentId);
         }
         #endregion
 
@@ -148,9 +150,10 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId"></param>
         /// <returns></returns>
         [HttpPost("Start/{tournamentId}")]
-        public IActionResult Start(int tournamentId)
+        public ActionResult<Models.Tournament> Start(int tournamentId)
         {
-            return this._service.Start(tournamentId);
+            this._service.Start(tournamentId);
+            return this._service.Get(tournamentId);
         }
 
         #region Play area CRUD

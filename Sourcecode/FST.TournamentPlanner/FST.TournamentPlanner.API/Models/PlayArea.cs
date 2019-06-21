@@ -19,9 +19,12 @@ namespace FST.TournamentPlanner.API.Models
 
         internal PlayArea(DB.Models.PlayArea playarea)
         {
-            Name = playarea.Name;
-            Description = playarea.Description;
-            Id = playarea.Id;
+            if(playarea != null)
+            {
+                Name = playarea.Name;
+                Description = playarea.Description;
+                Id = playarea.Id;
+            }
         }
         /// <summary>
         /// Id of the play area

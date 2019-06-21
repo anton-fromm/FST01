@@ -321,6 +321,446 @@
             Final match
             </summary>
         </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.IRepository`1">
+            <summary>
+            Interface for data manipulation
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Create(`0)">
+            <summary>
+            Creates the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Delete(`0)">
+            <summary>
+            Deletes the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Delete(System.Int32)">
+            <summary>
+            Deletes the specified identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Edit(`0)">
+            <summary>
+            Edits the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.GetById(System.Int32)" -->
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Filter">
+            <summary>
+            Filters this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Filter(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Filters the specified predicate.
+            </summary>
+            <param name="predicate">The predicate.</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.SaveChanges" -->
+        <member name="T:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper">
+            <summary>
+            Wrapper over all available repos
+            </summary>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper.Tournament">
+            <summary>
+            Gets the tournament.
+            </summary>
+            <value>
+            The tournament.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper.Match">
+            <summary>
+            Gets the match.
+            </summary>
+            <value>
+            The match.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper.PlayAreaBooking">
+            <summary>
+            Gets the play area booking.
+            </summary>
+            <value>
+            The play area booking.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper.PlayArea">
+            <summary>
+            Gets the play area.
+            </summary>
+            <value>
+            The play area.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper.Team">
+            <summary>
+            Gets the team.
+            </summary>
+            <value>
+            The team.
+            </value>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.MatchRepository">
+            <summary>
+            Data Access for match
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.MatchRepository.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.MatchRepository"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.MatchRepository.GetById(System.Int32)">
+            <summary>
+            Gets the by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.MatchRepository.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.PlayAreaBookingRepository">
+            <summary>
+            Data Access for PlayAreaBooking
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.PlayAreaBookingRepository.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.PlayAreaBookingRepository"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.PlayAreaRepository">
+            <summary>
+            Data Access for PlayArea
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.PlayAreaRepository.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.PlayAreaRepository"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.Repository`1">
+            <summary>
+            Generic Repository
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:FST.TournamentPlanner.API.Repositories.IRepository`1" />
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.Repository`1.PlannerContext">
+            <summary>
+            Gets or sets the planner context.
+            </summary>
+            <value>
+            The planner context.
+            </value>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.Repository`1"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Create(`0)">
+            <summary>
+            Creates the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Delete(`0)">
+            <summary>
+            Deletes the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Delete(System.Int32)">
+            <summary>
+            Deletes the specified identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Edit(`0)">
+            <summary>
+            Edits the specified entity.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.GetById(System.Int32)">
+            <summary>
+            Gets the by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Filter">
+            <summary>
+            Filters this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.Filter(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Filters the specified predicate.
+            </summary>
+            <param name="predicate">The predicate.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.SaveChanges">
+            <summary>
+            Saves the changes.
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.Repository`1.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.RepositoryWrapper">
+            <summary>
+            Wrapper implementation
+            </summary>
+            <seealso cref="T:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper" />
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.Tournament">
+            <summary>
+            Gets the tournament.
+            </summary>
+            <value>
+            The tournament.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.Match">
+            <summary>
+            Gets the match.
+            </summary>
+            <value>
+            The match.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.PlayAreaBooking">
+            <summary>
+            Gets the play area booking.
+            </summary>
+            <value>
+            The play area booking.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.PlayArea">
+            <summary>
+            Gets the play area.
+            </summary>
+            <value>
+            The play area.
+            </value>
+        </member>
+        <member name="P:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.Team">
+            <summary>
+            Gets the team.
+            </summary>
+            <value>
+            The team.
+            </value>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.RepositoryWrapper.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.RepositoryWrapper"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.TeamRepository">
+            <summary>
+            Data Access for Team
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.TeamRepository.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.TeamRepository"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Repositories.TournamentRepository">
+            <summary>
+            Data Access for Tournament
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.TournamentRepository.#ctor(FST.TournamentPlanner.DB.Contexts.PlannerContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FST.TournamentPlanner.API.Repositories.TournamentRepository"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.TournamentRepository.GetById(System.Int32)">
+            <summary>
+            Gets the by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Repositories.TournamentRepository.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FST.TournamentPlanner.API.Services.ITournamentService">
+            <summary>
+            Interface for Business Logic
+            </summary>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.Get(System.Int32)">
+            <summary>Gets the specified identifier.</summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.GetAll">
+            <summary>Gets all.</summary>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.SetScore(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the score.
+            </summary>
+            <param name="matchId">The match identifier.</param>
+            <param name="scoreOne">The score one.</param>
+            <param name="scoreTwo">The score two.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.EndMatch(System.Int32,System.Int32)">
+            <summary>
+            Ends the match.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="matchId">The match identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.Start(System.Int32)">
+            <summary>
+            Starts the specified tournament identifier.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.GetMatch(System.Int32,System.Int32)">
+            <summary>
+            Gets the match.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="matchId">The match identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.AddPlayArea(System.Int32,System.String,System.String)">
+            <summary>
+            Adds the play area.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="name">The name.</param>
+            <param name="description">The description.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.GetPlayArea(System.Int32,System.Int32)">
+            <summary>
+            Gets the play area.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="playAreaId">The play area identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.RemovePlayArea(System.Int32,System.Int32)">
+            <summary>
+            Removes the play area.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="playAreaId">The play area identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.UpdatePlayArea(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.PlayArea)">
+            <summary>
+            Updates the play area.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="playAreaId1">The play area id1.</param>
+            <param name="playAreaId">The play area identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.UpdateTeam(System.Int32,System.Int32,FST.TournamentPlanner.API.Models.Team)">
+            <summary>
+            Updates the team.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="teamId">The team identifier.</param>
+            <param name="team">The team.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.AddTournament(FST.TournamentPlanner.API.Models.Tournament)">
+            <summary>
+            Adds the tournament.
+            </summary>
+            <param name="tournament">The tournament.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.RemoveTeam(System.Int32,System.Int32)">
+            <summary>
+            Removes the team.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="teamId">The team identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.GetTeam(System.Int32,System.Int32)">
+            <summary>
+            Gets the team.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="teamId">The team identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.AddTeam(System.Int32,System.String)">
+            <summary>
+            Adds the team.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.RemoveTournament(System.Int32)">
+            <summary>
+            Removes the tournament.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.ITournamentService.UpdateTournament(System.Int32,FST.TournamentPlanner.API.Models.Tournament)">
+            <summary>
+            Updates the tournament.
+            </summary>
+            <param name="tournamentId">The tournament identifier.</param>
+            <param name="tournament">The tournament.</param>
+            <returns></returns>
+        </member>
         <member name="T:FST.TournamentPlanner.API.Services.TournamentService">
             <summary>
             Business Logic
@@ -343,6 +783,13 @@
             <summary>
             Get all tournaments
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.FST#TournamentPlanner#API#Services#ITournamentService#Get(System.Int32)">
+            <summary>
+            Gets the specified identifier.
+            </summary>
+            <param name="id">The identifier.</param>
             <returns></returns>
         </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.AddTournament(FST.TournamentPlanner.API.Models.Tournament)">
@@ -374,6 +821,19 @@
             <param name="tournamentId"></param>
             <returns></returns>
         </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateMatchPlan(FST.TournamentPlanner.DB.Models.Tournament)">
+            <summary>
+            Generates the match plan.
+            </summary>
+            <param name="tournament">The tournament.</param>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateMatchTree(FST.TournamentPlanner.DB.Models.Match,System.Int32)">
+            <summary>
+            Generates the match tree.
+            </summary>
+            <param name="match">The match.</param>
+            <param name="depth">The depth.</param>
+        </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateRoundLists(FST.TournamentPlanner.DB.Models.Match)">
             <summary>
             Convert the tree of matches to a directory, where the key is the current play round and the value is the list of all matches within the round
@@ -387,6 +847,14 @@
             </summary>
             <param name="tournament"></param>
             <returns></returns>
+        </member>
+        <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GenerateRoundListRecursion(System.Collections.Generic.Dictionary{System.Int32,System.Collections.Generic.List{FST.TournamentPlanner.DB.Models.Match}},FST.TournamentPlanner.DB.Models.Match,System.Int32)">
+            <summary>
+            Generates the round list recursion.
+            </summary>
+            <param name="matchList">The match list.</param>
+            <param name="parentMatch">The parent match.</param>
+            <param name="round">The round.</param>
         </member>
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.GetMatch(System.Int32,System.Int32)">
             <summary>
@@ -433,7 +901,6 @@
         <member name="M:FST.TournamentPlanner.API.Services.TournamentService.RemovePlayArea(System.Int32,System.Int32)">
             <summary>
             Remove the given play area from the tournament
-            
             Only valid while the tournament is in Created-State<see cref="T:FST.TournamentPlanner.DB.Models.TournamentState"/>
             </summary>
             <param name="tournamentId"></param>
