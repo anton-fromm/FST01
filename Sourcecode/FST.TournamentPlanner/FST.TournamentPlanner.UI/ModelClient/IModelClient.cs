@@ -91,7 +91,7 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> UpdateTournamentWithHttpMessagesAsync(int tournamentId, Tournament tournament = default(Tournament), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<Tournament>> UpdateTournamentWithHttpMessagesAsync(int tournamentId, Tournament tournament = default(Tournament), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete the given tournament by its Id
@@ -169,7 +169,7 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> StartWithHttpMessagesAsync(int tournamentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<Tournament>> StartWithHttpMessagesAsync(int tournamentId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// create a play area
@@ -298,7 +298,7 @@ namespace FST.TournamentPlanner.UI.Model
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<Team>> UpdateTeamWithHttpMessagesAsync(int tournamentId, int? teamId = default(int?), Team team = default(Team), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<Team>> UpdateTeamWithHttpMessagesAsync(int tournamentId, int teamId, Team team = default(Team), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

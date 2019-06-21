@@ -45,10 +45,12 @@ namespace FST.TournamentPlanner.UI
             {
                 MessageBox.Show(this, string.Format(TEAMCOUNT_MISMATCH, m.CurrentTeamCount, m.TournamentSize), MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Information);
             });
+            /*
             MessengerInstance.Register<msg.MatchFinishedMessage>(this, false, (m) =>
             {
                 MessageBox.Show(this, MATCH_FINISHED, MESSAGEBOX_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
             });
+            */
             MessengerInstance.Register<msg.AreYouSureMessage>(this, (m) =>
             {
                 if (MessageBox.Show(this, m.Message, m.Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)

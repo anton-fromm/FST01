@@ -28,15 +28,20 @@ namespace FST.TournamentPlanner.UI.ViewModel
             else
             {
                 new List<Model.Models.Tournament>(App.RestClient.GetAllWithHttpMessagesAsync().Result.Body).ForEach(t => Tournaments.Add(new TournamentViewModel(t)));
-                //Tournaments.Add(new TournamentViewModel(App.RestClient.GetWithHttpMessagesAsync(1).Result.Body));
-                //OpenedDocuments.Add(Tournaments[0]);
-                //CurrentDocument = Tournaments[0];
             }
 
             MessengerInstance.Register<OpenTournamentMessage>(this, m =>
             {
                 OpenedDocuments.Add(m.Tournament);
                 CurrentDocument = m.Tournament;
+            });
+            MessengerInstance.Register<CloseTournamentMessage>(this, m =>
+            {
+                if (OpenedDocuments.Contains(m.Sender))
+                {
+                    CurrentDocument = OpenedDocuments[0];
+                    OpenedDocuments.Remove(m.Sender);
+                }
             });
 
         }
@@ -114,7 +119,19 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         try
                         {
-                            var res = await App.RestClient.NewTournamentWithHttpMessagesAsync();
+                            var newTournamentModel = 
+                            new Model.Models.Tournament(
+                                -1, 
+                                "Neues Turnier", 
+                                "Beschreibung ergänzen", 
+                                DateTime.Now.AddDays(5), 
+                                60, 
+                                16, 
+                                0, 
+                                new Model.Models.PlayArea[0], 
+                                new Model.Models.Team[0], 
+                                null);
+                            var res = await App.RestClient.NewTournamentWithHttpMessagesAsync(newTournamentModel);
                             var tournament = ViewModelLocator.Instance.GetTournamentViewModel(res.Body);
                             Tournaments.Add(tournament);
                             OpenedDocuments.Add(tournament);
@@ -143,7 +160,23 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         MessengerInstance.Send(new AreYouSureMessage("Turnier löschen", "Das Turnier sowie alle Ergebnisse werden unwiederbringlich gelöscht.\nSind Sie sicher?", () =>
                         {
-                            //App.RestClient.DeleteTournamet
+                            try
+                            {
+                                SelectedTournament.Close(false);
+                                App.RestClient.DeleteTournamentWithHttpMessagesAsync(SelectedTournament.Id);
+                                Tournaments.Remove(SelectedTournament);
+                            }
+                            catch (Exception e)
+                            {
+                                if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                                {
+                                    MessengerInstance.Send(new CommunicationErrorMessage());
+                                }
+                                else
+                                {
+                                    throw e;
+                                }
+                            }
                         }));
                     });
                 }

@@ -357,7 +357,7 @@
             </summary>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.GetById(System.Int32)" -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.GetById(System.Int32)" ignoriert -->
         <member name="M:FST.TournamentPlanner.API.Repositories.IRepository`1.Filter">
             <summary>
             Filters this instance.
@@ -371,7 +371,7 @@
             <param name="predicate">The predicate.</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.SaveChanges" -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:FST.TournamentPlanner.API.Repositories.IRepository`1.SaveChanges" ignoriert -->
         <member name="T:FST.TournamentPlanner.API.Repositories.IRepositoryWrapper">
             <summary>
             Wrapper over all available repos

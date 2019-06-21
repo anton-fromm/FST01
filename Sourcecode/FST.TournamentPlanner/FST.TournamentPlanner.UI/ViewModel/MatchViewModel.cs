@@ -37,7 +37,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 if (m.TournamentId == tournament.Id && m.Match == FirstPredecessor || m.Match == SecondPredecessor)
                 {
                     //TODO: Update current match, since one of the previous matches is finished now
-                    // Get fresh version of the match from Rest API
+                    Model = App.RestClient.GetMatchWithHttpMessagesAsync(Model.Id.Value, _tournament.Id.Value).Result.Body;
+                    UpdateValuesFromModel();
                 }
             });
 
@@ -48,9 +49,9 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         private void UpdateValuesFromModel()
         {
-            _teamOneScore = _model.TeamOneScore;
+            _teamOneScore = Model.TeamOneScore;
             RaisePropertyChanged(() => TeamOneScore);
-            _teamTwoScore = _model.TeamTwoScore;
+            _teamTwoScore = Model.TeamTwoScore;
             RaisePropertyChanged(() => TeamTwoScore);
             RaisePropertyChanged(() => TeamOne);
             RaisePropertyChanged(() => TeamTwo);
@@ -65,7 +66,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _model.Id.Value;
+                return Model.Id.Value;
             }
         }
         #endregion
@@ -95,13 +96,13 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                if (_model.FirstPredecessor == null)
+                if (Model.FirstPredecessor == null)
                 {
                     return null;
                 }
                 if (_firstPredecessor == null)
                 {
-                    _firstPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, _model.FirstPredecessor, this);
+                    _firstPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, Model.FirstPredecessor, this);
                 }
                 return _firstPredecessor;
             }
@@ -114,13 +115,13 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                if (_model.SecondPredecessor == null)
+                if (Model.SecondPredecessor == null)
                 {
                     return null;
                 }
                 if (_secondPredecessor == null)
                 {
-                    _secondPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, _model.SecondPredecessor, this);
+                    _secondPredecessor = ViewModelLocator.Instance.GetMatchViewModel(_tournament, Model.SecondPredecessor, this);
                 }
                 return _secondPredecessor;
             }
@@ -133,7 +134,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, _model.TeamOne);
+                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, Model.TeamOne);
             }
         }
 
@@ -145,7 +146,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, _model.TeamTwo);
+                return ViewModelLocator.Instance.GetTeamViewModel(_tournament, Model.TeamTwo);
             }
         }
 
@@ -243,7 +244,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
         {
             get
             {
-                return _model.MatchState.Value;
+                return Model.MatchState.Value;
             }
         }
         #endregion
@@ -259,11 +260,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
         #endregion
 
         #region PlayArea
-        public PlayAreaViewModel PlayArea => ViewModelLocator.Instance.GetPlayAreaViewModel(_tournament, _model.PlayArea);
+        public PlayAreaViewModel PlayArea => ViewModelLocator.Instance.GetPlayAreaViewModel(_tournament, Model.PlayArea);
         #endregion
 
         #region StartTime
-        public TimeSpan StartTime => _model.Start.Value.TimeOfDay;
+        public TimeSpan StartTime => Model.Start.Value.TimeOfDay;
         #endregion
 
         #region CurrentlyFinishing
@@ -318,7 +319,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         {
                             CurrentlyFinishing = true;
                             var res = await App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
-                            _model = res.Body;
+                            Model = res.Body;
                             UpdateValuesFromModel();
                             // Inform successor about finished prematch
                             MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
