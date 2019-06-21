@@ -34,7 +34,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match.TeamOne?.Team == null)
+                if (_match == null || _match.TeamOne == null || _match.TeamOne.Team == null)
                 {
                     return null;
                 }
@@ -49,7 +49,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match.TeamTwo?.Team == null)
+                if (_match == null || _match.TeamTwo == null || _match.TeamTwo.Team == null)
                 {
                     return null;
                 }
@@ -64,7 +64,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match?.PlayAreaBooking == null)
+                if (_match == null || _match.PlayAreaBooking == null)
                 {
                     return null;
                 }
@@ -75,27 +75,77 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Start time of this match
         /// </summary>
-        public DateTime? Start => _match.PlayAreaBooking?.Start;
+        public DateTime? Start
+        {
+            get
+            {
+                if (_match == null || _match.PlayAreaBooking == null)
+                {
+                    return null;
+                }
+                return _match.PlayAreaBooking.Start;
+            }
+        }
 
         /// <summary>
         /// End time of this match
         /// </summary>
-        public DateTime? End => _match.PlayAreaBooking?.End;
+        public DateTime? End
+        {
+            get
+            {
+                if (_match == null || _match.PlayAreaBooking == null)
+                {
+                    return null;
+                }
+                return _match.PlayAreaBooking.End;
+            }
+        }
 
         /// <summary>
         /// Score of team one
         /// </summary>
-        public int? TeamOneScore => _match.TeamOne?.Score;
+        public int? TeamOneScore
+        {
+            get
+            {
+                if (_match == null || _match.TeamOne == null)
+                {
+                    return null;
+                }
+                return _match.TeamOne.Score;
+            }
+        }        
 
         /// <summary>
         /// Score of team two
         /// </summary>
-        public int? TeamTwoScore => _match.TeamTwo?.Score;
+        public int? TeamTwoScore
+        {
+            get
+            {
+                if (_match == null || _match.TeamTwo == null)
+                {
+                    return null;
+                }
+                return _match.TeamTwo.Score;
+            }
+        }
 
         /// <summary>
         /// State of this match
         /// </summary>
-        public MatchState MatchState => _match.State;
+        public MatchState MatchState
+        {
+            get
+            {
+                if (_match == null)
+                {
+                    return MatchState.Planned;
+                }
+                return _match.State;
+            }
+        }
 
         /// <summary>
         /// Successor of this match
@@ -104,7 +154,7 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
-                if (_match.Successor == null)
+                if (_match == null || _match.Successor == null)
                 {
                     return null;
                 }
@@ -119,6 +169,11 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
+                if (_match == null )
+                {
+                    return null;
+                }
+
                 DB.Models.Match preMatch = _match.Predecessors?.OrderBy(p => p.Id).FirstOrDefault();
                 if (preMatch == null)
                 {
@@ -135,6 +190,11 @@ namespace FST.TournamentPlanner.API.Models
         {
             get
             {
+                if (_match == null)
+                {
+                    return null;
+                }
+
                 DB.Models.Match preMatch = _match.Predecessors?.OrderBy(p => p.Id).LastOrDefault();
                 if (preMatch == null)
                 {

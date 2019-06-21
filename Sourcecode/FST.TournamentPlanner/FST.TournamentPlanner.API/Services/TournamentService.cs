@@ -51,6 +51,11 @@ namespace FST.TournamentPlanner.API.Services
             return this._repoWrapper.Tournament.GetAll().Select(t => new Tournament(t)).ToList();
         }
 
+        /// <summary>
+        /// Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         Tournament ITournamentService.Get(int id)
         {
             DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(id);
@@ -80,9 +85,6 @@ namespace FST.TournamentPlanner.API.Services
 
             this._repoWrapper.Tournament.Create(tmnt);
             this._repoWrapper.Tournament.SaveChanges();
-
-            this._repoWrapper.Tournament.SaveChanges();
-
             return new ActionResult<Tournament>(new Tournament(tmnt));
         }
 
@@ -162,64 +164,54 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return new BadRequestObjectResult("Tournament allready started of finished");
             }
-            try
-            {
-                tournament.State = DbModels.TournamentState.Started;
-                this.GenerateMatchPlan(tournament);
-                this._repoWrapper.Tournament.SaveChanges();
-                this._repoWrapper.PlayAreaBooking.SaveChanges();
-                return new OkResult();
-            }
-            catch (Exception e)
-            {
-                tournament.State = DbModels.TournamentState.Created;
-                return new BadRequestObjectResult(e.Message);
-            }
+
+            tournament.State = DbModels.TournamentState.Started;
+            this.GenerateMatchPlan(tournament);
+            this._repoWrapper.Tournament.SaveChanges();
+            this._repoWrapper.PlayAreaBooking.SaveChanges();
+            this._repoWrapper.Match.SaveChanges();
+
+            return new OkResult();
         }
 
+        /// <summary>
+        /// Generates the match plan.
+        /// </summary>
+        /// <param name="tournament">The tournament.</param>
         private void GenerateMatchPlan(DbModels.Tournament tournament)
         {
-            //
             // Generate match tree
-            //
             int depth = (int)Math.Log(tournament.TeamCount, 2);
             DbModels.Match finalMatch = new DbModels.Match() { CreatedAt = DateTime.Now };
             this.GenerateMatchTree(finalMatch, depth - 1);
-            //
+
             // gather list of matches per round
-            //
             Dictionary<int, List<DbModels.Match>> matchesPerRound = this.GenerateRoundLists(finalMatch);
-            // 
+
             // Add matches to tournament
-            //
             tournament.Matches = new List<DbModels.Match>();
             matchesPerRound.ToList().ForEach(kv =>
             {
-                kv.Value.ForEach(m => {
+                kv.Value.ForEach(m =>
+                {
                     tournament.Matches.Add(m);
                 });
             });
             this._repoWrapper.Tournament.SaveChanges();
-            
-            //
+
             // Assign play area booking to each match
-            //
             matchesPerRound.OrderByDescending(l => l.Key).ToList().ForEach(l => l.Value.ForEach(m =>
             {
                 m.PlayAreaBooking = this.CreateBookingForPlayArea(tournament);
                 //little work-around: without this save, the next call of CreateBookingForPlayArea will not determinate the correct next slot
                 this._repoWrapper.Tournament.SaveChanges();
-            })
-            );
-            
-            //
+            }));
+
             // randomize team list for fairness
-            //
             //TODO: Shuffle wieder einschalten
             List<DbModels.Team> teams = tournament.Teams.ToList(); //.ShuffleToNewList();
-            //
-            // assign teams to matches
-            //
+
+            // assign teams to matches            
             List<DbModels.Match> firstRoundMatches = matchesPerRound.GetValueOrDefault(matchesPerRound.Keys.Max());
             for (int i = 0; i < firstRoundMatches.Count; i++)
             {
@@ -228,6 +220,11 @@ namespace FST.TournamentPlanner.API.Services
             }
         }
 
+        /// <summary>
+        /// Generates the match tree.
+        /// </summary>
+        /// <param name="match">The match.</param>
+        /// <param name="depth">The depth.</param>
         private void GenerateMatchTree(DbModels.Match match, int depth)
         {
             depth--;
@@ -295,9 +292,15 @@ namespace FST.TournamentPlanner.API.Services
                 End = earliestAvailablePlayArea.Value.AddMinutes(tournament.MatchDuration),
                 PlayArea = earliestAvailablePlayArea.Key
             };
-            return booking;            
+            return booking;
         }
 
+        /// <summary>
+        /// Generates the round list recursion.
+        /// </summary>
+        /// <param name="matchList">The match list.</param>
+        /// <param name="parentMatch">The parent match.</param>
+        /// <param name="round">The round.</param>
         private void GenerateRoundListRecursion(Dictionary<int, List<DbModels.Match>> matchList, DbModels.Match parentMatch, int round)
         {
             if (!matchList.TryGetValue(round, out List<DbModels.Match> matchesThisRound))
@@ -334,7 +337,7 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return new ActionResult<Match>(new NotFoundResult());
             }
-           
+
             return new ActionResult<Match>(new Match(new Tournament(this._repoWrapper.Tournament.GetById(torunamentId)), match));
         }
 
@@ -371,7 +374,6 @@ namespace FST.TournamentPlanner.API.Services
             this._repoWrapper.Match.SaveChanges();
 
             return new OkResult();
-
         }
 
         /// <summary>
@@ -382,7 +384,6 @@ namespace FST.TournamentPlanner.API.Services
         /// <returns></returns>
         public ActionResult<Match> EndMatch(int tournamentId, int matchId)
         {
-            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
             DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
             if (match == null)
             {
@@ -423,13 +424,15 @@ namespace FST.TournamentPlanner.API.Services
 
             this._repoWrapper.Match.SaveChanges();
 
+            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
+
             return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
         }
 
         #endregion
 
         #region PlayArea Handling
-        
+
         /// <summary>
         /// Add a new play area
         /// </summary>
@@ -444,7 +447,7 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return new NotFoundResult();
             }
-            
+
             // Only update while tournament not started
             if (tournament.State != DbModels.TournamentState.Created)
             {
@@ -489,7 +492,6 @@ namespace FST.TournamentPlanner.API.Services
 
         /// <summary>
         /// Remove the given play area from the tournament
-        /// 
         /// Only valid while the tournament is in Created-State<see cref="DbModels.TournamentState"/>
         /// </summary>
         /// <param name="tournamentId"></param>
@@ -588,7 +590,6 @@ namespace FST.TournamentPlanner.API.Services
             }
 
             dbTeam.Name = team.Name;
-
             this._repoWrapper.Team.SaveChanges();
 
             return new OkResult();
@@ -668,7 +669,6 @@ namespace FST.TournamentPlanner.API.Services
             {
                 return new BadRequestObjectResult("Tournament allready started of finished");
             }
-
 
             DbModels.Team team = new DbModels.Team
             {
