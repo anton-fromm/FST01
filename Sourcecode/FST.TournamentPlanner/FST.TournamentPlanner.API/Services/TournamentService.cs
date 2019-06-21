@@ -223,8 +223,8 @@ namespace FST.TournamentPlanner.API.Services
             List<DbModels.Match> firstRoundMatches = matchesPerRound.GetValueOrDefault(matchesPerRound.Keys.Max());
             for (int i = 0; i < firstRoundMatches.Count; i++)
             {
-                firstRoundMatches[i].TeamOne = new DbModels.MatchResult() { Team = teams[i * 2], CreatedAt = DateTime.Now };
-                firstRoundMatches[i].TeamTwo = new DbModels.MatchResult() { Team = teams[i * 2 + 1], CreatedAt = DateTime.Now };
+                firstRoundMatches[i].TeamOne = new DbModels.MatchResult() { Team = teams[i * 2], CreatedAt = DateTime.Now, Match = firstRoundMatches[i] };
+                firstRoundMatches[i].TeamTwo = new DbModels.MatchResult() { Team = teams[i * 2 + 1], CreatedAt = DateTime.Now, Match = firstRoundMatches[i] };
             }
         }
 
@@ -364,6 +364,7 @@ namespace FST.TournamentPlanner.API.Services
             {
                 match.State = DbModels.MatchState.Started;
             }
+
             match.TeamOne.Score = scoreOne;
             match.TeamTwo.Score = scoreTwo;
 
