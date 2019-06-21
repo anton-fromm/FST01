@@ -152,8 +152,7 @@ namespace FST.TournamentPlanner.API.Controllers
         [HttpPost("Start/{tournamentId}")]
         public ActionResult<Models.Tournament> Start(int tournamentId)
         {
-            this._service.Start(tournamentId);
-            return this._service.Get(tournamentId);
+            return this._service.Start(tournamentId);
         }
 
         #region Play area CRUD
