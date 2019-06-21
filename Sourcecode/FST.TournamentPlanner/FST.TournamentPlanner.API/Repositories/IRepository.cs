@@ -17,7 +17,7 @@ namespace FST.TournamentPlanner.API.Repositories
         //read side (could be in separate Readonly Generic Repository)
         TEntity GetById(int id);
         IEnumerable<TEntity> Filter();
-        IEnumerable<TEntity> Filter(Func<TEntity, bool> predicate);
+        IEnumerable<TEntity> Filter(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate);
 
         //separate method SaveChanges can be helpful when using this pattern with UnitOfWork
         void SaveChanges();

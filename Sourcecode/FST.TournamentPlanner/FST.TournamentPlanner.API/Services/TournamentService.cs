@@ -200,6 +200,7 @@ namespace FST.TournamentPlanner.API.Services
                 });
             });
             this._repoWrapper.Tournament.SaveChanges();
+            
             //
             // Assign play area booking to each match
             //
@@ -210,6 +211,7 @@ namespace FST.TournamentPlanner.API.Services
                 this._repoWrapper.Tournament.SaveChanges();
             })
             );
+            
             //
             // randomize team list for fairness
             //
@@ -274,7 +276,7 @@ namespace FST.TournamentPlanner.API.Services
             {
                 IEnumerable<DbModels.PlayAreaBooking> bookings = this._repoWrapper.PlayAreaBooking.Filter(b => b.PlayArea.Id == pa.Id);
                 // In case there are no bookings for the current play area yet, the start time of the tournament is used
-                if (bookings == null ||bookings.Count() == 0)
+                if (bookings == null || (bookings != null && bookings.Count() == 0))
                 {
                     currentAvailableTimeSlot.Add(new KeyValuePair<DbModels.PlayArea, DateTime>(pa, tournament.Start));
                 }
@@ -285,6 +287,7 @@ namespace FST.TournamentPlanner.API.Services
                 }
             });
             KeyValuePair<DbModels.PlayArea, DateTime> earliestAvailablePlayArea = currentAvailableTimeSlot.OrderBy(c => c.Value).First();
+
             DbModels.PlayAreaBooking booking = new DbModels.PlayAreaBooking()
             {
                 CreatedAt = DateTime.Now,
@@ -292,8 +295,7 @@ namespace FST.TournamentPlanner.API.Services
                 End = earliestAvailablePlayArea.Value.AddMinutes(tournament.MatchDuration),
                 PlayArea = earliestAvailablePlayArea.Key
             };
-            return booking;
-            
+            return booking;            
         }
 
         private void GenerateRoundListRecursion(Dictionary<int, List<DbModels.Match>> matchList, DbModels.Match parentMatch, int round)

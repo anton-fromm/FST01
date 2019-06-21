@@ -53,7 +53,7 @@ namespace FST.TournamentPlanner.API.Repositories
             return PlannerContext.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> Filter(Func<TEntity, bool> predicate)
+        public IEnumerable<TEntity> Filter(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
             return PlannerContext.Set<TEntity>().Where(predicate);
         }
