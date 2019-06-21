@@ -8,9 +8,10 @@ namespace FST.TournamentPlanner.UI.ViewModel.Messages
 {
     internal class MatchFinishedMessage : GalaSoft.MvvmLight.Messaging.MessageBase
     {
-        internal MatchFinishedMessage(int tournamentID, MatchViewModel match)
+        internal MatchFinishedMessage(int tournamentID, MatchViewModel sender)
         {
-            Match = match ?? throw new NullReferenceException();
+            Match = sender ?? throw new NullReferenceException();
+            Sender = sender;
             TournamentId = tournamentID;
         }
 

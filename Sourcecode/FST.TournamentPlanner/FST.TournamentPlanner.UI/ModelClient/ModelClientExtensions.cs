@@ -122,9 +122,9 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='tournament'>
             /// tournament to update
             /// </param>
-            public static void UpdateTournament(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament))
+            public static Tournament UpdateTournament(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament))
             {
-                Task.Factory.StartNew(s => ((IModelClient)s).UpdateTournamentAsync(tournamentId, tournament), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return Task.Factory.StartNew(s => ((IModelClient)s).UpdateTournamentAsync(tournamentId, tournament), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -141,9 +141,12 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task UpdateTournamentAsync(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Tournament> UpdateTournamentAsync(this IModelClient operations, int tournamentId, Tournament tournament = default(Tournament), CancellationToken cancellationToken = default(CancellationToken))
             {
-                await operations.UpdateTournamentWithHttpMessagesAsync(tournamentId, tournament, null, cancellationToken).ConfigureAwait(false);
+                using (var _result = await operations.UpdateTournamentWithHttpMessagesAsync(tournamentId, tournament, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>
@@ -301,9 +304,9 @@ namespace FST.TournamentPlanner.UI.Model
             /// </param>
             /// <param name='tournamentId'>
             /// </param>
-            public static void Start(this IModelClient operations, int tournamentId)
+            public static Tournament Start(this IModelClient operations, int tournamentId)
             {
-                Task.Factory.StartNew(s => ((IModelClient)s).StartAsync(tournamentId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return Task.Factory.StartNew(s => ((IModelClient)s).StartAsync(tournamentId), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -318,9 +321,12 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task StartAsync(this IModelClient operations, int tournamentId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Tournament> StartAsync(this IModelClient operations, int tournamentId, CancellationToken cancellationToken = default(CancellationToken))
             {
-                await operations.StartWithHttpMessagesAsync(tournamentId, null, cancellationToken).ConfigureAwait(false);
+                using (var _result = await operations.StartWithHttpMessagesAsync(tournamentId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>
@@ -591,7 +597,7 @@ namespace FST.TournamentPlanner.UI.Model
             /// </param>
             /// <param name='team'>
             /// </param>
-            public static Team UpdateTeam(this IModelClient operations, int tournamentId, int? teamId = default(int?), Team team = default(Team))
+            public static Team UpdateTeam(this IModelClient operations, int tournamentId, int teamId, Team team = default(Team))
             {
                 return Task.Factory.StartNew(s => ((IModelClient)s).UpdateTeamAsync(tournamentId, teamId, team), operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -612,7 +618,7 @@ namespace FST.TournamentPlanner.UI.Model
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Team> UpdateTeamAsync(this IModelClient operations, int tournamentId, int? teamId = default(int?), Team team = default(Team), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Team> UpdateTeamAsync(this IModelClient operations, int tournamentId, int teamId, Team team = default(Team), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.UpdateTeamWithHttpMessagesAsync(tournamentId, teamId, team, null, cancellationToken).ConfigureAwait(false))
                 {

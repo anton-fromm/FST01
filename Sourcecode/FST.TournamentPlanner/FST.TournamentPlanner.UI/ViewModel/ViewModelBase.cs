@@ -8,11 +8,11 @@ namespace FST.TournamentPlanner.UI.ViewModel
 {
     public class ViewModelBase<TEntity> : GalaSoft.MvvmLight.ViewModelBase
     {
-        protected TEntity _model;
+        internal TEntity Model;
 
         public ViewModelBase(TEntity model)
         {
-            _model = model;
+            Model = model;
         }
     }
 }
