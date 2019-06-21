@@ -45,7 +45,7 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Second Team in this match
         /// </summary>
-        public Team TeamTwo 
+        public Team TeamTwo
         {
             get
             {
@@ -60,7 +60,17 @@ namespace FST.TournamentPlanner.API.Models
         /// <summary>
         /// Play area this match is held
         /// </summary>
-        public PlayArea PlayArea => new PlayArea(_match?.PlayAreaBooking?.PlayArea);
+        public PlayArea PlayArea
+        {
+            get
+            {
+                if (_match?.PlayAreaBooking == null)
+                {
+                    return null;
+                }
+                return new PlayArea(_match.PlayAreaBooking.PlayArea);
+            }
+        }
 
         /// <summary>
         /// Start time of this match
@@ -117,7 +127,7 @@ namespace FST.TournamentPlanner.API.Models
                 return new Match(_tournament, preMatch);
             }
         }
-        
+
         /// <summary>
         /// Second predecessor game
         /// </summary>
