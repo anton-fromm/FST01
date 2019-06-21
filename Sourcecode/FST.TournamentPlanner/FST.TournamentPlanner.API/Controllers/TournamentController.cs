@@ -79,7 +79,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournament">tournament to update</param>
         /// <param name="tournamentId"></param>
         /// <returns>updated tournament</returns>
-        [HttpPost("{tournamentId}")]
+        [HttpPut("{tournamentId}")]
         public ActionResult<Models.Tournament> UpdateTournament(int tournamentId, Models.Tournament tournament)
         {
             this._service.UpdateTournament(tournamentId, tournament);
@@ -188,7 +188,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId"></param>
         /// <param name="playAreaId"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/PlayArea/{playAreaId}/Remove")]
+        [HttpDelete("{tournamentId}/PlayArea/{playAreaId}/Remove")]
         public IActionResult RemovePlayArea(int tournamentId, int playAreaId)
         {
             return this._service.RemovePlayArea(tournamentId, playAreaId);
@@ -201,7 +201,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="playAreaId"></param>
         /// <param name="playArea"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/PlayArea/{playAreaId}")]
+        [HttpPut("{tournamentId}/PlayArea/{playAreaId}")]
         public IActionResult UpdatePlayArea(int tournamentId, int playAreaId, Models.PlayArea playArea)
         {
             return this._service.UpdatePlayArea(tournamentId, playAreaId, playArea);
@@ -241,7 +241,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="tournamentId">Id of the tournament</param>
         /// <param name="teamId">Id of the team</param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/Team/{teamId}/Remove")]
+        [HttpDelete("{tournamentId}/Team/{teamId}/Remove")]
         public ActionResult RemoveTeam(int tournamentId, int teamId)
         {
             return this._service.RemoveTeam(tournamentId, teamId);
@@ -254,7 +254,7 @@ namespace FST.TournamentPlanner.API.Controllers
         /// <param name="teamId">Id of the team</param>
         /// <param name="team"></param>
         /// <returns></returns>
-        [HttpPost("{tournamentId}/Team/Update/{teamId}")]
+        [HttpPut("{tournamentId}/Team/Update/{teamId}")]
         public ActionResult<Models.Team> UpdateTeam(int tournamentId, int teamId, Models.Team team)
         {
             return this._service.UpdateTeam(tournamentId, teamId, team);
