@@ -301,7 +301,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         Finish();
                     },
-                    () => ScoreIsEditable && State == STATE_STARTED);
+                    () => ScoreIsEditable && TeamOneScore.HasValue);
                 }
                 return _finishCommand;
             }
@@ -328,7 +328,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                             }
                             else
                             {
-                                
+                                MessengerInstance.Send(new TournamentFinishedMessage(_tournament.Id.Value));
                             }
                             MessengerInstance.Send(new MatchFinishedMessage(_tournament.Id.Value, this));
                             CurrentlyFinishing = false;
