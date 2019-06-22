@@ -28,18 +28,18 @@
             </Ribbon.ApplicationMenu>
             <RibbonTab Header="Verwaltung">
                 <RibbonGroup Header="Turniere">
-                    <RibbonButton Label="Neues Turnier" SmallImageSource="Icons/Document_16x.png" LargeImageSource="Icons/Document_32x.png" Command="{Binding NewTournamentCommand}"/>
-                    <RibbonButton Label="Turnier löschen" SmallImageSource="Icons/Document_16x.png" LargeImageSource="Icons/Document_32x.png" Command="{Binding DeleteTournamentCommand}"/>
+                    <RibbonButton Label="Neues Turnier" LargeImageSource="Icons/CreateTorunament.png" Command="{Binding NewTournamentCommand}"/>
+                    <RibbonButton Label="Turnier löschen" LargeImageSource="Icons/DeleteTournament.png" Command="{Binding DeleteTournamentCommand}"/>
                 </RibbonGroup>
             </RibbonTab>
             <RibbonTab Header="Turnier" Visibility="{Binding TournamentRibbonVisibility}" x:Name="tournamentRibbon">
                 <RibbonGroup Header="Speichern">
-                    <RibbonButton Label="Speichern" SmallImageSource="Icons/Save_16x.png" LargeImageSource="Icons/Save_32x.png" Command="{Binding CurrentDocument.SaveChangesCommand}" />
+                    <RibbonButton Label="Speichern" LargeImageSource="Icons/Save.png" Command="{Binding CurrentDocument.SaveChangesCommand}" />
                 </RibbonGroup>
                 <RibbonGroup Header="Verwaltung">
-                    <RibbonButton Label="Turnier starten" LargeImageSource="Icons/Run_32x.png" Command="{Binding CurrentDocument.StartCommand}"/>
-                    <RibbonButton Label="Turnierbaum anzeigen" Click="RibbonButton_Click" IsEnabled="{Binding CurrentDocument.State, Converter={StaticResource TabItemVisibilityConverter}}" />
-                    <RibbonButton Label="Urkunden generieren" Command="{Binding CurrentDocument.GenerateWinnerCertificatesCommand}"/>
+                    <RibbonButton Label="Turnier starten" LargeImageSource="Icons/start.png" Command="{Binding CurrentDocument.StartCommand}"/>
+                    <RibbonButton Label="Turnierbaum anzeigen" LargeImageSource="Icons/ShowTree.png" Click="RibbonButton_Click" IsEnabled="{Binding CurrentDocument.State, Converter={StaticResource TabItemVisibilityConverter}}" />
+                    <RibbonButton Label="Urkunden generieren" LargeImageSource="Icons/Urkunde.png" Command="{Binding CurrentDocument.GenerateWinnerCertificatesCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="Spielfelder">
                     <RibbonButton Label="Spielfeld hinzufügen" LargeImageSource="Icons/AddPlayArea.png" Command="{Binding CurrentDocument.AddPlayAreaCommand}"/>
