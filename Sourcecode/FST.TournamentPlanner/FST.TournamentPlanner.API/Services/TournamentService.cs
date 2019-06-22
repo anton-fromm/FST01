@@ -385,6 +385,8 @@ namespace FST.TournamentPlanner.API.Services
         public ActionResult<Match> EndMatch(int tournamentId, int matchId)
         {
             DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
+
             if (match == null)
             {
                 return new ActionResult<Match>(new NotFoundResult());
@@ -426,11 +428,16 @@ namespace FST.TournamentPlanner.API.Services
                     match.Successor.TeamTwo = nextMatchForWinner;
                 }
             }
+            //Final match
+            else
+            {
+                tournament.State = DbModels.TournamentState.Finished;
+            }
 
             match.State = DbModels.MatchState.Finished;
             this._repoWrapper.Match.SaveChanges();
+            this._repoWrapper.Tournament.SaveChanges();
 
-            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
             return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
         }
 
