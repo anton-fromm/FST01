@@ -385,6 +385,8 @@ namespace FST.TournamentPlanner.API.Services
         public ActionResult<Match> EndMatch(int tournamentId, int matchId)
         {
             DbModels.Match match = this._repoWrapper.Match.GetById(matchId);
+            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
+
             if (match == null)
             {
                 return new ActionResult<Match>(new NotFoundResult());
@@ -405,26 +407,36 @@ namespace FST.TournamentPlanner.API.Services
                 return new ActionResult<Match>(new BadRequestResult());
             }
             DB.Models.Team winner = (match.TeamOne.Score > match.TeamTwo.Score) ? match.TeamOne.Team : match.TeamTwo.Team;
+
             // Winner: TeamOne
-            DbModels.MatchResult nextMatchForWinner = new DbModels.MatchResult()
+
+            if (match.Successor != null)
             {
-                CreatedAt = DateTime.Now,
-                Match = match.Successor,
-                Team = winner
-            };
-            if (match.Successor.TeamOne == null)
-            {
-                match.Successor.TeamOne = nextMatchForWinner;
+                DbModels.MatchResult nextMatchForWinner = new DbModels.MatchResult()
+                {
+                    CreatedAt = DateTime.Now,
+                    Match = match.Successor,
+                    Team = winner
+                };
+
+                if (match.Successor.TeamOne == null)
+                {
+                    match.Successor.TeamOne = nextMatchForWinner;
+                }
+                else
+                {
+                    match.Successor.TeamTwo = nextMatchForWinner;
+                }
             }
+            //Final match
             else
             {
-                match.Successor.TeamTwo = nextMatchForWinner;
+                tournament.State = DbModels.TournamentState.Finished;
             }
+
             match.State = DbModels.MatchState.Finished;
-
             this._repoWrapper.Match.SaveChanges();
-
-            DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
+            this._repoWrapper.Tournament.SaveChanges();
 
             return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
         }
