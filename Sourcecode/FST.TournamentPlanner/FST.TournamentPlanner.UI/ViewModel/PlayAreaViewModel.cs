@@ -77,7 +77,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 {
                     try
                     {
-                        var newModel = new Model.Models.PlayArea(Model.Id, Name, _description);
+                        var newModel = new Model.Models.PlayArea(Model.Id, Name, value);
                         App.RestClient.UpdatePlayAreaWithHttpMessagesAsync(_tournament.Id.Value, newModel.Id.Value, newModel);
                         _description = value;
                         Model = newModel;
