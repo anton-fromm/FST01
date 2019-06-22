@@ -56,7 +56,14 @@
                                     <RowDefinition></RowDefinition>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding TeamOne.Name}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" TextDecorations="{Binding Converter={StaticResource MatchResultTeamNameDecorationConverter}, ConverterParameter=One}"/>
+                                <TextBlock Text="{Binding TeamOne.Name}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+                                    <TextBlock.TextDecorations>
+                                        <MultiBinding Converter="{StaticResource MatchResultTeamNameDecorationConverter}" ConverterParameter="One">
+                                            <Binding/>
+                                            <Binding Path="State"/>
+                                        </MultiBinding>
+                                    </TextBlock.TextDecorations>
+                                </TextBlock>
                                 <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource MatchResultConverter}">
@@ -66,7 +73,14 @@
                                             <Binding Path="TeamTwoScore" UpdateSourceTrigger="PropertyChanged"/>
                                         </MultiBinding>
                                     </TextBlock.Text></TextBlock>
-                                <TextBlock Text="{Binding TeamTwo.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" TextDecorations="{Binding Converter={StaticResource MatchResultTeamNameDecorationConverter}, ConverterParameter=Two}"/>
+                                <TextBlock Text="{Binding TeamTwo.Name}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                                    <TextBlock.TextDecorations>
+                                        <MultiBinding Converter="{StaticResource MatchResultTeamNameDecorationConverter}" ConverterParameter="Two">
+                                            <Binding/>
+                                            <Binding Path="State"/>
+                                        </MultiBinding>
+                                    </TextBlock.TextDecorations>
+                                </TextBlock>
                             </Grid>
                         </Border>
                         <Border BorderThickness="0,0,1,0" BorderBrush="Black" 

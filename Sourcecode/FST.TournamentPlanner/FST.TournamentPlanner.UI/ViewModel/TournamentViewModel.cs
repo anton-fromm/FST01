@@ -764,20 +764,16 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         GenerateWinnerCertificates();
                     },
-                    //TODO richtiger bedingung setzen...
-                    true);
-                    //() => State == STATE_FINISHED);
+                    () => State == STATE_FINISHED);
                 }
                 return _generateWinnerCertificatesCommand;
             }
         }
         private void GenerateWinnerCertificates()
         {
-            //TODO: echte namen aus dem final-match übergeben
-
             var finalMatch = this.FinalMatch.FirstOrDefault();
-            string winner = string.Empty;
-            string looser = string.Empty;
+            string winner = FinalMatch.First().Winner.Name;
+            string looser = FinalMatch.First().Looser.Name;
 
             if (finalMatch != null && finalMatch.Winner != null && finalMatch.Looser != null)
             {

@@ -36,7 +36,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
             {
                 if (m.TournamentId == tournament.Id && m.Match == FirstPredecessor || m.Match == SecondPredecessor)
                 {
-                    //TODO: Update current match, since one of the previous matches is finished now
+                    //Update current match, since one of the previous matches is finished now
                     Model = App.RestClient.GetMatchWithHttpMessagesAsync(Model.Id.Value, _tournament.Id.Value).Result.Body;
                     UpdateValuesFromModel();
                 }
@@ -301,7 +301,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         Finish();
                     },
-                    () => ScoreIsEditable);
+                    () => ScoreIsEditable && State == STATE_STARTED);
                 }
                 return _finishCommand;
             }
@@ -318,7 +318,9 @@ namespace FST.TournamentPlanner.UI.ViewModel
                         try
                         {
                             CurrentlyFinishing = true;
-                            UpdateMatch();
+                            var res = App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
+                            Model = res.Result.Body;
+                            UpdateValuesFromModel();
                             if (Successor != null)
                             {
                                 // Inform successor about finished prematch
@@ -341,9 +343,16 @@ namespace FST.TournamentPlanner.UI.ViewModel
 
         private void UpdateMatch()
         {
-            var res = App.RestClient.EndMatchWithHttpMessagesAsync(_tournament.Id.Value, Id);
-            Model = res.Result.Body;
-            UpdateValuesFromModel();
+            try
+            {
+                Model = App.RestClient.GetMatchWithHttpMessagesAsync(Id, _tournament.Id.Value).Result.Body;
+                UpdateValuesFromModel();
+            }
+            catch (Microsoft.Rest.HttpOperationException)
+            {
+                MessengerInstance.Send(new CommunicationErrorMessage());
+                CurrentlyFinishing = false;
+            }
         }
         #endregion
     }
