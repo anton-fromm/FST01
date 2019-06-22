@@ -462,7 +462,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                     {
                         try
                         {
-                            await App.RestClient.UpdateTournamentWithHttpMessagesAsync(Model.Id.Value,
+                            Model = App.RestClient.UpdateTournamentWithHttpMessagesAsync(Model.Id.Value,
                                 new Model.Models.Tournament(Model.Id.Value,
                                 Name,
                                 Description,
@@ -471,7 +471,8 @@ namespace FST.TournamentPlanner.UI.ViewModel
                                 TeamCount,
                                 State,
                                 PlayAreas.Select(a => a.Model).ToList(),
-                                Teams.Select(t => t.Model).ToList()));
+                                Teams.Select(t => t.Model).ToList())).Result.Body;
+                            UpdateFromModel(Model);
                         }
                         catch (Exception e)
                         {
