@@ -49,12 +49,31 @@ namespace FST.TournamentPlanner.UI.ViewModel
             _watcher.StatusChanged += this.Watcher_StatusChanged;
             _watcher.Start();
 
-            MessengerInstance.Register<msg.MatchFinishedMessage>(this, (m) =>
+
+            MessengerInstance.Register<msg.TournamentFinishedMessage>(this, (m) =>
             {
-                if (Matches.Contains(m.Match) && m.Match.Successor == null)
+                if (m.TournamentId == Model.Id.Value)
                 {
-                    // Final match of this tournament is finished => finish the tournament
-                    Finish();
+                    try
+                    {
+                        var resp = App.RestClient.GetWithHttpMessagesAsync(Id);
+                        resp.ContinueWith(t =>
+                        {
+                            Model = resp.Result.Body;
+                            UpdateFromModel(Model);
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        if (e.GetType() == typeof(AggregateException) || e.GetType() == typeof(Microsoft.Rest.HttpOperationException))
+                        {
+                            MessengerInstance.Send(new CommunicationErrorMessage());
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
                 }
             });
 
@@ -546,13 +565,6 @@ namespace FST.TournamentPlanner.UI.ViewModel
                 }
             }
             // Alle Properties => RaisePropertyChanged / Command.CanExecute updaten
-
-        }
-        #endregion
-
-        #region Finish()
-        private void Finish()
-        {
 
         }
         #endregion

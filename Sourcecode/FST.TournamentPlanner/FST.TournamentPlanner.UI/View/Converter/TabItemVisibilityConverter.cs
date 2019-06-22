@@ -14,7 +14,7 @@ namespace FST.TournamentPlanner.UI.View
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int res;
-            if (int.TryParse(value.ToString(), out res) && res == 1)
+            if (int.TryParse(value.ToString(), out res) && res > 0)
             {
                 return Visibility.Visible;
             }

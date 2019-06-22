@@ -251,6 +251,7 @@
     <Compile Include="ViewModel\Messages\TeamCountInvalidMessage.cs" />
     <Compile Include="ViewModel\Messages\TeamCountMismatchMessage.cs" />
     <Compile Include="ViewModel\Messages\TournamentAllreadyStarted.cs" />
+    <Compile Include="ViewModel\Messages\TournamentFinishedMessage.cs" />
     <Compile Include="ViewModel\Models\LocationObject.cs" />
     <Compile Include="View\Converter\TournamentStateToTextConverter.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
