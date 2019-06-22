@@ -405,27 +405,32 @@ namespace FST.TournamentPlanner.API.Services
                 return new ActionResult<Match>(new BadRequestResult());
             }
             DB.Models.Team winner = (match.TeamOne.Score > match.TeamTwo.Score) ? match.TeamOne.Team : match.TeamTwo.Team;
-            // Winner: TeamOne
-            DbModels.MatchResult nextMatchForWinner = new DbModels.MatchResult()
-            {
-                CreatedAt = DateTime.Now,
-                Match = match.Successor,
-                Team = winner
-            };
-            if (match.Successor.TeamOne == null)
-            {
-                match.Successor.TeamOne = nextMatchForWinner;
-            }
-            else
-            {
-                match.Successor.TeamTwo = nextMatchForWinner;
-            }
-            match.State = DbModels.MatchState.Finished;
 
+            // Winner: TeamOne
+
+            if (match.Successor != null)
+            {
+                DbModels.MatchResult nextMatchForWinner = new DbModels.MatchResult()
+                {
+                    CreatedAt = DateTime.Now,
+                    Match = match.Successor,
+                    Team = winner
+                };
+
+                if (match.Successor.TeamOne == null)
+                {
+                    match.Successor.TeamOne = nextMatchForWinner;
+                }
+                else
+                {
+                    match.Successor.TeamTwo = nextMatchForWinner;
+                }
+            }
+
+            match.State = DbModels.MatchState.Finished;
             this._repoWrapper.Match.SaveChanges();
 
             DbModels.Tournament tournament = this._repoWrapper.Tournament.GetById(tournamentId);
-
             return new ActionResult<Match>(new Models.Match(new Models.Tournament(tournament), match));
         }
 
