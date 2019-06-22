@@ -124,7 +124,7 @@ namespace FST.TournamentPlanner.UI.ViewModel
                                 -1, 
                                 "Neues Turnier", 
                                 "Beschreibung ergänzen", 
-                                DateTime.Now.AddDays(5), 
+                                DateTime.Now.Date.AddDays(7).AddHours(8), 
                                 60, 
                                 16, 
                                 0, 
