@@ -832,9 +832,13 @@ namespace FST.TournamentPlanner.UI.ViewModel
             if (rootObject.address.city != null)
             {
                 return rootObject.address.city;
+            }else if (rootObject.address.village != null)
+            {
+                return rootObject.address.village;
             }
 
-            return rootObject.address.village;
+            return "Dortmund";
+
         }
         #endregion
 
